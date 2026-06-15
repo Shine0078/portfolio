@@ -1,0 +1,179 @@
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Strategy Template
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 1: STRATEGY DECLARATION
+// ══════════════════════════════════════════════════════════════════════════════
+// @version=6
+strategy("Momentum + Mean Reversion Hybrid", overlay=true, initial_capital=100, currency=currency.USD, default_qty_type=strategy.percent_of_equity, default_qty_value=2, commission_type=strategy.commission.percent, commission_value=0.1, slippage=2, process_orders_on_close=false, calc_on_every_tick=false)
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 2: INPUT PARAMETERS
+// ══════════════════════════════════════════════════════════════════════════════
+
+fastEMA_len = input.int(9, "Fast EMA Length", minval=1, group="EMA")
+slowEMA_len = input.int(21, "Slow EMA Length", minval=1, group="EMA")
+
+rsi_len = input.int(14, "RSI Length", minval=1, group="RSI")
+rsi_long_lower = input.int(40, "RSI Long Lower", group="RSI")
+rsi_long_upper = input.int(65, "RSI Long Upper", group="RSI")
+rsi_short_lower = input.int(35, "RSI Short Lower", group="RSI")
+rsi_short_upper = input.int(60, "RSI Short Upper", group="RSI")
+
+vol_avg_len = input.int(20, "Volume MA Length", group="Volume")
+vol_mult = input.float(1.5, "Volume Multiplier", step=0.1, group="Volume")
+
+sl_pct = input.float(1.5, "Stop Loss %", step=0.1, group="Risk")
+tp_pct = input.float(3.0, "Take Profit %", step=0.1, group="Risk")
+risk_pct = input.float(2.0, "Risk Per Trade %", step=0.1, group="Risk")
+
+no_trade_open_mins = input.int(15, "No Trade After Open (mins)", group="Time")
+no_trade_close_mins = input.int(15, "No Trade Before Close (mins)", group="Time")
+
+daily_loss_pct = input.float(3.0, "Daily Loss Limit %", step=0.1, group="Limits")
+weekly_loss_usd = input.float(370.0, "Weekly Loss Limit USD", step=10, group="Limits")
+max_open_trades = input.int(3, "Max Open Trades", group="Limits")
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 3: INDICATOR CALCULATIONS
+// ══════════════════════════════════════════════════════════════════════════════
+
+ema_fast = ta.ema(close, fastEMA_len)
+ema_slow = ta.ema(close, slowEMA_len)
+rsi_val = ta.rsi(close, rsi_len)
+vwap_val = ta.vwap(hlc3)
+vol_ma = ta.sma(volume, vol_avg_len)
+vol_surge = volume > vol_ma * vol_mult
+ema_cross_up = ta.crossover(ema_fast, ema_slow)
+ema_cross_down = ta.crossunder(ema_fast, ema_slow)
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 4: TIME FILTERS
+// ══════════════════════════════════════════════════════════════════════════════
+
+current_hour = hour(time, "America/New_York")
+current_minute = minute(time, "America/New_York")
+time_in_minutes = current_hour * 60 + current_minute
+market_open = 9 * 60 + 30
+market_close = 16 * 60
+too_early = time_in_minutes < market_open + no_trade_open_mins
+too_late = time_in_minutes >= market_close - no_trade_close_mins
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 5: RISK MANAGEMENT
+// ══════════════════════════════════════════════════════════════════════════════
+
+var float daily_pnl = 0.0
+var float prev_netprofit = 0.0
+var bool trading_halted = false
+
+today = dayofmonth
+is_new_day = ta.change(today) != 0
+
+if is_new_day
+    daily_pnl := 0.0
+    prev_netprofit := strategy.netprofit
+    trading_halted := false
+
+daily_pnl := strategy.netprofit - prev_netprofit
+daily_halted = daily_pnl <= -(strategy.equity * daily_loss_pct / 100)
+
+var float weekly_pnl = 0.0
+var float prev_week_netprofit = 0.0
+current_week = weekofyear(time)
+is_new_week = ta.change(current_week) != 0
+
+if is_new_week
+    weekly_pnl := 0.0
+    prev_week_netprofit := strategy.netprofit
+
+weekly_pnl := strategy.netprofit - prev_week_netprofit
+weekly_halted = weekly_pnl <= -weekly_loss_usd
+
+if daily_halted or weekly_halted
+    trading_halted := true
+
+open_trades = strategy.opentrades
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 6: ENTRY CONDITIONS
+// ══════════════════════════════════════════════════════════════════════════════
+
+stop_distance = close * sl_pct / 100
+risk_amount = strategy.equity * risk_pct / 100
+qty_calc = risk_amount / stop_distance
+qty = math.max(qty_calc, 1)
+
+can_trade = not trading_halted and not too_early and not too_late and open_trades < max_open_trades
+
+long_entry = ema_cross_up and rsi_val >= rsi_long_lower and rsi_val <= rsi_long_upper and close > vwap_val and vol_surge and can_trade
+
+short_entry = ema_cross_down and rsi_val >= rsi_short_lower and rsi_val <= rsi_short_upper and close < vwap_val and vol_surge and can_trade
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 7: ORDER EXECUTION
+// ══════════════════════════════════════════════════════════════════════════════
+
+if long_entry and strategy.position_size <= 0
+    sl_price = close * (1 - sl_pct / 100)
+    tp_price = close * (1 + tp_pct / 100)
+    strategy.entry("LONG", strategy.long, qty=qty)
+    strategy.exit("LONG_EXIT", "LONG", stop=sl_price, limit=tp_price)
+
+if short_entry and strategy.position_size >= 0
+    sl_price = close * (1 + sl_pct / 100)
+    tp_price = close * (1 - tp_pct / 100)
+    strategy.entry("SHORT", strategy.short, qty=qty)
+    strategy.exit("SHORT_EXIT", "SHORT", stop=sl_price, limit=tp_price)
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 8: ALERTS
+// ══════════════════════════════════════════════════════════════════════════════
+
+if long_entry and strategy.position_size <= 0
+    alert('{"action": "buy", "ticker": "' + syminfo.ticker + '", "price": "' + str.tostring(close) + '", "qty": "' + str.tostring(qty) + '"}', alert.freq_once_per_bar_close)
+
+if short_entry and strategy.position_size >= 0
+    alert('{"action": "sell_short", "ticker": "' + syminfo.ticker + '", "price": "' + str.tostring(close) + '", "qty": "' + str.tostring(qty) + '"}', alert.freq_once_per_bar_close)
+
+if strategy.position_size[1] > 0 and strategy.position_size <= 0
+    alert('{"action": "sell", "ticker": "' + syminfo.ticker + '", "price": "' + str.tostring(close) + '"}', alert.freq_once_per_bar_close)
+
+if strategy.position_size[1] < 0 and strategy.position_size >= 0
+    alert('{"action": "buy_to_cover", "ticker": "' + syminfo.ticker + '", "price": "' + str.tostring(close) + '"}', alert.freq_once_per_bar_close)
+
+if weekly_halted and not weekly_halted[1]
+    alert('WEEKLY LOSS LIMIT REACHED - MANUAL REVIEW REQUIRED', alert.freq_once_per_bar_close)
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 9: CHART VISUALS
+// ══════════════════════════════════════════════════════════════════════════════
+
+plotshape(long_entry and strategy.position_size <= 0, title="Long Entry", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.small)
+plotshape(short_entry and strategy.position_size >= 0, title="Short Entry", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.small)
+plot(ema_fast, "Fast EMA", color=color.green, linewidth=1)
+plot(ema_slow, "Slow EMA", color=color.red, linewidth=1)
+plot(vwap_val, "VWAP", color=color.orange, linewidth=1, style=plot.style_stepline_diamond)
+bgcolor(trading_halted ? color.new(color.red, 90) : na, title="Trading Halted Background")
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 10: DASHBOARD TABLE
+// ══════════════════════════════════════════════════════════════════════════════
+
+var table dash = table.new(position.top_right, 2, 6, bgcolor=color.new(color.black, 80), border_width=1, border_color=color.gray)
+
+status_text = trading_halted ? "HALTED" : "ACTIVE"
+status_color = trading_halted ? color.red : color.green
+
+table.cell(dash, 0, 0, "METRIC", text_color=color.white, text_size=size.small)
+table.cell(dash, 1, 0, "VALUE", text_color=color.white, text_size=size.small)
+table.cell(dash, 0, 1, "Today P&L", text_color=color.white, text_size=size.small)
+table.cell(dash, 1, 1, "$" + str.tostring(daily_pnl, "#.##"), text_color=daily_pnl >= 0 ? color.green : color.red, text_size=size.small)
+table.cell(dash, 0, 2, "Week P&L", text_color=color.white, text_size=size.small)
+table.cell(dash, 1, 2, "$" + str.tostring(weekly_pnl, "#.##"), text_color=weekly_pnl >= 0 ? color.green : color.red, text_size=size.small)
+table.cell(dash, 0, 3, "Status", text_color=color.white, text_size=size.small)
+table.cell(dash, 1, 3, status_text, text_color=status_color, text_size=size.small)
+table.cell(dash, 0, 4, "Trades", text_color=color.white, text_size=size.small)
+table.cell(dash, 1, 4, str.tostring(strategy.closedtrades), text_color=color.white, text_size=size.small)
+table.cell(dash, 0, 5, "Open Pos", text_color=color.white, text_size=size.small)
+table.cell(dash, 1, 5, str.tostring(strategy.opentrades), text_color=color.white, text_size=size.small)

@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: 255 255 255;
+    --color-surface: 245 245 245;
+    --color-surface-elevated: 255 255 255;
+    --color-border: 229 229 229;
+    --color-text: 0 0 0;
+    --color-text-secondary: 82 82 82;
+    --color-accent: 0 0 0;
+    --color-accent-hover: 38 38 38;
+    --color-accent-light: 240 240 240;
+    --color-success: 34 34 34;
+    --color-danger: 68 68 68;
+  }
+
+  .dark {
+    --color-bg: 0 0 0;
+    --color-surface: 11 11 11;
+    --color-surface-elevated: 20 20 20;
+    --color-border: 34 34 34;
+    --color-text: 255 255 255;
+    --color-text-secondary: 140 140 140;
+    --color-accent: 255 255 255;
+    --color-accent-hover: 200 200 200;
+    --color-accent-light: 22 22 22;
+    --color-success: 200 200 200;
+    --color-danger: 180 180 180;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-text antialiased;
+  }
+
+  ::selection {
+    background-color: rgb(0 0 0 / 0.2);
+    color: inherit;
+  }
+
+  .dark ::selection {
+    background-color: rgb(255 255 255 / 0.15);
+    color: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(128 128 128 / 0.25);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(128 128 128 / 0.4);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-text to-text-secondary;
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
+  }
+
+  .perspective-800 {
+    perspective: 800px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .bg-surface-elevated {
+    background-color: rgb(var(--color-surface-elevated));
+  }
+
+  .bg-accent-light {
+    background-color: rgb(var(--color-accent-light));
+  }
+
+  .text-success {
+    color: rgb(var(--color-success));
+  }
+
+  .text-danger {
+    color: rgb(var(--color-danger));
+  }
+
+  .glass {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+    background-size: 200% 100%;
+  }
+
+  .gradient-mask-b {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

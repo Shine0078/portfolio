@@ -127,12 +127,15 @@ export function Contact() {
               <input
                 id="name"
                 type="text"
+                autoComplete="name"
+                aria-invalid={errors.name ? "true" : undefined}
+                aria-describedby={errors.name ? "name-error" : undefined}
                 {...register("name")}
                 placeholder="Your name"
                 className="w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text placeholder-text-secondary/40 focus:outline-none focus:ring-2 focus:ring-text/20 focus:border-text/30 transition-all duration-200"
               />
               {errors.name && (
-                <p className="mt-1.5 text-xs text-danger">
+                <p id="name-error" className="mt-1.5 text-xs text-danger">
                   {errors.name.message}
                 </p>
               )}
@@ -148,12 +151,15 @@ export function Contact() {
               <input
                 id="email"
                 type="email"
+                autoComplete="email"
+                aria-invalid={errors.email ? "true" : undefined}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
                 placeholder="you@example.com"
                 className="w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text placeholder-text-secondary/40 focus:outline-none focus:ring-2 focus:ring-text/20 focus:border-text/30 transition-all duration-200"
               />
               {errors.email && (
-                <p className="mt-1.5 text-xs text-danger">
+                <p id="email-error" className="mt-1.5 text-xs text-danger">
                   {errors.email.message}
                 </p>
               )}
@@ -170,12 +176,14 @@ export function Contact() {
             <textarea
               id="message"
               rows={6}
+              aria-invalid={errors.message ? "true" : undefined}
+              aria-describedby={errors.message ? "message-error" : undefined}
               {...register("message")}
               placeholder="Tell me about your project or just say hello..."
               className="w-full rounded-lg border border-border bg-surface-elevated px-4 py-3 text-sm text-text placeholder-text-secondary/40 focus:outline-none focus:ring-2 focus:ring-text/20 focus:border-text/30 transition-all duration-200 resize-y"
             />
             {errors.message && (
-              <p className="mt-1.5 text-xs text-danger">
+              <p id="message-error" className="mt-1.5 text-xs text-danger">
                 {errors.message.message}
               </p>
             )}
@@ -195,6 +203,7 @@ export function Contact() {
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
+                role="status"
                 className="flex items-center gap-2 text-sm text-success"
               >
                 <CheckCircle className="h-4 w-4" />
@@ -206,6 +215,7 @@ export function Contact() {
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
+                role="alert"
                 className="flex items-center gap-2 text-sm text-danger"
               >
                 <AlertCircle className="h-4 w-4" />

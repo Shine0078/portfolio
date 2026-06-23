@@ -75,6 +75,22 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgb(0,0,0)_70%)] opacity-30 dark:opacity-50" />
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated/60 px-4 py-1.5 text-xs font-medium text-text-secondary"
+        >
+          <span
+            aria-hidden="true"
+            className="relative flex h-2 w-2"
+          >
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+          </span>
+          {siteConfig.availability}
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,12 +102,14 @@ export function Hero() {
 
         <h1
           ref={nameRef}
+          aria-label={siteConfig.name}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[1.05] text-text"
           style={{ perspective: "600px" }}
         >
           {siteConfig.name.split("").map((char, i) => (
             <span
               key={i}
+              aria-hidden="true"
               className="char inline-block"
               style={char === " " ? { width: "0.3em" } : {}}
             >
@@ -109,7 +127,7 @@ export function Hero() {
 
         <p
           ref={taglineRef}
-          className="mx-auto mt-5 max-w-xl text-sm sm:text-base text-text-secondary/60 leading-relaxed text-balance"
+          className="mx-auto mt-5 max-w-xl text-sm sm:text-base text-text-secondary/70 leading-relaxed text-balance"
         >
           {siteConfig.tagline}
         </p>
@@ -122,7 +140,10 @@ export function Hero() {
             href="#contact"
             className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-text px-8 py-3.5 text-sm font-medium text-bg transition-all duration-300 hover:shadow-xl hover:shadow-text/10"
           >
-            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/10 transition-transform duration-500 ease-out" />
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/10 transition-transform duration-500 ease-out"
+            />
             <span className="relative z-10">Get In Touch</span>
           </a>
           <a
@@ -138,15 +159,17 @@ export function Hero() {
 
       <motion.a
         href="#about"
+        aria-label="Scroll to About section"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 0.8 }}
-        className="absolute bottom-10 flex flex-col items-center gap-2 text-text-secondary/50 hover:text-text-secondary transition-colors"
+        className="absolute bottom-10 flex flex-col items-center gap-2 text-text-secondary/70 hover:text-text-secondary transition-colors"
       >
         <span className="text-[10px] font-medium tracking-[0.2em] uppercase">
           Scroll
         </span>
         <motion.span
+          aria-hidden="true"
           animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         >

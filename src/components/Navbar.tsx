@@ -39,39 +39,51 @@ export function Navbar() {
           : "border-b border-transparent bg-transparent"
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <nav
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6"
+        aria-label="Primary"
+      >
         <a
           href="#hero"
+          aria-label={`${siteConfig.name} — home`}
           className="group relative text-lg font-bold tracking-tight text-text"
         >
           {siteConfig.name.split(" ")[0]}
-          <span className="text-text/40">.</span>
-          <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-text transition-all duration-300 group-hover:w-full" />
+          <span aria-hidden="true" className="text-text/40">.</span>
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-0.5 left-0 h-px w-0 bg-text transition-all duration-300 group-hover:w-full"
+          />
         </a>
 
         <ul className="hidden md:flex items-center gap-0.5">
-          {siteConfig.navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className={cn(
-                  "relative rounded-md px-3 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200",
-                  activeId === link.href.slice(1)
-                    ? "text-text"
-                    : "text-text-secondary hover:text-text"
-                )}
-              >
-                {link.label}
-                {activeId === link.href.slice(1) && (
-                  <motion.span
-                    layoutId="nav-indicator"
-                    className="absolute inset-x-1 -bottom-px h-px bg-text"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-              </a>
-            </li>
-          ))}
+          {siteConfig.navLinks.map((link) => {
+            const isActive = activeId === link.href.slice(1);
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "relative rounded-md px-3 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200",
+                    isActive
+                      ? "text-text"
+                      : "text-text-secondary hover:text-text"
+                  )}
+                >
+                  {link.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-indicator"
+                      aria-hidden="true"
+                      className="absolute inset-x-1 -bottom-px h-px bg-text"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </a>
+              </li>
+            );
+          })}
           <li className="ml-2">
             <a
               href={siteConfig.resumeUrl}
@@ -132,6 +144,9 @@ export function Navbar() {
                     <a
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
+                      aria-current={
+                        activeId === link.href.slice(1) ? "true" : undefined
+                      }
                       className={cn(
                         "text-2xl font-medium tracking-tight transition-colors",
                         activeId === link.href.slice(1)

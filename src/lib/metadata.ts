@@ -20,14 +20,32 @@ export function generateMetadata({
     : `${siteConfig.name} — ${siteConfig.role}`;
   const pageDescription =
     description ??
-    "Aspiring programmer and data enthusiast building real-world solutions. Skilled in Python, Java, JavaScript, AWS, and cloud computing.";
+    siteConfig.shortBio;
+  const keywords = [
+    "IT Analyst",
+    "Cloud Technologist",
+    "AWS Cloud Practitioner",
+    "Cloud Computing",
+    "Data Analysis",
+    "SQL",
+    "Python",
+    "Java",
+    "DevOps",
+    "IT Support",
+    "Oshawa",
+    "Ontario",
+    "Samuel Abraham",
+  ];
 
   return {
     title: pageTitle,
     description: pageDescription,
+    keywords,
     metadataBase: new URL(baseUrl),
-    authors: [{ name: siteConfig.name }],
+    authors: [{ name: siteConfig.name, url: baseUrl }],
     creator: siteConfig.name,
+    publisher: siteConfig.name,
+    category: "Technology",
     openGraph: {
       title: pageTitle,
       description: pageDescription,

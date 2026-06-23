@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { generateMetadata } from "@/lib/metadata";
+import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
@@ -36,6 +37,40 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = generateMetadata();
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.name,
+  jobTitle: siteConfig.role,
+  description: siteConfig.shortBio,
+  email: `mailto:${siteConfig.email}`,
+  url: siteConfig.siteUrl,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Oshawa",
+    addressRegion: "ON",
+    addressCountry: "CA",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Durham College",
+  },
+  knowsAbout: [
+    "Cloud Computing",
+    "AWS",
+    "Data Analysis",
+    "SQL",
+    "Python",
+    "Java",
+    "IT Operations",
+  ],
+  sameAs: [
+    siteConfig.social.github,
+    siteConfig.social.linkedin,
+    siteConfig.social.twitter,
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -49,12 +84,21 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
       </head>
       <body className="min-h-screen flex flex-col">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <CursorGlow />
         <GSAPScrollAnimations />
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

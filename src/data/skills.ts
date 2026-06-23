@@ -2,40 +2,13 @@ import type { SkillCategory } from "@/types";
 
 export const skillCategories: SkillCategory[] = [
   {
-    category: "Languages",
-    skills: [
-      { name: "Python" },
-      { name: "Java" },
-      { name: "JavaScript" },
-      { name: "TypeScript" },
-      { name: "PHP" },
-      { name: "SQL" },
-    ],
-  },
-  {
-    category: "Frontend",
-    skills: [
-      { name: "HTML/CSS" },
-      { name: "React" },
-      { name: "Next.js" },
-      { name: "Tailwind CSS" },
-    ],
-  },
-  {
-    category: "Backend & Database",
-    skills: [
-      { name: "Node.js" },
-      { name: "MySQL" },
-      { name: "PostgreSQL" },
-      { name: "REST APIs" },
-    ],
-  },
-  {
-    category: "Cloud & DevOps",
+    category: "Cloud & Infrastructure",
     skills: [
       { name: "AWS" },
-      { name: "Docker" },
       { name: "Cloud Computing" },
+      { name: "Virtualization" },
+      { name: "Docker" },
+      { name: "Linux" },
       { name: "Git" },
     ],
   },
@@ -44,17 +17,53 @@ export const skillCategories: SkillCategory[] = [
     skills: [
       { name: "Data Analysis" },
       { name: "Data Presentation" },
-      { name: "Blockchain" },
-      { name: "Software Testing" },
+      { name: "SQL" },
+      { name: "MySQL" },
+      { name: "PostgreSQL" },
+      { name: "Reporting" },
     ],
   },
   {
-    category: "Tools & Methods",
+    category: "Programming",
+    skills: [
+      { name: "Python" },
+      { name: "Java" },
+      { name: "JavaScript" },
+      { name: "TypeScript" },
+      { name: "PHP" },
+    ],
+  },
+  {
+    category: "Web & Tooling",
+    skills: [
+      { name: "HTML/CSS" },
+      { name: "React" },
+      { name: "Next.js" },
+      { name: "Node.js" },
+      { name: "Tailwind CSS" },
+      { name: "Figma" },
+    ],
+  },
+  {
+    category: "Practices & Security",
+    skills: [
+      { name: "Software Testing" },
+      { name: "DevOps Awareness" },
+      { name: "IT Security Basics" },
+      { name: "Blockchain" },
+      { name: "REST APIs" },
+      { name: "Agile" },
+    ],
+  },
+  {
+    category: "Professional Strengths",
     skills: [
       { name: "Problem Solving" },
+      { name: "Process Discipline" },
+      { name: "Incident Coordination" },
+      { name: "Documentation" },
       { name: "Team Collaboration" },
-      { name: "Agile" },
-      { name: "Figma" },
+      { name: "Adaptability" },
     ],
   },
 ];

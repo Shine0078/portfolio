@@ -13,8 +13,7 @@ export function Footer() {
               {siteConfig.name.split(" ")[0]}.
             </a>
             <p className="mt-3 text-sm text-text-secondary leading-relaxed max-w-xs">
-              Aspiring programmer and data enthusiast building real-world
-              solutions.
+              {siteConfig.shortBio}
             </p>
           </div>
 
@@ -74,26 +73,14 @@ export function Footer() {
 
           <div>
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-text mb-4">
-              Legal
+              Location
             </h4>
-            <ul className="flex flex-col gap-2.5">
-              <li>
-                <a
-                  href="/privacy"
-                  className="text-sm text-text-secondary hover:text-text transition-colors duration-200"
-                >
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/terms"
-                  className="text-sm text-text-secondary hover:text-text transition-colors duration-200"
-                >
-                  Terms of Service
-                </a>
-              </li>
-            </ul>
+            <p className="text-sm text-text-secondary leading-relaxed">
+              {siteConfig.location}
+            </p>
+            <p className="mt-3 text-sm font-medium text-text">
+              {siteConfig.availability}
+            </p>
           </div>
         </div>
 

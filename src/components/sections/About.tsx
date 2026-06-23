@@ -7,9 +7,9 @@ import { useInView } from "@/hooks/useInView";
 
 const stats = [
   { label: "Years of Study", value: "3+" },
-  { label: "Languages", value: "6+" },
-  { label: "Projects Built", value: "10+" },
-  { label: "Certifications", value: "3" },
+  { label: "Languages & Tools", value: "20+" },
+  { label: "Credentials", value: "3" },
+  { label: "AWS Track", value: "Active" },
 ];
 
 export function About() {
@@ -84,25 +84,33 @@ export function About() {
             className="flex flex-col gap-5"
           >
             <p className="text-base sm:text-lg leading-relaxed text-text-secondary">
-              I am a dedicated student and aspiring programmer exploring the
-              boundless possibilities of technology. I am currently studying{" "}
-              <span className="font-medium text-text">Computer Programming</span> at
-              Durham College, where I have refined my coding skills across Python,
-              Java, MySQL, CSS, PHP, and JavaScript.
+              I am an{" "}
+              <span className="font-medium text-text">IT Analyst</span> based in
+              the Greater Toronto Area with a foundation in software development
+              and a growing specialty in cloud infrastructure and data
+              operations. I completed a three-year{" "}
+              <span className="font-medium text-text">
+                Computer Programming &amp; Analysis
+              </span>{" "}
+              diploma at Durham College, working across Python, Java,
+              JavaScript, SQL, and PHP.
             </p>
             <p className="text-base sm:text-lg leading-relaxed text-text-secondary">
-              I have hands-on experience in cloud computing, data analysis, software
-              testing, and blockchain technology. I am also pursuing the{" "}
+              I am currently advancing through the{" "}
               <span className="font-medium text-text">
                 Cloud and Information Technology Systems
               </span>{" "}
-              program to deepen my expertise in AWS, DevOps, and cloud security.
+              program and preparing for the AWS Cloud Practitioner
+              certification, deepening my expertise in cloud architecture,
+              DevOps, security, and virtualization.
             </p>
             <p className="text-base sm:text-lg leading-relaxed text-text-secondary">
-              My ultimate goal is to become a skilled programmer and data scientist,
-              specializing in machine learning, artificial intelligence, and robotics.
-              I am passionate about solving real-world problems with technology and
-              committed to lifelong learning in this dynamic industry.
+              What I bring from my operational background is reliability under
+              pressure, process discipline, and a metrics-driven mindset — the
+              same qualities that make infrastructure dependable and support
+              teams effective. I am focused on roles where I can keep systems
+              running cleanly, analyze data with intent, and document everything
+              so the next person is set up to succeed.
             </p>
 
             <div className="flex items-center gap-2 text-sm text-text-secondary mt-2">

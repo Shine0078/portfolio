@@ -39,8 +39,42 @@
     scroll-behavior: smooth;
   }
 
+  /* Honor users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply bg-bg text-text antialiased;
+  }
+
+  /* Visible, consistent focus indicator for keyboard users */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid rgb(var(--color-text));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Skip-to-content link for keyboard / screen-reader users */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100%;
+    z-index: 100;
+    transform: translateY(-100%);
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    background: rgb(var(--color-text));
+    color: rgb(var(--color-bg));
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: top 0.2s ease, transform 0.2s ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+    transform: translateY(0);
   }
 
   ::selection {

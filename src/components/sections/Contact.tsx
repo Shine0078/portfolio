@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import { Send, CheckCircle, AlertCircle, Copy, Check } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { useInView } from "@/hooks/useInView";
 import { Button } from "@/components/ui/Button";
@@ -35,6 +35,19 @@ export function Contact() {
   const [submitState, setSubmitState] = useState<SubmitState>({
     status: "idle",
   });
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(siteConfig.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const a = document.createElement("a");
+      a.href = `mailto:${siteConfig.email}`;
+      a.click();
+    }
+  };
 
   const {
     register,
@@ -98,12 +111,22 @@ export function Contact() {
           <p className="mt-6 text-base sm:text-lg text-text-secondary max-w-lg mx-auto leading-relaxed">
             I am always open to discussing new projects, creative ideas, or
             opportunities to be part of your vision. Reach out directly at{" "}
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="text-text hover:underline font-medium"
+            <button
+              type="button"
+              onClick={copyEmail}
+              className="inline-flex items-center gap-1.5 rounded text-text hover:underline font-medium"
+              aria-label={`Copy email ${siteConfig.email} to clipboard`}
             >
               {siteConfig.email}
-            </a>
+              {copied ? (
+                <Check className="h-3.5 w-3.5 text-success" aria-hidden="true" />
+              ) : (
+                <Copy className="h-3.5 w-3.5 text-text-secondary" aria-hidden="true" />
+              )}
+            </button>
+            <span className="sr-only" role="status">
+              {copied ? "Email copied to clipboard" : ""}
+            </span>
             .
           </p>
         </motion.div>

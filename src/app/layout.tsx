@@ -5,6 +5,8 @@ import { generateMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CommandPalette } from "@/components/CommandPalette";
+import { BackToTop } from "@/components/BackToTop";
 import "./globals.css";
 
 const GSAPScrollAnimations = dynamic(
@@ -100,6 +102,8 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <CommandPalette />
+        <BackToTop />
       </body>
     </html>
   );

@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { ArrowDown, Download } from "lucide-react";
 import gsap from "gsap";
 import { siteConfig } from "@/config/site";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+import { Typewriter } from "@/components/ui/Typewriter";
 
 const ThreeScene = dynamic(
   () => import("@/components/three/ThreeScene").then((m) => m.ThreeScene),
@@ -122,7 +124,14 @@ export function Hero() {
           ref={roleRef}
           className="mt-6 text-lg sm:text-xl md:text-2xl font-light text-text-secondary tracking-wide"
         >
-          {siteConfig.role}
+          <Typewriter
+            words={[
+              "IT Analyst",
+              "Cloud Technologist",
+              "Data Enthusiast",
+              "Problem Solver",
+            ]}
+          />
         </p>
 
         <p
@@ -136,24 +145,28 @@ export function Hero() {
           ref={ctaRef}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <a
-            href="#contact"
-            className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-text px-8 py-3.5 text-sm font-medium text-bg transition-all duration-300 hover:shadow-xl hover:shadow-text/10"
-          >
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/10 transition-transform duration-500 ease-out"
-            />
-            <span className="relative z-10">Get In Touch</span>
-          </a>
-          <a
-            href={siteConfig.resumeUrl}
-            download
-            className="group inline-flex items-center justify-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-text/30 hover:text-text hover:bg-text/5"
-          >
-            <Download className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-            Resume
-          </a>
+          <MagneticButton strength={0.4} radius={90}>
+            <a
+              href="#contact"
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-text px-8 py-3.5 text-sm font-medium text-bg transition-all duration-300 hover:shadow-xl hover:shadow-text/10"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/10 transition-transform duration-500 ease-out"
+              />
+              <span className="relative z-10">Get In Touch</span>
+            </a>
+          </MagneticButton>
+          <MagneticButton strength={0.4} radius={90}>
+            <a
+              href={siteConfig.resumeUrl}
+              download
+              className="group inline-flex items-center justify-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-text/30 hover:text-text hover:bg-text/5"
+            >
+              <Download className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+              Resume
+            </a>
+          </MagneticButton>
         </div>
       </div>
 

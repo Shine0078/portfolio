@@ -4,13 +4,51 @@ import { motion } from "framer-motion";
 import { Mail, MapPin, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { useInView } from "@/hooks/useInView";
+import { useCountUp } from "@/hooks/useCountUp";
 
-const stats = [
-  { label: "Years of Study", value: "3+" },
-  { label: "Languages & Tools", value: "20+" },
-  { label: "Credentials", value: "3" },
-  { label: "AWS Track", value: "Active" },
+const stats: {
+  label: string;
+  display: (v: number) => string;
+  end: number;
+}[] = [
+  { label: "Years of Study", end: 3, display: (v) => `${v}+` },
+  { label: "Languages & Tools", end: 20, display: (v) => `${v}+` },
+  { label: "Credentials", end: 3, display: (v) => `${v}` },
+  { label: "AWS Track", end: 1, display: () => "Active" },
 ];
+
+function StatCard({
+  stat,
+  index,
+  isInView,
+}: {
+  stat: (typeof stats)[number];
+  index: number;
+  isInView: boolean;
+}) {
+  const isNumeric = stat.display(0) !== "Active";
+  const { value, ref } = useCountUp({
+    end: stat.end,
+    duration: 1600,
+  });
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+      ref={ref as React.RefObject<HTMLDivElement>}
+      className="rounded-xl border border-border bg-surface-elevated p-4 text-center transition-all duration-300 hover:border-text/20 hover:-translate-y-0.5"
+    >
+      <div className="text-2xl font-bold text-text tabular-nums">
+        {isNumeric ? stat.display(value) : stat.display(value)}
+      </div>
+      <div className="mt-1 text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+        {stat.label}
+      </div>
+    </motion.div>
+  );
+}
 
 export function About() {
   const { ref, isInView } = useInView<HTMLElement>();
@@ -60,18 +98,12 @@ export function About() {
 
             <div className="grid grid-cols-2 gap-3">
               {stats.map((stat, index) => (
-                <motion.div
+                <StatCard
                   key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                  className="rounded-xl border border-border bg-surface-elevated p-4 text-center"
-                >
-                  <div className="text-2xl font-bold text-text">{stat.value}</div>
-                  <div className="mt-1 text-[11px] font-medium text-text-secondary uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </motion.div>
+                  stat={stat}
+                  index={index}
+                  isInView={isInView}
+                />
               ))}
             </div>
           </motion.div>

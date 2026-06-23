@@ -61,30 +61,34 @@ export function Contact() {
   const onSubmit = async (data: ContactFormData) => {
     setSubmitState({ status: "loading" });
 
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+    const apiPath = `${basePath}/api/contact`;
+
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(apiPath, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      const json = await res.json();
-
-      if (!res.ok) {
-        setSubmitState({
-          status: "error",
-          message: json.error ?? "Something went wrong. Please try again.",
-        });
+      if (res.ok) {
+        setSubmitState({ status: "success" });
+        reset();
         return;
       }
 
-      setSubmitState({ status: "success" });
-      reset();
+      const json = await res.json().catch(() => ({}));
+      throw new Error(json.error ?? "api-unavailable");
     } catch {
+      const subject = encodeURIComponent(`Portfolio message from ${data.name}`);
+      const body = encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`
+      );
+      window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
       setSubmitState({
-        status: "error",
-        message: "Network error. Please check your connection and try again.",
+        status: "success",
       });
+      reset();
     }
   };
 
@@ -230,7 +234,8 @@ export function Contact() {
                 className="flex items-center gap-2 text-sm text-success"
               >
                 <CheckCircle className="h-4 w-4" />
-                Message sent! I will get back to you soon.
+                Your email client should have opened with your message ready to
+                send.
               </motion.p>
             )}
 

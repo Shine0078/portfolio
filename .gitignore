@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# contentlayer build cache (generated, not source)
+/.contentlayer/
+
 # production
 /build
 

@@ -12,11 +12,16 @@ const config: Config = {
       colors: {
         bg: "rgb(var(--color-bg) / <alpha-value>)",
         surface: "rgb(var(--color-surface) / <alpha-value>)",
+        "surface-elevated":
+          "rgb(var(--color-surface-elevated) / <alpha-value>)",
         border: "rgb(var(--color-border) / <alpha-value>)",
         text: "rgb(var(--color-text) / <alpha-value>)",
         "text-secondary": "rgb(var(--color-text-secondary) / <alpha-value>)",
         accent: "rgb(var(--color-accent) / <alpha-value>)",
         "accent-hover": "rgb(var(--color-accent-hover) / <alpha-value>)",
+        "accent-light": "rgb(var(--color-accent-light) / <alpha-value>)",
+        success: "rgb(var(--color-success) / <alpha-value>)",
+        danger: "rgb(var(--color-danger) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

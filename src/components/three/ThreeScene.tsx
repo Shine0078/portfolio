@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useCallback } from "react";
+import { useRef, useMemo, useEffect, useCallback, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -142,9 +142,9 @@ function ParticleField() {
     canvas.height = 64;
     const ctx = canvas.getContext("2d")!;
     const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-    gradient.addColorStop(0, "rgba(255,255,255,1)");
-    gradient.addColorStop(0.3, "rgba(255,255,255,0.8)");
-    gradient.addColorStop(1, "rgba(255,255,255,0)");
+    gradient.addColorStop(0, "rgba(103,232,249,1)");
+    gradient.addColorStop(0.3, "rgba(34,211,238,0.8)");
+    gradient.addColorStop(1, "rgba(34,211,238,0)");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 64, 64);
     const texture = new THREE.CanvasTexture(canvas);
@@ -166,7 +166,7 @@ function ParticleField() {
           size={0.06}
           map={particleTexture}
           transparent
-          opacity={0.8}
+          opacity={0.65}
           depthWrite={false}
           sizeAttenuation
           blending={THREE.AdditiveBlending}
@@ -175,9 +175,9 @@ function ParticleField() {
 
       <lineSegments ref={lineRef} geometry={lineGeometry}>
         <lineBasicMaterial
-          color="#ffffff"
+          color="#22d3ee"
           transparent
-          opacity={0.15}
+          opacity={0.12}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
@@ -209,18 +209,18 @@ function AmbientOrbs() {
       <mesh ref={orb1Ref}>
         <sphereGeometry args={[0.8, 32, 32]} />
         <meshBasicMaterial
-          color="#ffffff"
+          color="#22d3ee"
           transparent
-          opacity={0.02}
+          opacity={0.025}
           depthWrite={false}
         />
       </mesh>
       <mesh ref={orb2Ref}>
         <sphereGeometry args={[0.5, 32, 32]} />
         <meshBasicMaterial
-          color="#ffffff"
+          color="#818cf8"
           transparent
-          opacity={0.015}
+          opacity={0.018}
           depthWrite={false}
         />
       </mesh>
@@ -232,7 +232,7 @@ function SceneContent() {
   const { scene } = useThree();
 
   useEffect(() => {
-    scene.background = new THREE.Color("#000000");
+    scene.background = new THREE.Color("#0a0a0f");
   }, [scene]);
 
   return (
@@ -245,6 +245,23 @@ function SceneContent() {
 }
 
 export function ThreeScene() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+
+    updatePreference();
+    media.addEventListener("change", updatePreference);
+    return () => media.removeEventListener("change", updatePreference);
+  }, []);
+
+  if (prefersReducedMotion) {
+    return (
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.11),transparent_30rem)]" />
+    );
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none">
       <Canvas

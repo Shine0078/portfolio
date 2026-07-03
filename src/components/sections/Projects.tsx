@@ -20,21 +20,22 @@ export function Projects() {
     <section
       id="projects"
       ref={ref}
-      className="py-28 sm:py-36 px-6 bg-surface"
+      className="relative overflow-hidden bg-surface/55 px-6 py-28 sm:py-36"
     >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(34,211,238,0.09),transparent_24rem)]" />
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
         >
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-text-secondary mb-3">
+          <p className="mb-3 font-mono text-xs font-medium uppercase tracking-[0.25em] text-accent/80">
             Portfolio
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text">
+          <h2 className="text-3xl font-bold tracking-tight text-text sm:text-4xl">
             Featured Projects
           </h2>
-          <div className="mt-3 h-px w-16 bg-text/20" />
+          <div className="accent-line mt-3 h-px w-24" />
         </motion.div>
 
         <motion.div
@@ -47,8 +48,8 @@ export function Projects() {
             onClick={() => setActiveFilter(null)}
             className={`rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all duration-300 ${
               activeFilter === null
-                ? "bg-text text-bg shadow-sm"
-                : "bg-surface-elevated border border-border text-text-secondary hover:text-text hover:border-text/20"
+                ? "bg-accent text-bg shadow-[0_0_26px_rgb(var(--color-accent)/0.2)]"
+                : "glass border border-border/40 bg-surface-elevated/55 text-text-secondary hover:border-accent/30 hover:text-accent"
             }`}
           >
             All
@@ -61,8 +62,8 @@ export function Projects() {
               }
               className={`rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all duration-300 ${
                 activeFilter === tag
-                  ? "bg-text text-bg shadow-sm"
-                  : "bg-surface-elevated border border-border text-text-secondary hover:text-text hover:border-text/20"
+                  ? "bg-accent text-bg shadow-[0_0_26px_rgb(var(--color-accent)/0.2)]"
+                  : "glass border border-border/40 bg-surface-elevated/55 text-text-secondary hover:border-accent/30 hover:text-accent"
               }`}
             >
               {tag}
@@ -83,17 +84,19 @@ export function Projects() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.4, delay: index * 0.06 }}
-                className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-surface-elevated transition-all duration-500 hover:shadow-xl hover:shadow-black/5 hover:border-text/15"
+                whileHover={{ y: -8, scale: 1.015 }}
+                className="group glass-panel relative flex flex-col overflow-hidden rounded-xl transition-all duration-500 hover:border-accent/30 hover:shadow-[0_0_0_1px_rgb(var(--color-accent)/0.08),0_24px_80px_rgb(0_0_0/0.45),0_0_52px_rgb(var(--color-accent)/0.16)]"
               >
-                <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-text/8 to-transparent">
-                  <span className="text-6xl font-bold text-text/8 transition-transform duration-500 group-hover:scale-110">
+                <div className="relative flex h-48 items-center justify-center overflow-hidden bg-[linear-gradient(135deg,rgba(34,211,238,0.13),rgba(17,24,39,0.25)),linear-gradient(rgba(238,247,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(238,247,255,0.045)_1px,transparent_1px)] bg-[size:auto,28px_28px,28px_28px]">
+                  <div className="absolute inset-6 rounded-lg border border-accent/10 bg-bg/20 shadow-[inset_0_0_28px_rgb(var(--color-accent)/0.08)] transition-transform duration-500 group-hover:scale-105" />
+                  <span className="relative text-6xl font-bold text-accent/20 transition-transform duration-500 group-hover:scale-110">
                     {project.title.charAt(0)}
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-t from-surface-elevated via-transparent to-transparent" />
                 </div>
 
                 <div className="flex flex-1 flex-col gap-3 p-6">
-                  <h3 className="text-lg font-semibold text-text">
+                  <h3 className="text-lg font-semibold text-text transition-colors group-hover:text-accent">
                     {project.title}
                   </h3>
                   <p className="flex-1 text-sm leading-relaxed text-text-secondary line-clamp-3">
@@ -102,7 +105,9 @@ export function Projects() {
 
                   <div className="flex flex-wrap gap-1.5">
                     {project.tags.map((tag) => (
-                      <Badge key={tag}>{tag}</Badge>
+                      <Badge key={tag} className="font-mono">
+                        {tag}
+                      </Badge>
                     ))}
                   </div>
 
@@ -112,7 +117,7 @@ export function Projects() {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm font-medium text-text hover:text-text/60 transition-colors"
+                        className="flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
                       >
                         <ExternalLink className="h-3.5 w-3.5" />
                         Live Demo
@@ -123,7 +128,7 @@ export function Projects() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-text transition-colors"
+                        className="flex items-center gap-1.5 text-sm font-medium text-text-secondary transition-colors hover:text-accent"
                       >
                         <svg
                           className="h-3.5 w-3.5"

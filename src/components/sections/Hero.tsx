@@ -21,6 +21,10 @@ export function Hero() {
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
     if (nameRef.current) {
@@ -73,22 +77,24 @@ export function Hero() {
     >
       <ThreeScene />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bg" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgb(0,0,0)_70%)] opacity-30 dark:opacity-50" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.05)_1px,transparent_1px)] bg-[size:72px_72px] opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.18),transparent_24rem),radial-gradient(circle_at_80%_20%,rgba(99,102,241,0.13),transparent_28rem)]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg/30 via-transparent to-bg" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated/60 px-4 py-1.5 text-xs font-medium text-text-secondary"
+          className="glass-panel mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-text-secondary"
         >
           <span
             aria-hidden="true"
             className="relative flex h-2 w-2"
           >
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/70" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent shadow-[0_0_16px_rgb(var(--color-accent)/0.85)]" />
           </span>
           {siteConfig.availability}
         </motion.div>
@@ -97,7 +103,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="mb-6 text-xs font-medium uppercase tracking-[0.3em] text-text-secondary"
+          className="mb-6 font-mono text-xs font-medium uppercase tracking-[0.3em] text-accent/80"
         >
           {siteConfig.location}
         </motion.p>
@@ -105,7 +111,7 @@ export function Hero() {
         <h1
           ref={nameRef}
           aria-label={siteConfig.name}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[1.05] text-text"
+          className="text-gradient text-5xl font-bold leading-[1.05] tracking-[-0.04em] sm:text-6xl md:text-7xl lg:text-8xl"
           style={{ perspective: "600px" }}
         >
           {siteConfig.name.split("").map((char, i) => (
@@ -122,7 +128,7 @@ export function Hero() {
 
         <p
           ref={roleRef}
-          className="mt-6 text-lg sm:text-xl md:text-2xl font-light text-text-secondary tracking-wide"
+          className="mt-6 font-mono text-lg font-light tracking-wide text-text-secondary sm:text-xl md:text-2xl"
         >
           <Typewriter
             words={[
@@ -136,7 +142,7 @@ export function Hero() {
 
         <p
           ref={taglineRef}
-          className="mx-auto mt-5 max-w-xl text-sm sm:text-base text-text-secondary/70 leading-relaxed text-balance"
+          className="mx-auto mt-5 max-w-2xl text-balance text-sm leading-relaxed text-text-secondary sm:text-base"
         >
           {siteConfig.tagline}
         </p>
@@ -148,11 +154,11 @@ export function Hero() {
           <MagneticButton strength={0.4} radius={90}>
             <a
               href="#contact"
-              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-text px-8 py-3.5 text-sm font-medium text-bg transition-all duration-300 hover:shadow-xl hover:shadow-text/10"
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-bg shadow-[0_0_32px_rgb(var(--color-accent)/0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_0_46px_rgb(var(--color-accent)/0.38)]"
             >
               <span
                 aria-hidden="true"
-                className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/10 transition-transform duration-500 ease-out"
+                className="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-500 ease-out group-hover:translate-x-0"
               />
               <span className="relative z-10">Get In Touch</span>
             </a>
@@ -161,7 +167,7 @@ export function Hero() {
             <a
               href={siteConfig.resumeUrl}
               download
-              className="group inline-flex items-center justify-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-text/30 hover:text-text hover:bg-text/5"
+              className="group glass inline-flex items-center justify-center gap-2 rounded-full border border-border/50 bg-surface-elevated/55 px-8 py-3.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:bg-accent/10 hover:text-accent"
             >
               <Download className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
               Resume

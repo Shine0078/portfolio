@@ -84,7 +84,7 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} dark`}
     >
       <head>
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#0a0a0f" />
         <meta name="color-scheme" content="dark light" />
         <script
           type="application/ld+json"

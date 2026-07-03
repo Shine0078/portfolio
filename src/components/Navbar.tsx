@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { cn } from "@/lib/utils";
@@ -33,9 +33,9 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        "fixed left-0 right-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-border/40 glass bg-bg/70"
+          ? "border-b border-accent/15 bg-bg/70 shadow-[0_12px_42px_rgb(0_0_0/0.28),0_0_34px_rgb(var(--color-accent)/0.07)] glass"
           : "border-b border-transparent bg-transparent"
       )}
     >
@@ -45,18 +45,20 @@ export function Navbar() {
       >
         <a
           href="#hero"
-          aria-label={`${siteConfig.name} — home`}
-          className="group relative text-lg font-bold tracking-tight text-text"
+          aria-label={`${siteConfig.name} - home`}
+          className="group relative font-mono text-lg font-bold tracking-tight text-text"
         >
           {siteConfig.name.split(" ")[0]}
-          <span aria-hidden="true" className="text-text/40">.</span>
+          <span aria-hidden="true" className="text-accent">
+            .
+          </span>
           <span
             aria-hidden="true"
-            className="absolute -bottom-0.5 left-0 h-px w-0 bg-text transition-all duration-300 group-hover:w-full"
+            className="absolute -bottom-0.5 left-0 h-px w-0 bg-accent shadow-[0_0_12px_rgb(var(--color-accent)/0.8)] transition-all duration-300 group-hover:w-full"
           />
         </a>
 
-        <ul className="hidden md:flex items-center gap-0.5">
+        <ul className="hidden items-center gap-0.5 md:flex">
           {siteConfig.navLinks.map((link) => {
             const isActive = activeId === link.href.slice(1);
             return (
@@ -65,10 +67,10 @@ export function Navbar() {
                   href={link.href}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "relative rounded-md px-3 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200",
+                    "relative rounded-md px-3 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 hover:bg-accent/5",
                     isActive
-                      ? "text-text"
-                      : "text-text-secondary hover:text-text"
+                      ? "text-accent"
+                      : "text-text-secondary hover:text-accent"
                   )}
                 >
                   {link.label}
@@ -76,7 +78,7 @@ export function Navbar() {
                     <motion.span
                       layoutId="nav-indicator"
                       aria-hidden="true"
-                      className="absolute inset-x-1 -bottom-px h-px bg-text"
+                      className="absolute inset-x-1 -bottom-px h-px bg-accent shadow-[0_0_12px_rgb(var(--color-accent)/0.85)]"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -88,7 +90,7 @@ export function Navbar() {
             <a
               href={siteConfig.resumeUrl}
               download
-              className="rounded-full border border-border px-4 py-1.5 text-[13px] font-medium text-text transition-all duration-200 hover:border-text/30 hover:bg-text/5"
+              className="rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-[13px] font-medium text-accent transition-all duration-200 hover:border-accent/50 hover:bg-accent/15 hover:shadow-[0_0_24px_rgb(var(--color-accent)/0.18)]"
             >
               Resume
             </a>
@@ -98,7 +100,7 @@ export function Navbar() {
         <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="relative z-50 rounded-lg p-2 text-text-secondary hover:text-text transition-colors"
+            className="relative z-50 rounded-lg p-2 text-text-secondary transition-colors hover:text-accent"
             aria-label="Toggle menu"
           >
             <div className="relative h-5 w-5">
@@ -113,7 +115,7 @@ export function Navbar() {
                 transition={{ duration: 0.2 }}
               />
               <motion.span
-                className="absolute left-0 bottom-0 h-px w-5 bg-current"
+                className="absolute bottom-0 left-0 h-px w-5 bg-current"
                 animate={mobileOpen ? { rotate: -45, y: -9 } : { rotate: 0, y: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               />
@@ -150,8 +152,8 @@ export function Navbar() {
                       className={cn(
                         "text-2xl font-medium tracking-tight transition-colors",
                         activeId === link.href.slice(1)
-                          ? "text-text"
-                          : "text-text-secondary hover:text-text"
+                          ? "text-accent"
+                          : "text-text-secondary hover:text-accent"
                       )}
                     >
                       {link.label}
@@ -171,7 +173,7 @@ export function Navbar() {
                     href={siteConfig.resumeUrl}
                     download
                     onClick={() => setMobileOpen(false)}
-                    className="mt-4 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-text"
+                    className="mt-4 rounded-full border border-accent/30 bg-accent/10 px-6 py-2.5 text-sm font-medium text-accent"
                   >
                     Download Resume
                   </a>

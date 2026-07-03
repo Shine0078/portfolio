@@ -20,9 +20,19 @@ export function Typewriter({
   const [index, setIndex] = useState(0);
   const [sub, setSub] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    if (words.length === 0) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+
+    updatePreference();
+    media.addEventListener("change", updatePreference);
+    return () => media.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (words.length === 0 || prefersReducedMotion) return;
 
     if (!deleting && sub === words[index]) {
       const t = setTimeout(() => setDeleting(true), pause);
@@ -46,7 +56,20 @@ export function Typewriter({
       deleting ? deletingSpeed : typingSpeed
     );
     return () => clearTimeout(t);
-  }, [sub, deleting, index, words, typingSpeed, deletingSpeed, pause]);
+  }, [
+    sub,
+    deleting,
+    index,
+    words,
+    typingSpeed,
+    deletingSpeed,
+    pause,
+    prefersReducedMotion,
+  ]);
+
+  if (prefersReducedMotion) {
+    return <span className={className}>{words[0]}</span>;
+  }
 
   return (
     <span className={className}>

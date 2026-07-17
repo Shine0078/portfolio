@@ -1,10 +1,12 @@
 export interface Project {
   title: string;
-  description: string;
-  image: string;
+  label: string;
+  problem: string;
+  solution: string;
+  outcomes: string[];
   tags: string[];
   liveUrl?: string;
-  githubUrl?: string;
+  sourceUrl: string;
 }
 
 export interface Experience {
@@ -18,38 +20,16 @@ export interface Experience {
 
 export interface SkillCategory {
   category: string;
-  skills: Skill[];
+  summary: string;
+  skills: string[];
+  proof: string;
 }
 
-export interface Skill {
-  name: string;
-  icon?: string;
-}
-
-export interface Certification {
+export interface Credential {
   title: string;
   issuer: string;
   date: string;
+  status: "Completed" | "In progress" | "Preparing";
   description: string;
   link?: string;
-}
-
-export interface Post {
-  _id: string;
-  _raw: {
-    sourceFilePath: string;
-    sourceFileDir: string;
-    flattenedPath: string;
-  };
-  type: "Post";
-  title: string;
-  description: string;
-  date: string;
-  tags: string[];
-  readingTime: string;
-  slug: string;
-  body: {
-    code: string;
-    raw: string;
-  };
 }

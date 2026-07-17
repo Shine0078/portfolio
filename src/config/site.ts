@@ -23,7 +23,6 @@ export const siteConfig = {
   social: {
     github: "https://github.com/Shine0078",
     linkedin: "https://linkedin.com/in/samuelabraham-ops",
-    twitter: "https://twitter.com/samuelabraham",
   },
   copyright: "© 2026 Samuel Abraham.",
 } as const;

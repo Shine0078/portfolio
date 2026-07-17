@@ -1,43 +1,32 @@
-import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import { generateMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { CommandPalette } from "@/components/CommandPalette";
-import { BackToTop } from "@/components/BackToTop";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import "./globals.css";
 
-const GSAPScrollAnimations = dynamic(
-  () =>
-    import("@/components/GSAPScrollAnimations").then(
-      (m) => m.GSAPScrollAnimations
-    ),
-  { ssr: false }
-);
-
-const CursorGlow = dynamic(
-  () =>
-    import("@/components/CursorGlow").then(
-      (m) => m.CursorGlow
-    ),
-  { ssr: false }
-);
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const geist = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist",
   display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
   display: "swap",
+  fallback: ["Consolas", "monospace"],
 });
 
 export const metadata: Metadata = generateMetadata();
+
+export const viewport: Viewport = {
+  themeColor: "#080d12",
+  colorScheme: "dark",
+};
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -58,52 +47,43 @@ const personJsonLd = {
     name: "Durham College",
   },
   knowsAbout: [
-    "Cloud Computing",
-    "AWS",
-    "Data Analysis",
-    "SQL",
-    "Python",
-    "Java",
     "IT Operations",
+    "Cloud Computing",
+    "Active Directory",
+    "PowerShell",
+    "Data Analysis",
+    "Technical Documentation",
   ],
-  sameAs: [
-    siteConfig.social.github,
-    siteConfig.social.linkedin,
-    siteConfig.social.twitter,
-  ],
+  sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} dark`}
-    >
-      <head>
-        <meta name="theme-color" content="#0a0a0f" />
-        <meta name="color-scheme" content="dark light" />
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+      <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <ScrollProgress />
+        <Navbar />
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
+        <Footer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-      </head>
-      <body className="min-h-screen flex flex-col">
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-        <CursorGlow />
-        <GSAPScrollAnimations />
-        <Navbar />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <CommandPalette />
-        <BackToTop />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'document.getElementById("mobile-menu")?.addEventListener("click",function(event){if(event.target.closest("a"))this.hidePopover()});',
+          }}
+        />
       </body>
     </html>
   );

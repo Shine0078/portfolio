@@ -1,30 +1,31 @@
-import type { Certification } from "@/types";
+import type { Credential } from "@/types";
 
-// Add the Certification interface to types/index.ts
-
-export const certifications: Certification[] = [
+export const certifications: Credential[] = [
   {
-    title: "Diploma of Education — Computer Programming & Analysis",
+    title: "Computer Programming & Analysis",
     issuer: "Durham College",
     date: "2025",
+    status: "Completed",
     description:
-      "Three-year advanced diploma covering Python, Java, JavaScript, MySQL, PHP, CSS, software development, database management, and data analysis.",
+      "Three-year advanced diploma covering software development, databases, testing, and data analysis.",
     link: "https://durhamcollege.ca",
   },
   {
-    title: "Cloud and Information Technology Systems (In Progress)",
+    title: "Cloud and Information Technology Systems",
     issuer: "Durham College",
     date: "2026",
+    status: "In progress",
     description:
-      "Ontario College Diploma preparing for AWS Cloud Technologies certifications. Covers cloud architecture, DevOps, security, virtualization, and IT project management.",
+      "Current study in cloud architecture, DevOps, security, virtualization, and IT project management.",
     link: "https://durhamcollege.ca/programs/cloud-and-information-technology-systems",
   },
   {
-    title: "AWS Cloud Practitioner (In View)",
+    title: "AWS Certified Cloud Practitioner",
     issuer: "Amazon Web Services",
     date: "2026",
+    status: "Preparing",
     description:
-      "Foundational certification validating cloud knowledge including AWS services, security, architecture, pricing, and support. Currently preparing for the exam.",
+      "Exam preparation covering AWS services, security, architecture, pricing, and support. Not yet certified.",
     link: "https://aws.amazon.com/certification/certified-cloud-practitioner/",
   },
 ];

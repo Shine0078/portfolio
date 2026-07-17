@@ -1,21 +1,20 @@
-import { allPosts } from "contentlayer/generated";
 import { Hero } from "@/components/sections/Hero";
+import { Projects } from "@/components/sections/Projects";
 import { About } from "@/components/sections/About";
-import { Skills } from "@/components/sections/Skills";
 import { Experience } from "@/components/sections/Experience";
+import { Skills } from "@/components/sections/Skills";
 import { Certifications } from "@/components/sections/Certifications";
-import { Blog } from "@/components/sections/Blog";
 import { Contact } from "@/components/sections/Contact";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <Projects />
       <About />
-      <Skills />
       <Experience />
+      <Skills />
       <Certifications />
-      <Blog posts={allPosts} />
       <Contact />
     </>
   );

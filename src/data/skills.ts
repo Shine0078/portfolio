@@ -2,68 +2,45 @@ import type { SkillCategory } from "@/types";
 
 export const skillCategories: SkillCategory[] = [
   {
-    category: "Cloud & Infrastructure",
+    category: "Systems & cloud",
+    summary:
+      "Provisioning, policy, access, and recovery with a bias toward repeatable operations.",
     skills: [
-      { name: "AWS" },
-      { name: "Cloud Computing" },
-      { name: "Virtualization" },
-      { name: "Docker" },
-      { name: "Linux" },
-      { name: "Git" },
+      "AWS foundations",
+      "Windows & Active Directory",
+      "Linux",
+      "Hyper-V",
+      "Docker",
     ],
+    proof:
+      "Demonstrated in the Active Directory lab and current cloud systems coursework.",
   },
   {
-    category: "Data & Analytics",
+    category: "Automation & data",
+    summary:
+      "Turning repetitive support work and operational data into dependable workflows.",
     skills: [
-      { name: "Data Analysis" },
-      { name: "Data Presentation" },
-      { name: "SQL" },
-      { name: "MySQL" },
-      { name: "PostgreSQL" },
-      { name: "Reporting" },
+      "PowerShell",
+      "Python",
+      "SQL",
+      "REST APIs",
+      "Operational reporting",
     ],
+    proof:
+      "Applied in the helpdesk toolkit, lab provisioning scripts, and dashboard data model.",
   },
   {
-    category: "Programming",
+    category: "Engineering practice",
+    summary:
+      "Building software that is testable, documented, reviewable, and safe to operate.",
     skills: [
-      { name: "Python" },
-      { name: "Java" },
-      { name: "JavaScript" },
-      { name: "TypeScript" },
-      { name: "PHP" },
+      "TypeScript",
+      "Next.js",
+      "Automated testing",
+      "GitHub Actions",
+      "Technical documentation",
     ],
-  },
-  {
-    category: "Web & Tooling",
-    skills: [
-      { name: "HTML/CSS" },
-      { name: "React" },
-      { name: "Next.js" },
-      { name: "Node.js" },
-      { name: "Tailwind CSS" },
-      { name: "Figma" },
-    ],
-  },
-  {
-    category: "Practices & Security",
-    skills: [
-      { name: "Software Testing" },
-      { name: "DevOps Awareness" },
-      { name: "IT Security Basics" },
-      { name: "Blockchain" },
-      { name: "REST APIs" },
-      { name: "Agile" },
-    ],
-  },
-  {
-    category: "Professional Strengths",
-    skills: [
-      { name: "Problem Solving" },
-      { name: "Process Discipline" },
-      { name: "Incident Coordination" },
-      { name: "Documentation" },
-      { name: "Team Collaboration" },
-      { name: "Adaptability" },
-    ],
+    proof:
+      "Visible in public repositories with CI, tests, runbooks, and implementation notes.",
   },
 ];

@@ -7,7 +7,9 @@
     "build": "next build && node scripts/optimize_static_export.mjs",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare:lighthouse": "node scripts/prepare_lighthouse.mjs",
+    "check:export": "node scripts/check_export.mjs"
   },
   "dependencies": {
     "next": "16.2.10",

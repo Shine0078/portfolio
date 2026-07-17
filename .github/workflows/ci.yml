@@ -1,13 +1,13 @@
-name: CI
+name: Quality
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: quality-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -19,31 +19,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: TypeScript check
-        run: npx tsc --noEmit
-
       - name: Lint
-        run: npx next lint
+        run: npm run lint
 
-      - name: Build
-        run: npx next build
+      - name: Type-check
+        run: npm run typecheck
 
-      - name: Lighthouse CI
-        run: |
-          npm install -g @lhci/cli@0.14.x
-          lhci autorun \
-            --collect.staticDistDir=./out \
-            --collect.url=http://localhost:3000 \
-            --upload.target=temporary-public-storage \
-            --assert.presets=lighthouse:no-pwa \
-            --assert.performance=0.9 \
-            --assert.accessibility=0.9 \
-            --assert.best-practices=0.9 \
-            --assert.seo=0.9
+      - name: Production build
+        run: npm run build
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          NEXT_PUBLIC_SITE_URL: https://shine0078.github.io/portfolio
+
+      - name: Verify exported links and assets
+        run: npm run check:export
+
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+
+      - name: Lighthouse
+        run: |
+          npm run prepare:lighthouse
+          npx --yes @lhci/cli@0.15.x autorun

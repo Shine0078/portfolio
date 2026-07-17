@@ -4,61 +4,51 @@ import { siteConfig } from "@/config/site";
 interface GenerateMetadataParams {
   title?: string;
   description?: string;
-  path?: string;
-  ogImage?: string;
 }
 
 export function generateMetadata({
   title,
   description,
-  path = "/",
-  ogImage = "/og-image.png",
 }: GenerateMetadataParams = {}): Metadata {
-  const baseUrl = siteConfig.siteUrl;
   const pageTitle = title
     ? `${title} — ${siteConfig.name}`
     : `${siteConfig.name} — ${siteConfig.role}`;
-  const pageDescription =
-    description ??
-    siteConfig.shortBio;
-  const keywords = [
-    "IT Analyst",
-    "Cloud Technologist",
-    "AWS Cloud Practitioner",
-    "Cloud Computing",
-    "Data Analysis",
-    "SQL",
-    "Python",
-    "Java",
-    "DevOps",
-    "IT Support",
-    "Oshawa",
-    "Ontario",
-    "Samuel Abraham",
-  ];
+  const pageDescription = description ?? siteConfig.shortBio;
+  const socialImage = `${siteConfig.siteUrl}/og.png`;
 
   return {
     title: pageTitle,
     description: pageDescription,
-    keywords,
-    metadataBase: new URL(baseUrl),
-    authors: [{ name: siteConfig.name, url: baseUrl }],
+    metadataBase: new URL(siteConfig.siteUrl),
+    applicationName: `${siteConfig.name} Portfolio`,
+    authors: [{ name: siteConfig.name, url: siteConfig.siteUrl }],
     creator: siteConfig.name,
     publisher: siteConfig.name,
     category: "Technology",
+    keywords: [
+      "IT analyst",
+      "cloud support",
+      "IT operations",
+      "Active Directory",
+      "PowerShell automation",
+      "AWS",
+      "Oshawa",
+      "Samuel Abraham",
+    ],
+    alternates: { canonical: siteConfig.siteUrl },
     openGraph: {
       title: pageTitle,
       description: pageDescription,
-      url: `${baseUrl}${path}`,
-      siteName: siteConfig.name,
-      locale: "en_US",
-      type: "website",
+      url: siteConfig.siteUrl,
+      siteName: `${siteConfig.name} Portfolio`,
+      locale: "en_CA",
+      type: "profile",
       images: [
         {
-          url: ogImage,
+          url: socialImage,
           width: 1200,
           height: 630,
-          alt: `${siteConfig.name} — ${siteConfig.role}`,
+          alt: `${siteConfig.name}, ${siteConfig.role}`,
         },
       ],
     },
@@ -66,9 +56,8 @@ export function generateMetadata({
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [ogImage],
+      images: [socialImage],
     },
-    alternates: { canonical: `${baseUrl}${path}` },
     robots: {
       index: true,
       follow: true,

@@ -12,6 +12,9 @@
 # next.js
 /.next/
 /out/
+/dist/
+/output/
+/tmp/
 
 # contentlayer build cache (generated, not source)
 /.contentlayer/

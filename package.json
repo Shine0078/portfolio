@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "prepare:lighthouse": "node scripts/prepare_lighthouse.mjs",
-    "check:export": "node scripts/check_export.mjs"
+    "check:export": "node scripts/check_export.mjs",
+    "prepare:sites": "node scripts/prepare_sites.mjs"
   },
   "dependencies": {
     "next": "16.2.10",

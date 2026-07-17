@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Samuel Abraham — Portfolio
 
-## Getting Started
+A static, accessibility-first portfolio for Samuel Abraham, built with Next.js,
+TypeScript, and local Geist fonts.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The production build is exported to `out/` for GitHub Pages:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture
 
-## Learn More
+- Static export with the `/portfolio` base path
+- Server-rendered portfolio sections; JavaScript is limited to closing the native
+  mobile popover after navigation, while reading progress is CSS-only
+- CSS-only responsive layout, hover states, reduced-motion support, and optional
+  view-timeline reveals
+- Local font files to avoid render-blocking third-party requests
+- JSON-LD, canonical metadata, Open Graph/Twitter cards, sitemap, and robots rules
+- A generated, ATS-friendly PDF résumé at `public/resume.pdf`
 
-To learn more about Next.js, take a look at the following resources:
+Regenerate the résumé after editing its source content with:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+python scripts/generate_resume.py
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+Pushes to `main` or `master` run quality checks and deploy `out/` through GitHub
+Pages. The canonical production URL is:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<https://shine0078.github.io/portfolio/>

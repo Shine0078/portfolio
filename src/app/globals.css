@@ -1316,28 +1316,6 @@ main:focus {
   font-size: 0.68rem;
 }
 
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .section-inner,
-    .contact-grid {
-      animation: section-reveal linear both;
-      animation-range: entry 5% cover 24%;
-      animation-timeline: view();
-    }
-
-    @keyframes section-reveal {
-      from {
-        opacity: 0.72;
-        transform: translateY(1.4rem);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  }
-}
-
 @media (max-width: 960px) {
   .desktop-nav {
     display: none;

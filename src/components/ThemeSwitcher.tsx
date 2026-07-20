@@ -16,6 +16,7 @@ export function ThemeSwitcher() {
             data-theme-value={theme.value}
             aria-label={`Use ${theme.label.toLowerCase()} accent`}
             aria-pressed={theme.value === "cyan"}
+            suppressHydrationWarning
             key={theme.value}
           >
             <span aria-hidden="true" />

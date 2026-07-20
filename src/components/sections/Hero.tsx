@@ -2,7 +2,7 @@ import { siteConfig } from "@/config/site";
 
 export function Hero() {
   return (
-    <section id="hero" className="hero">
+    <section id="hero" className="hero" aria-labelledby="hero-title">
       <div className="hero-grid container">
         <div className="hero-copy">
           <p className="availability-badge">
@@ -10,34 +10,29 @@ export function Hero() {
             {siteConfig.availability}
           </p>
 
-          <p className="eyebrow">IT operations · cloud · automation</p>
-          <h1>
+          <p className="eyebrow">User support · troubleshooting · automation</p>
+          <h1 id="hero-title">
             Samuel Abraham
-            <span>{siteConfig.tagline}</span>
+            <span>{siteConfig.role}</span>
           </h1>
-          <p className="hero-summary">
-            I build practical systems that are easier to operate, audit, and
-            hand off.
-          </p>
+          <p className="hero-summary">{siteConfig.tagline}</p>
 
           <div className="hero-actions">
-            <a className="button button-primary" href="#contact">
-              Let&apos;s work together
+            <a className="button button-primary" href="#projects">
+              View support projects
               <span aria-hidden="true">↘</span>
             </a>
             <a className="button button-secondary" href={siteConfig.resumeUrl} download>
               <span aria-hidden="true">↓</span>
-              Résumé
+              Download resume
             </a>
           </div>
 
-          <div className="trust-line" aria-label="Background">
-            <p>Operations experience</p>
-            <span>Amazon</span>
-            <span>GEODIS</span>
-            <p>Education</p>
-            <span>Durham College</span>
-          </div>
+          <ul className="hero-facts" aria-label="Qualifications">
+            <li>Advanced diploma</li>
+            <li>CompTIA A+ in progress</li>
+            <li>Oshawa, Ontario</li>
+          </ul>
         </div>
 
         <aside className="hero-panel" aria-label="Professional profile">
@@ -45,20 +40,20 @@ export function Hero() {
             <span />
             <span />
             <span />
-            <p>operational-profile.yml</p>
+            <p>support-profile.txt</p>
           </div>
           <dl className="profile-list">
             <div>
-              <dt>Focus</dt>
-              <dd>Cloud support & IT operations</dd>
+              <dt>Target role</dt>
+              <dd>User Support Technician / IT Support</dd>
             </div>
             <div>
-              <dt>Working style</dt>
-              <dd>Documented, testable, calm under pressure</dd>
+              <dt>Support strengths</dt>
+              <dd>Troubleshooting, ticket ownership, and clear user communication</dd>
             </div>
             <div>
-              <dt>Current build</dt>
-              <dd>Active Directory automation lab</dd>
+              <dt>Environment</dt>
+              <dd>Windows, Microsoft 365, Active Directory, and networking</dd>
             </div>
             <div>
               <dt>Location</dt>
@@ -66,7 +61,7 @@ export function Hero() {
             </div>
           </dl>
           <a href="#projects" className="panel-link">
-            Review selected work
+            Review technical evidence
             <span aria-hidden="true">↗</span>
           </a>
         </aside>

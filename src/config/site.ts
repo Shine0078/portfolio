@@ -1,17 +1,17 @@
 export const siteConfig = {
   name: "Samuel Abraham",
-  role: "IT Analyst & Cloud Technologist",
+  role: "User Support Technician / IT Support",
   tagline:
-    "IT analyst turning operational complexity into reliable cloud and data systems.",
+    "I resolve user issues, document fixes, and automate repeatable support work.",
   shortBio:
-    "IT analyst building practical automation, documented infrastructure, and dependable data workflows.",
+    "User support candidate with hands-on Windows, Microsoft 365, Active Directory, networking, and PowerShell experience.",
   location: "Oshawa, Ontario, Canada",
   email: "samuelabraham321@gmail.com",
   siteUrl:
     process.env.NEXT_PUBLIC_SITE_URL ??
     "https://shine0078.github.io/portfolio",
   resumeUrl: "/portfolio/resume.pdf",
-  availability: "Open to IT analyst and cloud support roles",
+  availability: "Open to User Support Technician and IT Support roles",
   navLinks: [
     { label: "Work", href: "#projects" },
     { label: "About", href: "#about" },

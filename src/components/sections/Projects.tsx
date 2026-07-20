@@ -2,49 +2,57 @@ import { projects } from "@/data/projects";
 
 export function Projects() {
   return (
-    <section id="projects" className="section section-tinted">
+    <section
+      id="projects"
+      className="section section-tinted"
+      aria-labelledby="projects-title"
+    >
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">01 · Selected work</p>
-            <h2>Systems with an operational point of view.</h2>
+            <p className="eyebrow">Projects</p>
+            <h2 id="projects-title">Proof, not a project wall.</h2>
           </div>
           <p>
-            Each project starts with a real workflow problem, then makes the
-            solution inspectable through code, tests, or a live product.
+            Four facts for a quick scan. Expand any project for implementation
+            details, constraints, and safeguards.
           </p>
         </header>
 
         <div className="project-list">
           {projects.map((project, index) => (
-            <article className="project-card" key={project.title}>
-              <div className="project-index" aria-hidden="true">
-                0{index + 1}
-              </div>
+            <article
+              className={`project-card${project.featured ? " project-card-featured" : ""}`}
+              key={project.title}
+            >
+              <p className="project-index">
+                {project.featured ? "Flagship" : `Project 0${index + 1}`}
+              </p>
+
               <div className="project-content">
                 <p className="project-label">{project.label}</p>
                 <h3>{project.title}</h3>
-                <div className="project-story">
-                  <div>
-                    <p className="story-label">Problem</p>
-                    <p>{project.problem}</p>
-                  </div>
-                  <div>
-                    <p className="story-label">Solution</p>
-                    <p>{project.solution}</p>
-                  </div>
-                </div>
-                <ul className="outcome-list">
-                  {project.outcomes.map((outcome) => (
-                    <li key={outcome}>{outcome}</li>
+                <p className="project-summary">{project.summary}</p>
+
+                <ul className="project-brief">
+                  {project.highlights.map((highlight) => (
+                    <li key={highlight.label}>
+                      <span className="story-label">{highlight.label}</span>
+                      <p>{highlight.value}</p>
+                    </li>
                   ))}
                 </ul>
-                <ul className="tag-list" aria-label="Technologies">
-                  {project.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
+
+                <details className="project-details">
+                  <summary>View technical details</summary>
+                  <ul>
+                    {project.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
+                    ))}
+                  </ul>
+                </details>
               </div>
+
               <div className="project-links">
                 {project.liveUrl && (
                   <a href={project.liveUrl}>

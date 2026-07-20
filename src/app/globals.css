@@ -699,22 +699,33 @@ main:focus {
 
 .project-card {
   display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr) 13rem;
-  padding-block: 2.25rem;
+  grid-template-columns: 5rem minmax(0, 1fr) 13rem;
+  padding-block: 2.75rem;
   gap: 1.5rem;
   border-bottom: 1px solid var(--line);
-  transition: background 180ms ease, padding 180ms ease;
+  transition: background 180ms ease;
 }
 
 .project-card:hover {
-  padding-inline: 1rem;
   background: rgba(255, 255, 255, 0.022);
+}
+
+.project-card-featured {
+  border-bottom-color: var(--line-strong);
+  background: linear-gradient(
+    90deg,
+    rgba(125, 211, 199, 0.045),
+    transparent 38%
+  );
 }
 
 .project-index {
   color: var(--text-faint);
   font-family: var(--font-geist-mono), monospace;
-  font-size: 0.72rem;
+  font-size: 0.67rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .project-content h3,
@@ -727,73 +738,84 @@ main:focus {
   line-height: 1.15;
 }
 
-.project-story {
+.project-summary {
+  max-width: 48rem;
+  margin: 0.9rem 0 0;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.project-brief {
   display: grid;
-  margin-top: 1.5rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.75rem;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
 }
 
-.project-story p {
-  margin: 0;
+.project-brief li {
+  min-height: 7.5rem;
+  padding: 1rem 1.25rem 1rem 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.story-label {
-  margin-bottom: 0.45rem !important;
+.project-brief li:nth-child(odd) {
+  margin-right: 1.25rem;
+}
+
+.project-brief .story-label {
   color: var(--text-faint);
 }
 
-.project-story div > p:last-child,
+.project-brief p {
+  margin: 0.45rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.project-details {
+  margin-top: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-details summary {
+  width: fit-content;
+  min-height: 2.75rem;
+  padding-block: 0.75rem;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.project-details summary::marker {
+  color: var(--accent);
+}
+
+.project-details ul {
+  margin: 0;
+  padding: 0 0 1.2rem 1rem;
+}
+
+.project-details li {
+  padding-left: 0.3rem;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.project-details li + li {
+  margin-top: 0.45rem;
+}
+
 .credential-card > div:nth-child(2) > p:last-child {
   color: var(--text-muted);
   font-size: 0.91rem;
   line-height: 1.6;
-}
-
-.outcome-list {
-  display: flex;
-  margin: 1.3rem 0 0;
-  padding: 0;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  list-style: none;
-}
-
-.outcome-list li {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--text);
-  font-size: 0.76rem;
-  font-weight: 580;
-}
-
-.outcome-list li::before {
-  width: 0.32rem;
-  height: 0.32rem;
-  border-radius: 50%;
-  background: var(--accent);
-  content: "";
-}
-
-.tag-list {
-  display: flex;
-  margin: 1.2rem 0 0;
-  padding: 0;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  list-style: none;
-}
-
-.tag-list li {
-  padding: 0.28rem 0.55rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.022);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.67rem;
-  line-height: 1.25;
 }
 
 .project-links {
@@ -1348,7 +1370,6 @@ main:focus {
   }
 
   .project-card:hover {
-    padding-inline: 0;
     background: transparent;
   }
 
@@ -1357,8 +1378,17 @@ main:focus {
     grid-column: 1;
   }
 
-  .project-story {
+  .project-brief {
     grid-template-columns: 1fr;
+  }
+
+  .project-brief li {
+    min-height: 0;
+    padding-right: 0;
+  }
+
+  .project-brief li:nth-child(odd) {
+    margin-right: 0;
   }
 
   .timeline-content {

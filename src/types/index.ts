@@ -1,10 +1,13 @@
 export interface Project {
   title: string;
   label: string;
-  problem: string;
-  solution: string;
-  outcomes: string[];
-  tags: string[];
+  summary: string;
+  highlights: {
+    label: "Problem" | "Solution" | "Stack" | "Outcome";
+    value: string;
+  }[];
+  details: string[];
+  featured?: boolean;
   liveUrl?: string;
   sourceUrl: string;
 }

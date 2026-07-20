@@ -711,8 +711,7 @@ main:focus {
   background: rgba(255, 255, 255, 0.022);
 }
 
-.project-index,
-.capability-number {
+.project-index {
   color: var(--text-faint);
   font-family: var(--font-geist-mono), monospace;
   font-size: 0.72rem;
@@ -720,7 +719,6 @@ main:focus {
 
 .project-content h3,
 .timeline-content h3,
-.capability-card h3,
 .credential-card h3 {
   margin: 0.5rem 0 0;
   font-size: clamp(1.25rem, 2vw, 1.6rem);
@@ -851,8 +849,7 @@ main:focus {
   margin-top: 1.5rem;
 }
 
-.principles-card,
-.capability-card {
+.principles-card {
   padding: 1.5rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -965,46 +962,89 @@ main:focus {
   content: "";
 }
 
-.capability-grid {
+.skill-groups {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
-.capability-card {
+.skill-group {
   display: flex;
-  min-height: 24rem;
+  min-height: 21rem;
+  padding: 1.5rem;
   flex-direction: column;
-  transition: border 180ms ease, transform 180ms ease, background 180ms ease;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(17, 26, 35, 0.56);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 180ms ease, background 180ms ease;
 }
 
-.capability-card:hover {
+.skill-group:hover {
   border-color: rgba(125, 211, 199, 0.28);
   background: rgba(21, 33, 44, 0.8);
-  transform: translateY(-3px);
 }
 
-.capability-card h3 {
-  margin-top: 1.5rem;
+.skill-group header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
 }
 
-.capability-card > p:nth-of-type(2) {
-  margin: 0.85rem 0 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+.skill-group header span {
+  color: var(--accent);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  font-weight: 650;
 }
 
-.capability-card .tag-list {
-  margin-top: 1.4rem;
+.skill-group h3 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-weight: 630;
+  letter-spacing: -0.03em;
 }
 
-.capability-card .proof-line {
+.skill-group ul {
+  display: grid;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  list-style: none;
+}
+
+.skill-group li {
+  min-height: 2.85rem;
+  padding: 0.7rem 0.75rem 0.7rem 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.skill-group li::before {
+  display: inline-block;
+  width: 0.3rem;
+  height: 0.3rem;
+  margin: 0 0.65rem 0.12rem -1rem;
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+}
+
+.skill-evidence {
   margin: auto 0 0;
   padding-top: 1.4rem;
   border-top: 1px solid var(--line);
-  color: var(--text-faint);
-  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
   line-height: 1.55;
+}
+
+.skill-evidence strong {
+  color: var(--text);
+  font-weight: 650;
 }
 
 .credential-list {
@@ -1241,15 +1281,15 @@ main:focus {
     gap: 0.5rem;
   }
 
-  .capability-grid {
+  .skill-groups {
     grid-template-columns: 1fr;
   }
 
-  .capability-card {
+  .skill-group {
     min-height: 0;
   }
 
-  .capability-card .proof-line {
+  .skill-evidence {
     margin-top: 1.7rem;
   }
 
@@ -1296,6 +1336,10 @@ main:focus {
   .section-heading h2,
   .contact-section h2 {
     font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .skill-group ul {
+    grid-template-columns: 1fr;
   }
 
   .project-card {

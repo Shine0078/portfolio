@@ -12,10 +12,10 @@ export default function HomePage() {
     <>
       <Hero />
       <Summary />
+      <Skills />
       <Projects />
       <About />
       <Experience />
-      <Skills />
       <Certifications />
       <Contact />
     </>

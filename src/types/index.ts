@@ -20,9 +20,8 @@ export interface Experience {
 
 export interface SkillCategory {
   category: string;
-  summary: string;
   skills: string[];
-  proof: string;
+  evidence: string;
 }
 
 export interface Credential {

@@ -2,33 +2,34 @@ import { skillCategories } from "@/data/skills";
 
 export function Skills() {
   return (
-    <section id="skills" className="section">
+    <section id="skills" className="section" aria-labelledby="skills-title">
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">04 · Capabilities</p>
-            <h2>A focused toolkit, backed by visible work.</h2>
+            <p className="eyebrow">Skills</p>
+            <h2 id="skills-title">Grouped for a ten-second scan.</h2>
           </div>
           <p>
-            The useful signal is not the number of logos. It&apos;s how the tools
-            combine to solve a support, infrastructure, or data problem.
+            Support skills are grouped by use case. Named tools are limited to
+            work I can explain or demonstrate.
           </p>
         </header>
 
-        <div className="capability-grid">
+        <div className="skill-groups">
           {skillCategories.map((category, index) => (
-            <article className="capability-card" key={category.category}>
-              <p className="capability-number" aria-hidden="true">
-                /0{index + 1}
-              </p>
-              <h3>{category.category}</h3>
-              <p>{category.summary}</p>
-              <ul className="tag-list" aria-label={`${category.category} skills`}>
+            <article className="skill-group" key={category.category}>
+              <header>
+                <span aria-hidden="true">0{index + 1}</span>
+                <h3>{category.category}</h3>
+              </header>
+              <ul aria-label={`${category.category} skills`}>
                 {category.skills.map((skill) => (
                   <li key={skill}>{skill}</li>
                 ))}
               </ul>
-              <p className="proof-line">{category.proof}</p>
+              <p className="skill-evidence">
+                <strong>Evidence:</strong> {category.evidence}
+              </p>
             </article>
           ))}
         </div>

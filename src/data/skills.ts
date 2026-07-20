@@ -2,45 +2,51 @@ import type { SkillCategory } from "@/types";
 
 export const skillCategories: SkillCategory[] = [
   {
-    category: "Systems & cloud",
-    summary:
-      "Provisioning, policy, access, and recovery with a bias toward repeatable operations.",
+    category: "Operating systems & identity",
     skills: [
-      "AWS foundations",
-      "Windows & Active Directory",
-      "Linux",
-      "Hyper-V",
-      "Docker",
+      "Windows 10/11",
+      "Windows Server 2022",
+      "Active Directory",
+      "Group Policy",
+      "Linux fundamentals",
     ],
-    proof:
-      "Demonstrated in the Active Directory lab and current cloud systems coursework.",
+    evidence:
+      "Built a three-VM domain lab with 50 test accounts, eight Group Policies, and documented recovery procedures.",
   },
   {
-    category: "Automation & data",
-    summary:
-      "Turning repetitive support work and operational data into dependable workflows.",
+    category: "Networking",
+    skills: [
+      "TCP/IP",
+      "DNS & DHCP",
+      "Subnetting",
+      "Connectivity troubleshooting",
+      "Virtual network configuration",
+    ],
+    evidence:
+      "Configured and troubleshot domain and client connectivity in Hyper-V and cloud systems coursework.",
+  },
+  {
+    category: "Support workflow & tools",
+    skills: [
+      "Microsoft 365",
+      "Account provisioning",
+      "Issue triage & escalation",
+      "Software inventory",
+      "Knowledge base runbooks",
+    ],
+    evidence:
+      "Created four repeatable helpdesk workflows with dry-run safety and structured support reports.",
+  },
+  {
+    category: "Scripting & automation",
     skills: [
       "PowerShell",
       "Python",
-      "SQL",
+      "Pester testing",
+      "CSV & JSON reporting",
       "REST APIs",
-      "Operational reporting",
     ],
-    proof:
-      "Applied in the helpdesk toolkit, lab provisioning scripts, and dashboard data model.",
-  },
-  {
-    category: "Engineering practice",
-    summary:
-      "Building software that is testable, documented, reviewable, and safe to operate.",
-    skills: [
-      "TypeScript",
-      "Next.js",
-      "Automated testing",
-      "GitHub Actions",
-      "Technical documentation",
-    ],
-    proof:
-      "Visible in public repositories with CI, tests, runbooks, and implementation notes.",
+    evidence:
+      "Automated provisioning, password operations, health checks, and inventory collection.",
   },
 ];

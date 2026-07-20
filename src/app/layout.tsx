@@ -58,13 +58,66 @@ const personJsonLd = {
   sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
 };
 
+const themeBootScript = `
+try {
+  const savedTheme = localStorage.getItem("portfolio-accent");
+  if (savedTheme === "cyan" || savedTheme === "amber" || savedTheme === "violet") {
+    document.documentElement.dataset.theme = savedTheme;
+  }
+} catch {}
+`;
+
+const interactionScript = `
+(function () {
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll("[data-theme-value]");
+  const validThemes = ["cyan", "amber", "violet"];
+
+  function applyTheme(theme, persist) {
+    if (!validThemes.includes(theme)) return;
+    root.dataset.theme = theme;
+    buttons.forEach(function (button) {
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.themeValue === theme)
+      );
+    });
+    if (persist) {
+      try {
+        localStorage.setItem("portfolio-accent", theme);
+      } catch {}
+    }
+  }
+
+  applyTheme(root.dataset.theme || "cyan", false);
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      applyTheme(button.dataset.themeValue, true);
+    });
+  });
+
+  document
+    .getElementById("mobile-menu")
+    ?.addEventListener("click", function (event) {
+      if (event.target.closest("a")) this.hidePopover();
+    });
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      data-theme="cyan"
+      className={`${geist.variable} ${geistMono.variable}`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
@@ -81,8 +134,7 @@ export default function RootLayout({
         />
         <script
           dangerouslySetInnerHTML={{
-            __html:
-              'document.getElementById("mobile-menu")?.addEventListener("click",function(event){if(event.target.closest("a"))this.hidePopover()});',
+            __html: interactionScript,
           }}
         />
       </body>

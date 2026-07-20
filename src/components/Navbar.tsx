@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export function Navbar() {
   return (
@@ -14,6 +15,9 @@ export function Navbar() {
               <a href={link.href}>{link.label}</a>
             </li>
           ))}
+          <li className="theme-nav-item">
+            <ThemeSwitcher />
+          </li>
           <li>
             <a className="nav-resume" href={siteConfig.resumeUrl} download>
               Résumé
@@ -58,9 +62,12 @@ export function Navbar() {
             </li>
           ))}
         </ul>
-        <a className="button button-primary" href={siteConfig.resumeUrl} download>
-          Download résumé
-        </a>
+        <div className="mobile-menu-actions">
+          <ThemeSwitcher />
+          <a className="button button-primary" href={siteConfig.resumeUrl} download>
+            Download résumé
+          </a>
+        </div>
       </div>
     </header>
   );

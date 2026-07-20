@@ -8,9 +8,9 @@ export const experiences: Experience[] = [
     startDate: "2025-11",
     endDate: "Present",
     bullets: [
-      "Track inventory and complete time-sensitive orders while following documented fulfillment and safety procedures.",
-      "Investigate order discrepancies with cross-functional teams and escalate blockers to keep work moving.",
-      "Maintain accurate handoffs across shifts in a high-volume operating environment.",
+      "Kept time-sensitive orders moving by identifying inventory discrepancies and escalating blockers before handoff.",
+      "Protected fulfillment accuracy by following documented picking, verification, and safety procedures across high-volume shifts.",
+      "Maintained shift continuity through clear status handoffs and cross-team issue follow-up.",
     ],
   },
   {
@@ -20,9 +20,9 @@ export const experiences: Experience[] = [
     startDate: "2023-06",
     endDate: "2025-10",
     bullets: [
-      "Worked against daily productivity and quality targets in a high-volume fulfillment environment.",
-      "Adapted to rotating processes, priorities, and safety requirements with minimal downtime.",
-      "Coordinated with teammates across shifts to resolve workflow interruptions and maintain continuity.",
+      "Met daily productivity and quality expectations across changing fulfillment assignments and priorities.",
+      "Reduced workflow interruptions by coordinating with teammates to resolve process blockers quickly.",
+      "Maintained safe, accurate operations while adapting to rotating processes with minimal downtime.",
     ],
   },
 ];

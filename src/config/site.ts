@@ -13,10 +13,9 @@ export const siteConfig = {
   resumeUrl: "/portfolio/resume.pdf",
   availability: "Open to User Support Technician and IT Support roles",
   navLinks: [
-    { label: "Work", href: "#projects" },
-    { label: "About", href: "#about" },
-    { label: "Experience", href: "#experience" },
     { label: "Skills", href: "#skills" },
+    { label: "Projects", href: "#projects" },
+    { label: "Experience", href: "#experience" },
     { label: "Credentials", href: "#credentials" },
     { label: "Contact", href: "#contact" },
   ] as const,

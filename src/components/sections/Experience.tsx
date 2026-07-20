@@ -3,16 +3,22 @@ import { formatDate } from "@/lib/utils";
 
 export function Experience() {
   return (
-    <section id="experience" className="section section-tinted">
+    <section
+      id="experience"
+      className="section"
+      aria-labelledby="experience-title"
+    >
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">03 · Experience</p>
-            <h2>Operational reliability in high-volume environments.</h2>
+            <p className="eyebrow">Experience</p>
+            <h2 id="experience-title">
+              Reliable execution in high-volume operations.
+            </h2>
           </div>
           <p>
-            Experience shaped by accuracy, documented process, cross-shift
-            coordination, and resolving blockers before they cascade.
+            Transferable support habits: follow procedures, surface blockers,
+            document handoffs, and protect accuracy.
           </p>
         </header>
 

@@ -1075,11 +1075,32 @@ main:focus {
 
 .credential-card {
   display: grid;
-  padding-block: 1.75rem;
-  grid-template-columns: 9rem minmax(0, 1fr) 5rem;
+  padding: 1.75rem 0;
+  grid-template-columns: 9rem minmax(0, 1fr) 7.5rem;
   align-items: start;
   gap: 2rem;
   border-bottom: 1px solid var(--line);
+}
+
+.credential-card-featured {
+  padding-inline: 1.25rem;
+  border-bottom-color: var(--line-strong);
+  background: linear-gradient(
+    90deg,
+    rgba(125, 211, 199, 0.075),
+    transparent 48%
+  );
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.credential-kind {
+  margin: 0 0 0.65rem;
+  color: var(--text-faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .status {
@@ -1095,10 +1116,10 @@ main:focus {
   line-height: 1;
 }
 
-.status-Preparing {
-  border-color: rgba(228, 185, 102, 0.25);
-  color: var(--warning);
-  background: rgba(228, 185, 102, 0.07);
+.status-completed {
+  border-color: var(--line-strong);
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .credential-date {

@@ -30,8 +30,10 @@ export interface SkillCategory {
 export interface Credential {
   title: string;
   issuer: string;
+  kind: "Certification" | "Education";
   date: string;
-  status: "Completed" | "In progress" | "Preparing";
+  status: "Completed" | "In progress";
   description: string;
   link?: string;
+  featured?: boolean;
 }

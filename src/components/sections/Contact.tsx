@@ -1,37 +1,57 @@
 import { siteConfig } from "@/config/site";
 
+const contactLinks = [
+  {
+    label: "Email",
+    value: siteConfig.email,
+    href: `mailto:${siteConfig.email}`,
+  },
+  {
+    label: "LinkedIn",
+    value: "/in/samuelabraham-ops",
+    href: siteConfig.social.linkedin,
+  },
+  {
+    label: "GitHub",
+    value: "@Shine0078",
+    href: siteConfig.social.github,
+  },
+] as const;
+
 export function Contact() {
   return (
-    <section id="contact" className="contact-section">
+    <section
+      id="contact"
+      className="contact-section"
+      aria-labelledby="contact-title"
+    >
       <div className="container contact-grid">
         <div>
-          <p className="eyebrow">06 · Contact</p>
-          <h2>Need someone who thinks past the happy path?</h2>
+          <p className="eyebrow">Contact</p>
+          <h2 id="contact-title">Let&apos;s talk about your support team.</h2>
           <p>
-            I&apos;m open to IT analyst, cloud support, and junior systems roles
-            where reliability and documentation matter.
+            Open to User Support Technician and IT Support opportunities in
+            Oshawa, hybrid, or remote.
           </p>
         </div>
 
-        <div className="contact-actions">
-          <a
-            className="button button-primary"
-            href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(
-              "Let's work together"
-            )}`}
-          >
-            <span aria-hidden="true">↗</span>
-            Start a conversation
-          </a>
-          <a className="button button-secondary" href={`mailto:${siteConfig.email}`}>
-            Email Samuel
-          </a>
-          <p className="contact-email">{siteConfig.email}</p>
-          <a className="text-link" href={siteConfig.social.linkedin}>
-            Connect on LinkedIn
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
+        <address aria-label="Contact options">
+          <ul className="contact-list">
+            {contactLinks.map((link) => (
+              <li key={link.label}>
+                <a href={link.href}>
+                  <span>
+                    <span className="contact-label">{link.label}</span>
+                    <strong>{link.value}</strong>
+                  </span>
+                  <span className="contact-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </address>
       </div>
     </section>
   );

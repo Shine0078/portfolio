@@ -1,25 +1,24 @@
 from pathlib import Path
+from shutil import copyfile
 
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     HRFlowable,
     KeepTogether,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
-    Table,
-    TableStyle,
 )
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output" / "pdf" / "samuel-abraham-resume.pdf"
+PUBLIC_OUTPUT = ROOT / "public" / "resume.pdf"
 GEIST = ROOT / "src" / "app" / "fonts" / "GeistVF.woff"
 GEIST_MONO = ROOT / "src" / "app" / "fonts" / "GeistMonoVF.woff"
 
@@ -46,10 +45,10 @@ name_style = ParagraphStyle(
     "Name",
     parent=styles["Normal"],
     fontName=FONT,
-    fontSize=24,
-    leading=25,
+    fontSize=23,
+    leading=24,
     textColor=INK,
-    spaceAfter=3,
+    spaceAfter=2,
 )
 role_style = ParagraphStyle(
     "Role",
@@ -58,289 +57,223 @@ role_style = ParagraphStyle(
     fontSize=10.5,
     leading=13,
     textColor=ACCENT,
+    spaceAfter=3,
 )
 contact_style = ParagraphStyle(
     "Contact",
     parent=styles["Normal"],
     fontName=FONT,
-    fontSize=7.8,
-    leading=11,
+    fontSize=7.6,
+    leading=10.2,
     textColor=MUTED,
-    alignment=TA_RIGHT,
 )
 section_style = ParagraphStyle(
     "Section",
     parent=styles["Normal"],
     fontName=MONO,
-    fontSize=7.5,
+    fontSize=7.4,
     leading=9,
     textColor=ACCENT,
-    spaceBefore=7,
-    spaceAfter=4,
+    spaceBefore=6,
+    spaceAfter=3,
 )
 body_style = ParagraphStyle(
     "Body",
     parent=styles["Normal"],
     fontName=FONT,
-    fontSize=8.4,
-    leading=11.1,
+    fontSize=8.25,
+    leading=10.6,
     textColor=INK,
-    spaceAfter=3,
+    spaceAfter=2,
 )
 muted_style = ParagraphStyle(
     "Muted",
     parent=body_style,
     fontSize=7.7,
-    leading=10,
+    leading=9.8,
     textColor=MUTED,
 )
-job_style = ParagraphStyle(
-    "Job",
+item_title_style = ParagraphStyle(
+    "ItemTitle",
     parent=body_style,
-    fontSize=9.2,
-    leading=11.5,
-    spaceAfter=1,
-)
-date_style = ParagraphStyle(
-    "Date",
-    parent=muted_style,
-    alignment=TA_RIGHT,
+    fontSize=8.7,
+    leading=10.8,
+    spaceAfter=0.5,
 )
 bullet_style = ParagraphStyle(
     "Bullet",
     parent=body_style,
     leftIndent=9,
     firstLineIndent=-7,
-    bulletIndent=0,
-    spaceAfter=1.6,
-)
-project_style = ParagraphStyle(
-    "Project",
-    parent=body_style,
-    fontSize=8.1,
-    leading=10.6,
-    spaceAfter=2.7,
+    spaceAfter=1.2,
 )
 
 
 def section(title: str):
     return [
         Paragraph(title.upper(), section_style),
-        HRFlowable(width="100%", thickness=0.5, color=LINE, spaceAfter=4),
+        HRFlowable(width="100%", thickness=0.5, color=LINE, spaceAfter=3),
     ]
 
 
-def role_row(title: str, organization: str, date: str):
-    return Table(
+def experience_item(
+    role: str,
+    company: str,
+    location: str,
+    dates: str,
+    bullets: list[str],
+):
+    content = [
+        Paragraph(f"<b>{role}</b> | {company} | {location}", item_title_style),
+        Paragraph(dates, muted_style),
+    ]
+    content.extend(Paragraph(f"- {bullet}", bullet_style) for bullet in bullets)
+    return KeepTogether(content)
+
+
+def project_item(
+    title: str,
+    links: str,
+    summary: str,
+):
+    return KeepTogether(
         [
-            [
-                Paragraph(f"<b>{title}</b> · {organization}", job_style),
-                Paragraph(date, date_style),
-            ]
-        ],
-        colWidths=[5.7 * inch, 1.3 * inch],
-        style=TableStyle(
-            [
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ]
-        ),
+            Paragraph(f"<b>{title}</b> | {links}", item_title_style),
+            Paragraph(summary, body_style),
+        ]
     )
 
 
 def build_resume() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    PUBLIC_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     document = SimpleDocTemplate(
         str(OUTPUT),
         pagesize=LETTER,
         rightMargin=0.58 * inch,
         leftMargin=0.58 * inch,
-        topMargin=0.48 * inch,
+        topMargin=0.46 * inch,
         bottomMargin=0.45 * inch,
-        title="Samuel Abraham — Resume",
+        title="Samuel Abraham - Resume",
         author="Samuel Abraham",
-        subject="IT analyst, cloud support, and systems operations resume",
+        subject="User Support Technician and IT Support resume",
     )
 
-    story = []
-    header = Table(
-        [
-            [
-                [
-                    Paragraph("Samuel Abraham", name_style),
-                    Paragraph("IT ANALYST · CLOUD SUPPORT · AUTOMATION", role_style),
-                ],
-                Paragraph(
-                    "Oshawa, Ontario, Canada<br/>"
-                    '<link href="mailto:samuelabraham321@gmail.com">samuelabraham321@gmail.com</link><br/>'
-                    '<link href="https://linkedin.com/in/samuelabraham-ops">linkedin.com/in/samuelabraham-ops</link><br/>'
-                    '<link href="https://github.com/Shine0078">github.com/Shine0078</link>',
-                    contact_style,
-                ),
-            ]
-        ],
-        colWidths=[4.55 * inch, 2.45 * inch],
-        style=TableStyle(
-            [
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ]
+    story = [
+        Paragraph("Samuel Abraham", name_style),
+        Paragraph("USER SUPPORT TECHNICIAN / IT SUPPORT", role_style),
+        Paragraph(
+            "Oshawa, Ontario, Canada | "
+            '<link href="mailto:samuelabraham321@gmail.com">samuelabraham321@gmail.com</link> | '
+            '<link href="https://linkedin.com/in/samuelabraham-ops">LinkedIn</link> | '
+            '<link href="https://github.com/Shine0078">GitHub</link> | '
+            '<link href="https://shine0078.github.io/portfolio/">Portfolio</link>',
+            contact_style,
         ),
-    )
-    story.extend([header, Spacer(1, 7)])
+        Spacer(1, 4),
+    ]
 
-    story.extend(section("Profile"))
+    story.extend(section("Professional summary"))
     story.append(
         Paragraph(
-            "IT analyst with software-development training, current cloud systems coursework, "
-            "and high-volume operations experience. Builds practical automation, documented "
-            "infrastructure, and dependable data workflows with validation, tests, and safe defaults.",
+            "User support candidate with hands-on Windows, Microsoft 365, Active Directory, "
+            "networking, and PowerShell experience. Resolves user issues, documents fixes, "
+            "and automates repeatable support work.",
             body_style,
         )
     )
 
-    story.extend(section("Core capabilities"))
-    capability_table = Table(
-        [
-            [
-                Paragraph(
-                    "<b>Systems & cloud</b><br/>AWS foundations · Windows · Active Directory · Linux · Hyper-V · Docker",
-                    body_style,
-                ),
-                Paragraph(
-                    "<b>Automation & data</b><br/>PowerShell · Python · SQL · REST APIs · Operational reporting",
-                    body_style,
-                ),
-                Paragraph(
-                    "<b>Engineering practice</b><br/>TypeScript · Next.js · Testing · GitHub Actions · Documentation",
-                    body_style,
-                ),
-            ]
-        ],
-        colWidths=[2.33 * inch, 2.33 * inch, 2.34 * inch],
-        style=TableStyle(
-            [
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 10),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ]
+    story.extend(section("Technical skills"))
+    for group, skills in [
+        (
+            "Operating systems and identity",
+            "Windows 10/11, Windows Server 2022, Active Directory, Group Policy, Linux fundamentals",
         ),
-    )
-    story.append(capability_table)
-
-    story.extend(section("Selected projects"))
-    story.append(
-        Paragraph(
-            '<b>Active Directory Home Lab</b> · <link href="https://github.com/Shine0078/Home-Lab">Source</link><br/>'
-            "Scripted and documented a three-VM Hyper-V domain lab with Server 2022, two Windows 11 "
-            "clients, role-based access, eight Group Policies, 50 test accounts, event forwarding, "
-            "backup/recovery, Pester tests, and six operations runbooks.",
-            project_style,
-        )
-    )
-    story.append(
-        Paragraph(
-            '<b>IT Helpdesk Automation Toolkit</b> · '
-            '<link href="https://github.com/Shine0078/IT-Helpdesk-Toolkit">Source</link><br/>'
-            "Created four PowerShell support workflows for bulk provisioning, password operations, "
-            "health checks, and software inventory with dry-run support, Pester tests, and CSV, JSON, "
-            "and HTML reports.",
-            project_style,
-        )
-    )
-    story.append(
-        Paragraph(
-            '<b>eFootball League Dashboard</b> · '
-            '<link href="https://efootball-league-dashboard-mu.vercel.app">Live</link> · '
-            '<link href="https://github.com/Shine0078/efootball-league-dashboard">Source</link><br/>'
-            "Built a Next.js dashboard with public read-only standings, session-gated administration, "
-            "validated result entry, automatic home-and-away fixtures, and a recent-activity audit log.",
-            project_style,
-        )
-    )
+        (
+            "Networking",
+            "TCP/IP, DNS, DHCP, subnetting, connectivity troubleshooting, virtual networking",
+        ),
+        (
+            "Support workflow",
+            "Microsoft 365, account provisioning, issue triage, escalation notes, software inventory, runbooks",
+        ),
+        (
+            "Scripting and automation",
+            "PowerShell, Python, Pester, CSV/JSON reporting, REST APIs",
+        ),
+    ]:
+        story.append(Paragraph(f"<b>{group}:</b> {skills}", body_style))
 
     story.extend(section("Experience"))
     story.append(
-        KeepTogether(
+        experience_item(
+            "Order Picker - Fulfillment Operations",
+            "GEODIS",
+            "Oshawa, ON",
+            "November 2025 - Present",
             [
-                role_row(
-                    "Order Picker — Fulfillment Operations",
-                    "GEODIS · Oshawa, ON",
-                    "Nov 2025 — Present",
-                ),
-                Paragraph(
-                    "• Track inventory and complete time-sensitive orders while following documented fulfillment and safety procedures.",
-                    bullet_style,
-                ),
-                Paragraph(
-                    "• Investigate discrepancies with cross-functional teams, escalate blockers, and maintain accurate shift handoffs.",
-                    bullet_style,
-                ),
-            ]
+                "Kept time-sensitive orders moving by identifying inventory discrepancies and escalating blockers before handoff.",
+                "Protected fulfillment accuracy through documented picking, verification, safety procedures, and clear shift handoffs.",
+            ],
         )
     )
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 2))
     story.append(
-        KeepTogether(
+        experience_item(
+            "Fulfillment Center Associate",
+            "Amazon",
+            "Ontario",
+            "June 2023 - October 2025",
             [
-                role_row(
-                    "Fulfillment Center Associate",
-                    "Amazon · Ontario",
-                    "Jun 2023 — Oct 2025",
-                ),
-                Paragraph(
-                    "• Worked against daily productivity and quality targets in a high-volume environment.",
-                    bullet_style,
-                ),
-                Paragraph(
-                    "• Adapted to rotating processes and coordinated across shifts to resolve workflow interruptions.",
-                    bullet_style,
-                ),
-            ]
+                "Met daily productivity and quality expectations across changing assignments and priorities.",
+                "Reduced workflow interruptions through fast coordination while maintaining safe, accurate operations.",
+            ],
         )
     )
 
-    story.extend(section("Education & credential status"))
-    education = [
-        [
-            Paragraph("<b>Computer Programming & Analysis</b>", body_style),
-            Paragraph("Durham College", muted_style),
-            Paragraph("Advanced diploma · Completed 2025", date_style),
-        ],
-        [
-            Paragraph("<b>Cloud and Information Technology Systems</b>", body_style),
-            Paragraph("Durham College", muted_style),
-            Paragraph("In progress · 2026", date_style),
-        ],
-        [
-            Paragraph("<b>AWS Certified Cloud Practitioner</b>", body_style),
-            Paragraph("Amazon Web Services", muted_style),
-            Paragraph("Preparing · Not yet certified", date_style),
-        ],
-    ]
+    story.extend(section("Selected projects"))
     story.append(
-        Table(
-            education,
-            colWidths=[3.05 * inch, 1.75 * inch, 2.2 * inch],
-            style=TableStyle(
-                [
-                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                    ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                    ("RIGHTPADDING", (0, 0), (-1, -1), 8),
-                    ("TOPPADDING", (0, 0), (-1, -1), 1.5),
-                    ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5),
-                ]
-            ),
+        project_item(
+            "eFootball League Dashboard",
+            '<link href="https://efootball-league-dashboard-mu.vercel.app">Live demo</link> | '
+            '<link href="https://github.com/Shine0078/efootball-league-dashboard">Source</link>',
+            "Built a live Next.js league dashboard with public standings, authenticated administration, "
+            "validated scoring, automatic fixtures, and an audit trail.",
         )
     )
+    story.append(
+        project_item(
+            "Active Directory Home Lab",
+            '<link href="https://github.com/Shine0078/Home-Lab">Source</link>',
+            "Automated a three-VM Windows domain with 50 test users, eight Group Policies, delegated access, "
+            "event forwarding, backup and recovery scripts, Pester tests, and six runbooks.",
+        )
+    )
+    story.append(
+        project_item(
+            "IT Helpdesk Automation Toolkit",
+            '<link href="https://github.com/Shine0078/IT-Helpdesk-Toolkit">Source</link>',
+            "Created four PowerShell workflows for bulk users, password resets, health checks, and software "
+            "inventory with dry-run safety, audit output, and Pester checks.",
+        )
+    )
+
+    story.extend(section("Certifications and education"))
+    for title, detail in [
+        (
+            "CompTIA A+",
+            "In progress - studying hardware, Windows, networking, security, and support troubleshooting; not yet certified",
+        ),
+        (
+            "Computer Programming and Analysis - Durham College",
+            "Three-year advanced diploma - completed 2025",
+        ),
+        (
+            "Cloud and Information Technology Systems - Durham College",
+            "In progress - 2026",
+        ),
+    ]:
+        story.append(Paragraph(f"<b>{title}</b> | {detail}", body_style))
 
     def draw_page(canvas, _document):
         canvas.saveState()
@@ -348,15 +281,26 @@ def build_resume() -> None:
         canvas.rect(0, 0, LETTER[0], LETTER[1], fill=1, stroke=0)
         canvas.setStrokeColor(ACCENT)
         canvas.setLineWidth(2)
-        canvas.line(0.58 * inch, LETTER[1] - 0.26 * inch, LETTER[0] - 0.58 * inch, LETTER[1] - 0.26 * inch)
+        canvas.line(
+            0.58 * inch,
+            LETTER[1] - 0.26 * inch,
+            LETTER[0] - 0.58 * inch,
+            LETTER[1] - 0.26 * inch,
+        )
         canvas.setFont(MONO, 6.5)
         canvas.setFillColor(MUTED)
-        canvas.drawString(0.58 * inch, 0.23 * inch, "SAMUEL ABRAHAM · RESUME")
-        canvas.drawRightString(LETTER[0] - 0.58 * inch, 0.23 * inch, "UPDATED JULY 2026")
+        canvas.drawString(0.58 * inch, 0.23 * inch, "SAMUEL ABRAHAM - RESUME")
+        canvas.drawRightString(
+            LETTER[0] - 0.58 * inch,
+            0.23 * inch,
+            "UPDATED JULY 2026",
+        )
         canvas.restoreState()
 
     document.build(story, onFirstPage=draw_page, onLaterPages=draw_page)
+    copyfile(OUTPUT, PUBLIC_OUTPUT)
     print(OUTPUT)
+    print(PUBLIC_OUTPUT)
 
 
 if __name__ == "__main__":

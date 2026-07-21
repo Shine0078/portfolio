@@ -28,7 +28,7 @@ export function Contact() {
       <div className="container contact-grid">
         <div>
           <p className="eyebrow">Contact</p>
-          <h2 id="contact-title">Let&apos;s talk about your support team.</h2>
+          <h2 id="contact-title">Let&apos;s strengthen your support team.</h2>
           <p>
             Open to User Support Technician and IT Support opportunities in
             Oshawa, hybrid, or remote.

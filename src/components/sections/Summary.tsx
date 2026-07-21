@@ -11,7 +11,7 @@ export function Summary() {
         <header>
           <p className="eyebrow">Professional summary</p>
           <h2 id="summary-title">
-            Support-focused, technically grounded, ready to contribute.
+            Support-focused. Technically grounded. Ready to contribute.
           </h2>
         </header>
 

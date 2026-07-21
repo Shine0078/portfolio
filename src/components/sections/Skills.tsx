@@ -7,7 +7,7 @@ export function Skills() {
         <header className="section-heading">
           <div>
             <p className="eyebrow">Skills</p>
-            <h2 id="skills-title">Grouped for a ten-second scan.</h2>
+            <h2 id="skills-title">Scanned in ten seconds.</h2>
           </div>
           <p>
             Support skills are grouped by use case. Named tools are limited to

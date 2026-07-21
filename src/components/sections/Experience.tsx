@@ -13,7 +13,7 @@ export function Experience() {
           <div>
             <p className="eyebrow">Experience</p>
             <h2 id="experience-title">
-              Reliable execution in high-volume operations.
+              Reliable in high-volume operations.
             </h2>
           </div>
           <p>

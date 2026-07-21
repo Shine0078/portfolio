@@ -11,7 +11,7 @@ export function Projects() {
         <header className="section-heading">
           <div>
             <p className="eyebrow">Projects</p>
-            <h2 id="projects-title">Proof, not a project wall.</h2>
+            <h2 id="projects-title">Proof, not promises.</h2>
           </div>
           <p>
             Four facts for a quick scan. Expand any project for implementation

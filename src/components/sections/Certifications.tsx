@@ -11,7 +11,7 @@ export function Certifications() {
         <header className="section-heading">
           <div>
             <p className="eyebrow">Certifications & education</p>
-            <h2 id="credentials-title">Current status, clearly labeled.</h2>
+            <h2 id="credentials-title">Current status, clearly stated.</h2>
           </div>
           <p>
             CompTIA A+ preparation is in progress. Completed education and

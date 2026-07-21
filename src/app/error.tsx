@@ -14,21 +14,17 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
-      <div className="max-w-md">
+    <div className="error-page">
+      <div className="error-content">
         <p className="eyebrow">Application error</p>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight">
-          Something went wrong
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-slate-400">
+        <h1 className="error-title">Something went wrong</h1>
+        <p className="error-text">
           This page could not be rendered. Try the request again.
         </p>
         {error.digest && (
-          <p className="mt-4 font-mono text-xs text-slate-500">
-            Reference: {error.digest}
-          </p>
+          <p className="error-reference">Reference: {error.digest}</p>
         )}
-        <button className="button button-primary mt-8" onClick={reset}>
+        <button className="button button-primary error-button" onClick={reset}>
           Try again
         </button>
       </div>

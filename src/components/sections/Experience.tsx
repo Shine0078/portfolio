@@ -11,14 +11,11 @@ export function Experience() {
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">Experience</p>
-            <h2 id="experience-title">
-              Reliable in high-volume operations.
-            </h2>
+            <p className="eyebrow">Journey</p>
+            <h2 id="experience-title">Built in operations. Moving into IT.</h2>
           </div>
           <p>
-            Transferable support habits: follow procedures, surface blockers,
-            document handoffs, and protect accuracy.
+            Transferable support habits: follow procedures, surface blockers, document handoffs, and protect accuracy.
           </p>
         </header>
 

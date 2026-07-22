@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Samuel Abraham",
   role: "User Support Technician / IT Support",
   tagline:
-    "I resolve user issues, document fixes, and automate repeatable support work.",
+    "I troubleshoot the friction between people, devices, and dependable systems.",
   shortBio:
     "User support candidate with hands-on Windows, Microsoft 365, Active Directory, networking, and PowerShell experience.",
   location: "Oshawa, Ontario, Canada",
@@ -13,9 +13,9 @@ export const siteConfig = {
   resumeUrl: "/portfolio/resume.pdf",
   availability: "Open to User Support Technician and IT Support roles",
   navLinks: [
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Experience", href: "#experience" },
+    { label: "Work", href: "#projects" },
+    { label: "Capabilities", href: "#skills" },
+    { label: "Journey", href: "#experience" },
     { label: "Credentials", href: "#credentials" },
     { label: "Contact", href: "#contact" },
   ] as const,

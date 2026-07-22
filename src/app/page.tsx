@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/Hero";
+import { SignalStrip } from "@/components/sections/SignalStrip";
 import { Summary } from "@/components/sections/Summary";
 import { Projects } from "@/components/sections/Projects";
 import { Experience } from "@/components/sections/Experience";
@@ -10,9 +11,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Summary />
-      <Skills />
+      <SignalStrip />
       <Projects />
+      <Skills />
+      <Summary />
       <Experience />
       <Certifications />
       <Contact />

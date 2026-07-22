@@ -10,12 +10,11 @@ export function Certifications() {
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">Certifications & education</p>
-            <h2 id="credentials-title">Current status, clearly stated.</h2>
+            <p className="eyebrow">Credentials</p>
+            <h2 id="credentials-title">Proof of the next step.</h2>
           </div>
           <p>
-            CompTIA A+ preparation is in progress. Completed education and
-            current study are listed separately.
+            Completed education and active study are separated so the signal stays honest.
           </p>
         </header>
 

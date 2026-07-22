@@ -6,9 +6,7 @@ export function Navbar() {
     <header className="site-header">
       <nav className="nav-shell" aria-label="Primary navigation">
         <a className="wordmark" href="#hero" aria-label="Samuel Abraham, home">
-          <span className="wordmark-mark" aria-hidden="true">
-            SA
-          </span>
+          <span className="wordmark-mark" aria-hidden="true">SA</span>
           <span className="wordmark-copy">
             <strong>Samuel Abraham</strong>
             <span>Support systems / 2026</span>
@@ -29,8 +27,7 @@ export function Navbar() {
         <div className="nav-actions">
           <ThemeSwitcher />
           <a className="nav-resume" href={siteConfig.resumeUrl} download>
-            Résumé
-            <span aria-hidden="true">↘</span>
+            Resume <span aria-hidden="true">↘</span>
           </a>
         </div>
 
@@ -46,21 +43,10 @@ export function Navbar() {
         </button>
       </nav>
 
-      <div
-        id="mobile-menu"
-        className="mobile-menu"
-        popover="auto"
-        aria-label="Mobile navigation"
-      >
+      <div id="mobile-menu" className="mobile-menu" popover="auto" aria-label="Mobile navigation">
         <div className="mobile-menu-top">
           <p>Index / 001–005</p>
-          <button
-            type="button"
-            popoverTarget="mobile-menu"
-            popoverTargetAction="hide"
-          >
-            Close
-          </button>
+          <button type="button" popoverTarget="mobile-menu" popoverTargetAction="hide">Close</button>
         </div>
 
         <ul>
@@ -78,8 +64,7 @@ export function Navbar() {
         <div className="mobile-menu-actions">
           <ThemeSwitcher />
           <a className="button button-primary" href={siteConfig.resumeUrl} download>
-            Download résumé
-            <span aria-hidden="true">↓</span>
+            Download resume <span aria-hidden="true">↓</span>
           </a>
         </div>
       </div>

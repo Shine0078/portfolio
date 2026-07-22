@@ -6,12 +6,11 @@ export function Skills() {
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">Skills</p>
-            <h2 id="skills-title">Scanned in ten seconds.</h2>
+            <p className="eyebrow">Capabilities</p>
+            <h2 id="skills-title">The operating layer behind the work.</h2>
           </div>
           <p>
-            Support skills are grouped by use case. Named tools are limited to
-            work I can explain or demonstrate.
+            Practical lanes, named tools, and the evidence behind each one.
           </p>
         </header>
 
@@ -28,7 +27,7 @@ export function Skills() {
                 ))}
               </ul>
               <p className="skill-evidence">
-                <strong>Evidence:</strong> {category.evidence}
+                <strong>Field evidence</strong> {category.evidence}
               </p>
             </article>
           ))}

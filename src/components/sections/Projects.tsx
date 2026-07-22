@@ -10,12 +10,11 @@ export function Projects() {
       <div className="container section-inner">
         <header className="section-heading">
           <div>
-            <p className="eyebrow">Projects</p>
-            <h2 id="projects-title">Proof, not promises.</h2>
+            <p className="eyebrow">Selected work</p>
+            <h2 id="projects-title">Systems built to be understood.</h2>
           </div>
           <p>
-            Four facts for a quick scan. Expand any project for implementation
-            details, constraints, and safeguards.
+            A short list of real builds across support automation, identity, and full-stack operations.
           </p>
         </header>
 

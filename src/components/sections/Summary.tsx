@@ -11,24 +11,21 @@ export function Summary() {
         <header>
           <p className="eyebrow">Professional summary</p>
           <h2 id="summary-title">
-            Support-focused. Technically grounded. Ready to contribute.
+            Clearer systems start with clearer support.
           </h2>
         </header>
 
         <div className="summary-content">
-          <p>{siteConfig.shortBio}</p>
+          <p>{siteConfig.shortBio} I am building toward roles where calm diagnosis, precise documentation, and useful automation improve the day-to-day experience of a team.</p>
           <ul>
             <li>
-              Troubleshoot user, account, endpoint, and connectivity issues with
-              clear escalation notes.
+              Diagnose user, account, endpoint, and connectivity issues with clear escalation notes.
             </li>
             <li>
-              Build PowerShell and Python tools for provisioning, health checks,
-              inventory, and reporting.
+              Build PowerShell and Python tools for provisioning, health checks, inventory, and reporting.
             </li>
             <li>
-              Write procedures and recovery steps that make support work
-              repeatable across teams.
+              Write procedures and recovery steps that make support work repeatable across teams.
             </li>
           </ul>
         </div>

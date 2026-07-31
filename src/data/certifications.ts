@@ -5,7 +5,7 @@ export const certifications: Credential[] = [
     title: "CompTIA A+",
     issuer: "CompTIA",
     kind: "Certification",
-    date: "In progress",
+    date: "Target 2026",
     status: "In progress",
     description:
       "Studying hardware, Windows, networking, security, mobile devices, and support troubleshooting. Not yet certified.",

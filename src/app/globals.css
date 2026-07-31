@@ -338,7 +338,7 @@ button {
 
 .hero-facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: 1.25rem;
   margin: 3rem 0 0;
   padding: 1.5rem 0 0;
@@ -557,7 +557,7 @@ button {
 
 .skill-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
   gap: 1.25rem;
 }
 

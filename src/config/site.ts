@@ -1,29 +1,29 @@
 export const siteConfig = {
   name: "Samuel Abraham",
-  role: "User Support Technician / IT Support",
+  role: "IT Support Technician",
   tagline:
-    "I troubleshoot the friction between people, devices, and dependable systems.",
+    "I help people get back to work — diagnosing Windows, Microsoft 365, and network issues, then automating the fixes so they stay fixed.",
   shortBio:
-    "User support candidate with hands-on Windows, Microsoft 365, Active Directory, networking, and PowerShell experience.",
-  location: "Oshawa, Ontario, Canada",
+    "IT support candidate with hands-on experience in Windows, Microsoft 365, Active Directory, networking, and PowerShell automation.",
+  location: "Oshawa, Ontario",
   email: "samuelabraham321@gmail.com",
   siteUrl:
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    "https://shine0078.github.io/portfolio",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://shine0078.github.io/portfolio",
   resumeUrl: "/portfolio/resume.pdf",
-  availability: "Open to User Support Technician and IT Support roles",
+  availability: "Open to IT Support and Help Desk roles",
   navLinks: [
-    { label: "Work", href: "#projects" },
-    { label: "Capabilities", href: "#skills" },
-    { label: "Journey", href: "#experience" },
-    { label: "Credentials", href: "#credentials" },
+    { label: "About", href: "#about" },
+    { label: "Projects", href: "#projects" },
+    { label: "Skills", href: "#skills" },
+    { label: "Experience", href: "#experience" },
+    { label: "Education", href: "#education" },
     { label: "Contact", href: "#contact" },
   ] as const,
   social: {
     github: "https://github.com/Shine0078",
     linkedin: "https://linkedin.com/in/samuelabraham-ops",
   },
-  copyright: "© 2026 Samuel Abraham.",
+  copyright: "© 2026 Samuel Abraham",
 } as const;
 
 export type SiteConfig = typeof siteConfig;

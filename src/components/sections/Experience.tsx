@@ -5,17 +5,15 @@ export function Experience() {
   return (
     <section
       id="experience"
-      className="section"
+      className="section section-tinted"
       aria-labelledby="experience-title"
     >
       <div className="container section-inner">
         <header className="section-heading">
-          <div>
-            <p className="eyebrow">Journey</p>
-            <h2 id="experience-title">Built in operations. Moving into IT.</h2>
-          </div>
+          <h2 id="experience-title">Experience</h2>
           <p>
-            Transferable support habits: follow procedures, surface blockers, document handoffs, and protect accuracy.
+            Operations roles that built the habits support work runs on:
+            following procedure, escalating early, and handing off cleanly.
           </p>
         </header>
 
@@ -25,21 +23,18 @@ export function Experience() {
               className="timeline-item"
               key={`${experience.company}-${experience.startDate}`}
             >
-              <div className="timeline-date">
-                <p>
-                  {formatDate(experience.startDate)}
-                  <span>—</span>
-                  {experience.endDate === "Present"
-                    ? "Present"
-                    : formatDate(experience.endDate)}
+              <p className="timeline-date">
+                {formatDate(experience.startDate)} –{" "}
+                {experience.endDate === "Present"
+                  ? "Present"
+                  : formatDate(experience.endDate)}
+              </p>
+
+              <div className="timeline-body">
+                <h3>{experience.role}</h3>
+                <p className="timeline-meta">
+                  {experience.company} · {experience.location}
                 </p>
-              </div>
-              <div className="timeline-content">
-                <div>
-                  <p className="project-label">{experience.company}</p>
-                  <h3>{experience.role}</h3>
-                  <p className="muted">{experience.location}</p>
-                </div>
                 <ul>
                   {experience.bullets.map((bullet) => (
                     <li key={bullet}>{bullet}</li>

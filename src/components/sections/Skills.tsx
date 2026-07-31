@@ -5,30 +5,19 @@ export function Skills() {
     <section id="skills" className="section" aria-labelledby="skills-title">
       <div className="container section-inner">
         <header className="section-heading">
-          <div>
-            <p className="eyebrow">Capabilities</p>
-            <h2 id="skills-title">The operating layer behind the work.</h2>
-          </div>
-          <p>
-            Practical lanes, named tools, and the evidence behind each one.
-          </p>
+          <h2 id="skills-title">Skills</h2>
+          <p>Tools and areas I work in day to day.</p>
         </header>
 
-        <div className="skill-groups">
-          {skillCategories.map((category, index) => (
-            <article className="skill-group" key={category.category}>
-              <header>
-                <span aria-hidden="true">0{index + 1}</span>
-                <h3>{category.category}</h3>
-              </header>
-              <ul aria-label={`${category.category} skills`}>
+        <div className="skill-grid">
+          {skillCategories.map((category) => (
+            <article className="skill-card" key={category.category}>
+              <h3>{category.category}</h3>
+              <ul className="tag-list" aria-label={category.category}>
                 {category.skills.map((skill) => (
                   <li key={skill}>{skill}</li>
                 ))}
               </ul>
-              <p className="skill-evidence">
-                <strong>Field evidence</strong> {category.evidence}
-              </p>
             </article>
           ))}
         </div>

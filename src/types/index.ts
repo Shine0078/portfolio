@@ -1,13 +1,12 @@
 export interface Project {
   title: string;
-  label: string;
+  category: string;
   summary: string;
-  highlights: {
-    label: "Problem" | "Solution" | "Stack" | "Outcome";
-    value: string;
-  }[];
+  problem: string;
+  solution: string;
+  outcome: string;
+  stack: string[];
   details: string[];
-  featured?: boolean;
   liveUrl?: string;
   sourceUrl: string;
 }
@@ -24,7 +23,6 @@ export interface Experience {
 export interface SkillCategory {
   category: string;
   skills: string[];
-  evidence: string;
 }
 
 export interface Credential {
@@ -35,5 +33,4 @@ export interface Credential {
   status: "Completed" | "In progress";
   description: string;
   link?: string;
-  featured?: boolean;
 }

@@ -9,61 +9,64 @@ export function Projects() {
     >
       <div className="container section-inner">
         <header className="section-heading">
-          <div>
-            <p className="eyebrow">Selected work</p>
-            <h2 id="projects-title">Systems built to be understood.</h2>
-          </div>
+          <h2 id="projects-title">Projects</h2>
           <p>
-            A short list of real builds across support automation, identity, and full-stack operations.
+            Three builds across support automation, Windows infrastructure, and
+            full-stack development.
           </p>
         </header>
 
         <div className="project-list">
-          {projects.map((project, index) => (
-            <article
-              className={`project-card${project.featured ? " project-card-featured" : ""}`}
-              key={project.title}
-            >
-              <p className="project-index">
-                {project.featured ? "Flagship" : `Project 0${index + 1}`}
-              </p>
+          {projects.map((project) => (
+            <article className="project-card" key={project.title}>
+              <div className="project-header">
+                <div>
+                  <p className="project-category">{project.category}</p>
+                  <h3>{project.title}</h3>
+                </div>
+                <div className="project-links">
+                  {project.liveUrl && (
+                    <a href={project.liveUrl}>
+                      Live demo <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  <a href={project.sourceUrl}>
+                    Source <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </div>
 
-              <div className="project-content">
-                <p className="project-label">{project.label}</p>
-                <h3>{project.title}</h3>
-                <p className="project-summary">{project.summary}</p>
+              <p className="project-summary">{project.summary}</p>
 
-                <ul className="project-brief">
-                  {project.highlights.map((highlight) => (
-                    <li key={highlight.label}>
-                      <span className="story-label">{highlight.label}</span>
-                      <p>{highlight.value}</p>
-                    </li>
+              <dl className="project-breakdown">
+                <div>
+                  <dt>Problem</dt>
+                  <dd>{project.problem}</dd>
+                </div>
+                <div>
+                  <dt>Approach</dt>
+                  <dd>{project.solution}</dd>
+                </div>
+                <div>
+                  <dt>Result</dt>
+                  <dd>{project.outcome}</dd>
+                </div>
+              </dl>
+
+              <ul className="tag-list" aria-label={`${project.title} stack`}>
+                {project.stack.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+
+              <details className="project-details">
+                <summary>Technical details</summary>
+                <ul>
+                  {project.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
                   ))}
                 </ul>
-
-                <details className="project-details">
-                  <summary>View technical details</summary>
-                  <ul>
-                    {project.details.map((detail) => (
-                      <li key={detail}>{detail}</li>
-                    ))}
-                  </ul>
-                </details>
-              </div>
-
-              <div className="project-links">
-                {project.liveUrl && (
-                  <a href={project.liveUrl}>
-                    Live product
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-                <a href={project.sourceUrl}>
-                  Source & documentation
-                  <span aria-hidden="true">↗</span>
-                </a>
-              </div>
+              </details>
             </article>
           ))}
         </div>

@@ -3,30 +3,22 @@ import type { Project } from "@/types";
 export const projects: Project[] = [
   {
     title: "eFootball League Dashboard",
-    label: "Flagship · Full-stack application",
+    category: "Full-stack web application",
     summary:
-      "Built a live league dashboard that keeps standings public while restricting result changes to authenticated administrators.",
-    highlights: [
-      {
-        label: "Problem",
-        value:
-          "A private league needed one reliable source for fixtures, scores, and standings.",
-      },
-      {
-        label: "Solution",
-        value:
-          "Added read-only public views, guarded admin routes, validated score entry, and an audit trail.",
-      },
-      {
-        label: "Stack",
-        value:
-          "Next.js 15, React 19, TypeScript, Tailwind, Prisma, Turso/LibSQL, and iron-session.",
-      },
-      {
-        label: "Outcome",
-        value:
-          "Generates home-and-away fixtures, refreshes public data every eight seconds, and retains the latest 100 admin actions.",
-      },
+      "A live league dashboard that keeps standings public while restricting result changes to authenticated administrators.",
+    problem:
+      "A private league had no single reliable source for fixtures, scores, and standings.",
+    solution:
+      "Built read-only public views, session-guarded admin routes, validated score entry, and an audit trail.",
+    outcome:
+      "Generates home-and-away fixtures automatically, refreshes public data every eight seconds, and retains the last 100 admin actions.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Prisma",
+      "Turso/LibSQL",
+      "iron-session",
     ],
     details: [
       "Server-side API routes verify the administrator session before every write.",
@@ -34,37 +26,28 @@ export const projects: Project[] = [
       "A database uniqueness rule prevents duplicate home-and-away fixtures.",
       "Safe reseeding adds missing fixtures without deleting completed results.",
     ],
-    featured: true,
     liveUrl: "https://efootball-league-dashboard-mu.vercel.app",
-    sourceUrl:
-      "https://github.com/Shine0078/efootball-league-dashboard",
+    sourceUrl: "https://github.com/Shine0078/efootball-league-dashboard",
   },
   {
     title: "Active Directory Home Lab",
-    label: "Selected · Infrastructure automation",
+    category: "Windows infrastructure",
     summary:
-      "Scripted a reproducible Windows domain lab for identity, policy, monitoring, backup, and recovery practice.",
-    highlights: [
-      {
-        label: "Problem",
-        value:
-          "Manual lab setup made domain troubleshooting difficult to repeat and validate.",
-      },
-      {
-        label: "Solution",
-        value:
-          "Automated a Server 2022 domain controller and two Windows 11 clients on Hyper-V.",
-      },
-      {
-        label: "Stack",
-        value:
-          "PowerShell, Active Directory, DNS, DHCP, Group Policy, Hyper-V, and Pester.",
-      },
-      {
-        label: "Outcome",
-        value:
-          "Created 50 test accounts, eight Group Policies, seven delegated security groups, and six runbooks.",
-      },
+      "A scripted, reproducible Windows domain lab for practising identity, policy, monitoring, backup, and recovery.",
+    problem:
+      "Manual lab setup made domain troubleshooting slow to repeat and hard to validate.",
+    solution:
+      "Automated a Server 2022 domain controller and two Windows 11 clients on Hyper-V from scratch.",
+    outcome:
+      "Provisions 50 test accounts, eight Group Policies, seven delegated security groups, and six written runbooks.",
+    stack: [
+      "PowerShell",
+      "Active Directory",
+      "DNS",
+      "DHCP",
+      "Group Policy",
+      "Hyper-V",
+      "Pester",
     ],
     details: [
       "Includes STIG/CIS-inspired hardening, Windows Event Forwarding, and alert tasks.",
@@ -75,37 +58,27 @@ export const projects: Project[] = [
   },
   {
     title: "IT Helpdesk Automation Toolkit",
-    label: "Selected · Support automation",
+    category: "Support automation",
     summary:
-      "Turned common account and workstation checks into repeatable PowerShell workflows with safe defaults and audit output.",
-    highlights: [
-      {
-        label: "Problem",
-        value:
-          "One-off console work made routine support tasks slow, inconsistent, and difficult to audit.",
-      },
-      {
-        label: "Solution",
-        value:
-          "Automated bulk users, password resets, system health checks, and software inventory.",
-      },
-      {
-        label: "Stack",
-        value:
-          "PowerShell 5.1/7, Active Directory RSAT, CIM/WinRM, Pester, CSV, JSON, and HTML.",
-      },
-      {
-        label: "Outcome",
-        value:
-          "Delivered four focused workflows with dry-run support, per-item error isolation, and timestamped reports.",
-      },
+      "Common account and workstation checks turned into repeatable PowerShell workflows with safe defaults and audit output.",
+    problem:
+      "One-off console work made routine support tasks slow, inconsistent, and hard to audit.",
+    solution:
+      "Automated bulk user creation, password resets, system health checks, and software inventory.",
+    outcome:
+      "Four focused workflows with dry-run support, per-item error isolation, and timestamped reports.",
+    stack: [
+      "PowerShell 5.1/7",
+      "Active Directory RSAT",
+      "CIM/WinRM",
+      "Pester",
+      "CSV/JSON",
     ],
     details: [
       "SupportsShouldProcess and confirmation settings reduce accidental changes.",
-      "Passwords are accepted as secure strings and production configuration remains untracked.",
+      "Passwords are accepted as secure strings and production configuration stays untracked.",
       "Pester checks syntax, required documentation headers, and accidental secret exposure.",
     ],
-    sourceUrl:
-      "https://github.com/Shine0078/IT-Helpdesk-Toolkit",
+    sourceUrl: "https://github.com/Shine0078/IT-Helpdesk-Toolkit",
   },
 ];

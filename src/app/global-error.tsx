@@ -15,32 +15,30 @@ export default function GlobalError({
           display: "grid",
           placeItems: "center",
           padding: "1.5rem",
-          color: "#f4f7f9",
-          background: "#080d12",
-          fontFamily: "Arial, sans-serif",
+          color: "#16181d",
+          background: "#ffffff",
+          fontFamily: "Segoe UI, Arial, sans-serif",
           textAlign: "center",
         }}
       >
         <div style={{ maxWidth: "28rem" }}>
-          <p style={{ color: "#7dd3c7", fontSize: "0.75rem" }}>
-            APPLICATION ERROR
-          </p>
           <h1>Portfolio unavailable</h1>
-          <p style={{ color: "#9ba9b5", lineHeight: 1.6 }}>
+          <p style={{ color: "#5b6070", lineHeight: 1.6 }}>
             The application could not load. Try again, or refresh the page.
           </p>
           <button
             type="button"
             onClick={reset}
             style={{
-              minHeight: "3rem",
+              minHeight: "2.75rem",
               marginTop: "1rem",
-              padding: "0.75rem 1.25rem",
+              padding: "0.6rem 1.25rem",
               border: 0,
-              borderRadius: "0.7rem",
-              color: "#06231f",
-              background: "#7dd3c7",
-              fontWeight: 700,
+              borderRadius: "10px",
+              color: "#ffffff",
+              background: "#2456d8",
+              fontSize: "0.9375rem",
+              fontWeight: 500,
               cursor: "pointer",
             }}
           >

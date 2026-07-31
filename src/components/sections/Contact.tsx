@@ -22,28 +22,28 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="contact-section"
+      className="section contact-section"
       aria-labelledby="contact-title"
     >
-      <div className="container contact-grid">
+      <div className="container section-inner contact-grid">
         <div>
-          <p className="eyebrow">Contact</p>
-          <h2 id="contact-title">Let&apos;s make the next handoff cleaner.</h2>
-          <p>
-            Open to User Support Technician and IT Support opportunities in
-            Oshawa, hybrid, or remote.
+          <h2 id="contact-title">Get in touch</h2>
+          <p className="contact-lead">
+            {siteConfig.availability} in {siteConfig.location}, hybrid, or
+            remote. The fastest way to reach me is email.
           </p>
+          <a className="button button-primary" href={`mailto:${siteConfig.email}`}>
+            Email me
+          </a>
         </div>
 
-        <address aria-label="Contact options">
+        <address aria-label="Contact details">
           <ul className="contact-list">
             {contactLinks.map((link) => (
               <li key={link.label}>
                 <a href={link.href}>
-                  <span>
-                    <span className="contact-label">{link.label}</span>
-                    <strong>{link.value}</strong>
-                  </span>
+                  <span className="contact-label">{link.label}</span>
+                  <strong>{link.value}</strong>
                   <span className="contact-arrow" aria-hidden="true">
                     ↗
                   </span>

@@ -4,7 +4,6 @@ import { generateMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ScrollProgress } from "@/components/ScrollProgress";
 import "./globals.css";
 
 const geist = localFont({
@@ -24,8 +23,8 @@ const geistMono = localFont({
 export const metadata: Metadata = generateMetadata();
 
 export const viewport: Viewport = {
-  themeColor: "#080d12",
-  colorScheme: "dark",
+  themeColor: "#ffffff",
+  colorScheme: "light",
 };
 
 const personJsonLd = {
@@ -58,50 +57,11 @@ const personJsonLd = {
   sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
 };
 
-const themeBootScript = `
-try {
-  const savedTheme = localStorage.getItem("portfolio-accent");
-  if (savedTheme === "cyan" || savedTheme === "amber" || savedTheme === "violet") {
-    document.documentElement.dataset.theme = savedTheme;
-  }
-} catch {}
-`;
-
-const interactionScript = `
-(function () {
-  const root = document.documentElement;
-  const buttons = document.querySelectorAll("[data-theme-value]");
-  const validThemes = ["cyan", "amber", "violet"];
-
-  function applyTheme(theme, persist) {
-    if (!validThemes.includes(theme)) return;
-    root.dataset.theme = theme;
-    buttons.forEach(function (button) {
-      button.setAttribute(
-        "aria-pressed",
-        String(button.dataset.themeValue === theme)
-      );
-    });
-    if (persist) {
-      try {
-        localStorage.setItem("portfolio-accent", theme);
-      } catch {}
-    }
-  }
-
-  applyTheme(root.dataset.theme || "cyan", false);
-  buttons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      applyTheme(button.dataset.themeValue, true);
-    });
-  });
-
-  document
-    .getElementById("mobile-menu")
-    ?.addEventListener("click", function (event) {
-      if (event.target.closest("a")) this.hidePopover();
-    });
-})();
+// Closes the mobile menu popover once a navigation link inside it is followed.
+const closeMenuOnNavigate = `
+document.getElementById("mobile-menu")?.addEventListener("click", function (event) {
+  if (event.target.closest("a")) this.hidePopover();
+});
 `;
 
 export default function RootLayout({
@@ -110,20 +70,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      data-theme="cyan"
-      suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable}`}
-    >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
-      </head>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <ScrollProgress />
         <Navbar />
         <main id="main" tabIndex={-1}>
           {children}
@@ -133,11 +84,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: interactionScript,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: closeMenuOnNavigate }} />
       </body>
     </html>
   );

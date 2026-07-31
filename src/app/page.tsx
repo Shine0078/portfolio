@@ -1,22 +1,20 @@
 import { Hero } from "@/components/sections/Hero";
-import { SignalStrip } from "@/components/sections/SignalStrip";
-import { Summary } from "@/components/sections/Summary";
+import { About } from "@/components/sections/About";
 import { Projects } from "@/components/sections/Projects";
-import { Experience } from "@/components/sections/Experience";
 import { Skills } from "@/components/sections/Skills";
-import { Certifications } from "@/components/sections/Certifications";
+import { Experience } from "@/components/sections/Experience";
+import { Education } from "@/components/sections/Education";
 import { Contact } from "@/components/sections/Contact";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <SignalStrip />
+      <About />
       <Projects />
       <Skills />
-      <Summary />
       <Experience />
-      <Certifications />
+      <Education />
       <Contact />
     </>
   );

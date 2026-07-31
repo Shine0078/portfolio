@@ -9,13 +9,15 @@ import "./globals.css";
 const geist = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist",
+  weight: "100 900",
   display: "swap",
-  fallback: ["Arial", "sans-serif"],
+  fallback: ["Segoe UI", "system-ui", "Arial", "sans-serif"],
 });
 
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
+  weight: "100 900",
   display: "swap",
   fallback: ["Consolas", "monospace"],
 });
@@ -23,8 +25,10 @@ const geistMono = localFont({
 export const metadata: Metadata = generateMetadata();
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#08080a" },
+  ],
 };
 
 const personJsonLd = {
@@ -57,11 +61,39 @@ const personJsonLd = {
   sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
 };
 
-// Closes the mobile menu popover once a navigation link inside it is followed.
-const closeMenuOnNavigate = `
-document.getElementById("mobile-menu")?.addEventListener("click", function (event) {
-  if (event.target.closest("a")) this.hidePopover();
-});
+/**
+ * Runs before first paint so a stored preference never flashes the wrong
+ * scheme. With no stored value the document stays unset and the system
+ * preference wins through `color-scheme: light dark`.
+ */
+const themeBoot = `
+try {
+  var t = localStorage.getItem("theme");
+  if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+} catch (e) {}
+`;
+
+const behaviour = `
+(function () {
+  var root = document.documentElement;
+
+  document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var isDark = root.dataset.theme
+        ? root.dataset.theme === "dark"
+        : matchMedia("(prefers-color-scheme: dark)").matches;
+      var next = isDark ? "light" : "dark";
+      root.dataset.theme = next;
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+  });
+
+  document
+    .getElementById("mobile-menu")
+    ?.addEventListener("click", function (event) {
+      if (event.target.closest("a")) this.hidePopover();
+    });
+})();
 `;
 
 export default function RootLayout({
@@ -70,7 +102,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${geistMono.variable}`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
+      </head>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
@@ -84,7 +123,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        <script dangerouslySetInnerHTML={{ __html: closeMenuOnNavigate }} />
+        <script dangerouslySetInnerHTML={{ __html: behaviour }} />
       </body>
     </html>
   );

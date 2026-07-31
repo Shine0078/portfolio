@@ -1,4 +1,6 @@
 import { siteConfig } from "@/config/site";
+import { SectionHeading } from "@/components/SectionHeading";
+import { ArrowUpRight } from "@/components/Icons";
 
 const contactLinks = [
   {
@@ -25,15 +27,26 @@ export function Contact() {
       className="section contact-section"
       aria-labelledby="contact-title"
     >
+      <div className="contact-glow" aria-hidden="true" />
+
       <div className="container section-inner contact-grid">
         <div>
-          <h2 id="contact-title">Get in touch</h2>
+          <SectionHeading
+            index="06"
+            label="Contact"
+            title="Let's talk"
+            titleId="contact-title"
+          />
           <p className="contact-lead">
             {siteConfig.availability} in {siteConfig.location}, hybrid, or
             remote. The fastest way to reach me is email.
           </p>
-          <a className="button button-primary" href={`mailto:${siteConfig.email}`}>
+          <a
+            className="button button-primary"
+            href={`mailto:${siteConfig.email}`}
+          >
             Email me
+            <ArrowUpRight />
           </a>
         </div>
 
@@ -45,7 +58,7 @@ export function Contact() {
                   <span className="contact-label">{link.label}</span>
                   <strong>{link.value}</strong>
                   <span className="contact-arrow" aria-hidden="true">
-                    ↗
+                    <ArrowUpRight />
                   </span>
                 </a>
               </li>

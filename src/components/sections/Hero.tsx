@@ -1,47 +1,56 @@
 import { siteConfig } from "@/config/site";
+import { ArrowRight, Download } from "@/components/Icons";
+
+const facts = [
+  ["Location", `${siteConfig.location} · hybrid or remote`],
+  ["Focus", "Windows · Microsoft 365 · Active Directory"],
+  ["Studying", "CompTIA A+ · Cloud & IT Systems"],
+] as const;
 
 export function Hero() {
   return (
     <section id="hero" className="hero" aria-labelledby="hero-title">
+      <div className="hero-grid" aria-hidden="true" />
+      <div className="hero-glow" aria-hidden="true" />
+
       <div className="container hero-inner">
-        <p className="availability">
-          <span aria-hidden="true" />
-          {siteConfig.availability}
-        </p>
+        <div className="hero-copy">
+          <p className="availability">
+            <i aria-hidden="true" />
+            {siteConfig.availability}
+          </p>
 
-        <h1 id="hero-title">
-          <span className="hero-name">{siteConfig.name}</span>
-          <span className="hero-role">{siteConfig.role}</span>
-        </h1>
+          <h1 id="hero-title" className="hero-name">
+            {siteConfig.name}
+          </h1>
 
-        <p className="hero-tagline">{siteConfig.tagline}</p>
+          <p className="hero-role">{siteConfig.role}</p>
 
-        <div className="hero-actions">
-          <a className="button button-primary" href="#projects">
-            View projects
-          </a>
-          <a
-            className="button button-secondary"
-            href={siteConfig.resumeUrl}
-            download
-          >
-            Download resume
-          </a>
+          <p className="hero-tagline">{siteConfig.tagline}</p>
+
+          <div className="hero-actions">
+            <a className="button button-primary" href="#projects">
+              View projects
+              <ArrowRight />
+            </a>
+            <a
+              className="button button-secondary"
+              href={siteConfig.resumeUrl}
+              download
+            >
+              <Download />
+              Download resume
+            </a>
+          </div>
         </div>
 
         <ul className="hero-facts">
-          <li>
-            <span>Location</span>
-            {siteConfig.location} · hybrid or remote
-          </li>
-          <li>
-            <span>Focus</span>
-            Windows, Microsoft 365, Active Directory
-          </li>
-          <li>
-            <span>Studying</span>
-            CompTIA A+ · Cloud &amp; IT Systems
-          </li>
+          {facts.map(([label, value]) => (
+            <li key={label}>
+              <span>{label}</span>
+              {value}
+            </li>
+          ))}
         </ul>
       </div>
     </section>

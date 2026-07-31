@@ -1,37 +1,46 @@
 import { projects } from "@/data/projects";
+import { SectionHeading } from "@/components/SectionHeading";
+import { ArrowUpRight } from "@/components/Icons";
 
 export function Projects() {
   return (
     <section
       id="projects"
-      className="section section-tinted"
+      className="section section-subtle"
       aria-labelledby="projects-title"
     >
       <div className="container section-inner">
-        <header className="section-heading">
-          <h2 id="projects-title">Projects</h2>
-          <p>
-            Three builds across support automation, Windows infrastructure, and
-            full-stack development.
-          </p>
-        </header>
+        <SectionHeading
+          index="02"
+          label="Projects"
+          title="Selected work"
+          titleId="projects-title"
+          lead="Three builds across support automation, Windows infrastructure, and full-stack development."
+        />
 
         <div className="project-list">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <article className="project-card" key={project.title}>
+              <p className="project-index" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")} / {projects.length}
+              </p>
+
               <div className="project-header">
                 <div>
-                  <p className="project-category">{project.category}</p>
                   <h3>{project.title}</h3>
+                  <p className="project-category">{project.category}</p>
                 </div>
+
                 <div className="project-links">
                   {project.liveUrl && (
                     <a href={project.liveUrl}>
-                      Live demo <span aria-hidden="true">↗</span>
+                      Live demo
+                      <ArrowUpRight />
                     </a>
                   )}
                   <a href={project.sourceUrl}>
-                    Source <span aria-hidden="true">↗</span>
+                    Source
+                    <ArrowUpRight />
                   </a>
                 </div>
               </div>

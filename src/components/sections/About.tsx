@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { SectionHeading } from "@/components/SectionHeading";
 
 const strengths = [
   {
@@ -21,10 +22,12 @@ export function About() {
       <div className="container section-inner">
         <div className="about-grid">
           <div>
-            <p className="eyebrow">About</p>
-            <h2 id="about-title">
-              Support work done carefully, then written down.
-            </h2>
+            <SectionHeading
+              index="01"
+              label="About"
+              title="How I work"
+              titleId="about-title"
+            />
             <p className="about-lead">
               {siteConfig.shortBio} I am moving from high-throughput operations
               into IT support, where the same habits — follow the procedure,
@@ -33,8 +36,9 @@ export function About() {
           </div>
 
           <ul className="about-list">
-            {strengths.map((item) => (
+            {strengths.map((item, index) => (
               <li key={item.title}>
+                <b aria-hidden="true">{String(index + 1).padStart(2, "0")}</b>
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
               </li>

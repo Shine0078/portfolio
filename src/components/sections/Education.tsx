@@ -1,21 +1,27 @@
 import { certifications } from "@/data/certifications";
+import { SectionHeading } from "@/components/SectionHeading";
+import { ArrowUpRight } from "@/components/Icons";
 
 export function Education() {
   return (
-    <section id="education" className="section" aria-labelledby="education-title">
+    <section
+      id="education"
+      className="section"
+      aria-labelledby="education-title"
+    >
       <div className="container section-inner">
-        <header className="section-heading">
-          <h2 id="education-title">Education &amp; certifications</h2>
-          <p>
-            Completed and in-progress study, labelled so the status is never
-            ambiguous.
-          </p>
-        </header>
+        <SectionHeading
+          index="05"
+          label="Education"
+          title="Study & credentials"
+          titleId="education-title"
+          lead="Completed and in-progress study, labelled so the status is never ambiguous."
+        />
 
         <div className="credential-list">
           {certifications.map((credential) => (
             <article className="credential-card" key={credential.title}>
-              <div className="credential-main">
+              <div>
                 <div className="credential-title">
                   <h3>{credential.title}</h3>
                   <p
@@ -36,7 +42,8 @@ export function Education() {
 
               {credential.link && (
                 <a className="credential-link" href={credential.link}>
-                  Details <span aria-hidden="true">↗</span>
+                  Details
+                  <ArrowUpRight />
                 </a>
               )}
             </article>

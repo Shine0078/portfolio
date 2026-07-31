@@ -1,21 +1,22 @@
 import { experiences } from "@/data/experience";
 import { formatDate } from "@/lib/utils";
+import { SectionHeading } from "@/components/SectionHeading";
 
 export function Experience() {
   return (
     <section
       id="experience"
-      className="section section-tinted"
+      className="section section-subtle"
       aria-labelledby="experience-title"
     >
       <div className="container section-inner">
-        <header className="section-heading">
-          <h2 id="experience-title">Experience</h2>
-          <p>
-            Operations roles that built the habits support work runs on:
-            following procedure, escalating early, and handing off cleanly.
-          </p>
-        </header>
+        <SectionHeading
+          index="04"
+          label="Experience"
+          title="Where I've worked"
+          titleId="experience-title"
+          lead="Operations roles that built the habits support work runs on: following procedure, escalating early, and handing off cleanly."
+        />
 
         <div className="timeline">
           {experiences.map((experience) => (

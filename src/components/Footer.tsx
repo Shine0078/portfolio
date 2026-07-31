@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-inner">
-        <p className="footer-name">{siteConfig.copyright}</p>
+        <p>{siteConfig.copyright}</p>
 
         <ul className="footer-links">
           <li>

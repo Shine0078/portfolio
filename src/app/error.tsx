@@ -14,13 +14,19 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="error-page">
-      <p className="eyebrow">Application error</p>
+    <div className="container error-page">
+      <p className="section-label">
+        <b>500</b>
+        Error
+        <i aria-hidden="true" />
+      </p>
       <h1>Something went wrong</h1>
       <p className="error-text">
         This page could not be rendered. Try the request again.
       </p>
-      {error.digest && <p className="error-reference">Reference: {error.digest}</p>}
+      {error.digest && (
+        <p className="error-reference">Reference: {error.digest}</p>
+      )}
       <div className="error-actions">
         <button type="button" className="button button-primary" onClick={reset}>
           Try again

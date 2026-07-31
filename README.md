@@ -1,87 +1,67 @@
-# Samuel Abraham - IT Support Portfolio
+# Samuel Abraham — IT Support Portfolio
 
-A recruiter-first portfolio for User Support Technician and IT Support roles.
-It keeps the initial scan concise while exposing implementation details through
-native, keyboard-accessible project disclosures.
+A single-page portfolio for IT Support and Help Desk roles. Static, fast, and
+readable without client-side JavaScript.
 
 **Live site:** <https://shine0078.github.io/portfolio/>
 
-## What this repository includes
-
-- Semantic, server-rendered content that remains readable without client-side
-  JavaScript
-- ATS-friendly summary, skills, project evidence, credentials, and contact
-  information
-- Mobile-first navigation, a skip link, visible focus states, reduced-motion
-  support, and a CSS reading-progress indicator
-- Persisted cyan, amber, and violet accent presets over one accessible dark
-  foundation
-- Local Geist fonts, optimized static HTML, and no animation framework or
-  third-party font request
-- Canonical metadata, JSON-LD, Open Graph and X cards, `sitemap.xml`, and
-  `robots.txt`
-- A one-page, text-extractable PDF resume at `public/resume.pdf`
-
 ## Stack
 
-- Next.js 16 and React 19
+- Next.js 16 (App Router, static export) and React 19
 - TypeScript
-- Tailwind CSS 3 with project-level CSS tokens
+- Plain CSS with custom properties — no UI framework
 - GitHub Actions and GitHub Pages
 
 ## Local development
 
 ```bash
 npm ci
+```
+
+```bash
 npm run dev
 ```
 
-The site uses the `/portfolio` base path in production and exports static files
-to `out/`.
+The site uses the `/portfolio` base path, so the dev server serves it at
+<http://localhost:3000/portfolio/>.
 
 ## Quality checks
 
-Run the same core checks used in continuous integration:
-
 ```bash
-npm run lint
-npm run typecheck
-npm run build
-npm run check:export
+npm run lint && npm run typecheck && npm run build && npm run check:export
 ```
 
-The CI workflow also runs a high-severity dependency audit and Lighthouse
-assertions. Lighthouse thresholds are 95% performance, 100% accessibility,
-100% best practices, and 100% SEO.
+CI additionally runs a high-severity dependency audit and Lighthouse
+assertions (95% performance, 100% accessibility, best practices, and SEO).
 
-## Content and theming
+## Project layout
 
-Portfolio content lives in `src/config` and `src/data`; section components live
-in `src/components/sections`. Accent colors are CSS custom properties selected
-through `data-theme="cyan"`, `"amber"`, or `"violet"`. The browser stores only
-this local display preference under `portfolio-accent`.
+| Path                       | Contents                                       |
+| -------------------------- | ---------------------------------------------- |
+| `src/config/site.ts`       | Name, role, contact details, navigation        |
+| `src/data/`                | Projects, experience, skills, credentials      |
+| `src/components/sections/` | One component per page section                 |
+| `src/app/globals.css`      | All styling, grouped by component              |
+| `scripts/`                 | Resume generation, export checks, build helpers |
 
-Project summaries use native `<details>` elements so technical depth is
-available without adding a client-side bundle or hiding essential content from
-assistive technology.
+To update content, edit the files in `src/config` and `src/data` — the section
+components render whatever is there.
 
-## Resume generation
+## Resume
 
-The source-controlled generator writes the final PDF to `public/resume.pdf`:
+The PDF at `public/resume.pdf` is generated from a source-controlled script:
 
 ```bash
 python -m pip install reportlab
+```
+
+```bash
 python scripts/generate_resume.py
 ```
 
-Review the generated PDF visually and confirm that its text can be selected or
-extracted before committing it.
+Confirm the text is selectable in the generated PDF before committing it.
 
 ## Deployment
 
-Pushes to `main` or `master` trigger the GitHub Pages build and deployment
-workflow. A separate quality workflow runs linting, type checking, the
-production build, export verification, dependency auditing, and Lighthouse.
-
-The repository is intentionally configured as a static site; it has no server
-runtime, database, contact-form endpoint, or secrets requirement.
+Pushes to `main` or `master` trigger the GitHub Pages workflow. The site is
+fully static: no server runtime, database, form endpoint, or secrets.

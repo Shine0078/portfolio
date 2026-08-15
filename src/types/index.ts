@@ -9,6 +9,7 @@ export interface Project {
   details: string[];
   liveUrl?: string;
   sourceUrl: string;
+  detailsUrl?: string;
 }
 
 export interface Experience {

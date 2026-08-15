@@ -2,6 +2,38 @@ import type { Project } from "@/types";
 
 export const projects: Project[] = [
   {
+    title: "FINVERSE",
+    category: "AI-powered personal finance platform",
+    summary:
+      "A privacy-first, offline-capable personal finance app — automatic bank sync, budgets, insights, cash-flow forecasting, and a 0–1000 health score — shipped to Android, iOS, and the web as an installable PWA.",
+    problem:
+      "Personal finance tools either read your banking credentials or keep your data in a black box. Neither is acceptable for money data.",
+    solution:
+      "Built a pure-domain engine (NestJS + PostgreSQL with row-level security) behind a Flutter client, with Plaid Link handling bank auth in a hosted flow so credentials never reach the app.",
+    outcome:
+      "564 passing API tests, 93 Flutter tests, a release-signed Android APK, and an installable PWA — all distributed at zero cost via GitHub Releases and GitHub Pages.",
+    stack: [
+      "NestJS",
+      "TypeScript",
+      "PostgreSQL",
+      "Flutter",
+      "Dart",
+      "Plaid",
+      "Stripe",
+      "Docker",
+    ],
+    details: [
+      "Domain logic is pure functions over plain data — no framework, no database, no I/O (ADR-0002).",
+      "PostgreSQL row-level security isolates users behind a restricted role that cannot bypass policies (ADR-0006).",
+      "Plaid access tokens are AES-256-GCM encrypted at rest and never returned to the client.",
+      "Argon2id hashing, rotating refresh tokens, TOTP two-factor, passkeys, and on-device receipt OCR.",
+      "Release APK and web bundle are verified to contain no secrets before publishing.",
+    ],
+    liveUrl: "https://shine0078.github.io/starter/app/",
+    sourceUrl: "https://github.com/Shine0078/starter",
+    detailsUrl: "/portfolio/projects/finverse",
+  },
+  {
     title: "eFootball League Dashboard",
     category: "Full-stack web application",
     summary:

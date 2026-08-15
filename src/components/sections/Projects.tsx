@@ -15,7 +15,7 @@ export function Projects() {
           label="Projects"
           title="Selected work"
           titleId="projects-title"
-          lead="Three builds across support automation, Windows infrastructure, and full-stack development."
+          lead="A full-stack finance platform, a full-stack web app, Windows infrastructure, and support automation."
         />
 
         <div className="project-list">
@@ -35,6 +35,12 @@ export function Projects() {
                   {project.liveUrl && (
                     <a href={project.liveUrl}>
                       Live demo
+                      <ArrowUpRight />
+                    </a>
+                  )}
+                  {project.detailsUrl && (
+                    <a href={project.detailsUrl}>
+                      Case study
                       <ArrowUpRight />
                     </a>
                   )}

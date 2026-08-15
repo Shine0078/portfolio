@@ -1397,6 +1397,341 @@ button {
 }
 
 /* ==========================================================================
+   PROJECT CASE STUDY (FINVERSE)
+   ========================================================================== */
+
+.fin-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.fin-hero-inner {
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+.fin-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 2.5rem;
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  transition: color var(--fast) var(--ease);
+}
+
+.fin-back:hover {
+  color: var(--fg);
+}
+
+.fin-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.fin-hero-copy h1 {
+  font-size: clamp(2.75rem, 2rem + 3.5vw, 4.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.fin-hero-role {
+  margin-top: 1.25rem;
+  color: var(--fg-muted);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fin-hero-tagline {
+  max-width: 38rem;
+  margin-top: 1.5rem;
+  color: var(--fg-muted);
+  font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.1875rem);
+  line-height: 1.55;
+}
+
+.fin-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
+}
+
+.fin-hero-art {
+  display: grid;
+  place-items: center;
+  width: clamp(10rem, 22vw, 13rem);
+  height: clamp(10rem, 22vw, 13rem);
+  border-radius: 24%;
+  background: var(--accent-soft);
+  box-shadow: var(--shadow-md);
+}
+
+.fin-hero-art img {
+  width: 60%;
+  height: auto;
+  border-radius: 18%;
+}
+
+.fin-overview {
+  max-width: 46rem;
+}
+
+.fin-overview h2 {
+  margin-bottom: 1.25rem;
+}
+
+.fin-overview p {
+  color: var(--fg-muted);
+  font-size: var(--text-lg);
+}
+
+.fin-overview p + p {
+  margin-top: 1rem;
+}
+
+.fin-heading {
+  max-width: 46rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.fin-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--border);
+  overflow: hidden;
+}
+
+.fin-feature {
+  padding: clamp(1.4rem, 3vw, 1.85rem);
+  background: var(--surface);
+  transition: background var(--fast) var(--ease);
+}
+
+.fin-feature:hover {
+  background: var(--surface-hover);
+}
+
+.fin-feature h3 {
+  font-size: 1.0625rem;
+}
+
+.fin-feature p {
+  margin-top: 0.65rem;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.fin-arch {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.fin-arch-flow {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fin-arch-node {
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.fin-arch-node span {
+  display: block;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fin-arch-node b {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: var(--text-base);
+  font-weight: 560;
+}
+
+.fin-arch-node i {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  font-style: normal;
+}
+
+.fin-arch-edge {
+  justify-self: center;
+  padding: 0.1rem 0.75rem;
+  color: var(--fg-subtle);
+  font-family: var(--mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fin-arch-points {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fin-arch-points b {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 560;
+}
+
+.fin-arch-points p {
+  margin-top: 0.4rem;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.fin-subhead {
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  font-size: var(--text-h3);
+}
+
+.fin-subhead + .tag-list {
+  margin-top: 1rem;
+}
+
+.fin-security {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--border);
+  list-style: none;
+  overflow: hidden;
+}
+
+.fin-security li {
+  padding: clamp(1.3rem, 3vw, 1.7rem);
+  background: var(--surface);
+}
+
+.fin-security b {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 560;
+}
+
+.fin-security p {
+  margin-top: 0.45rem;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.fin-install {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+  gap: 1.25rem;
+}
+
+.fin-install-card {
+  padding: clamp(1.4rem, 3vw, 1.85rem);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+
+.fin-install-card h3 {
+  font-size: 1.0625rem;
+}
+
+.fin-install-card p {
+  margin-top: 0.65rem;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}
+
+.fin-install-card ol {
+  margin: 1.1rem 0 0;
+  padding-left: 1.25rem;
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}
+
+.fin-install-card li + li {
+  margin-top: 0.5rem;
+}
+
+.fin-install-card a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.fin-version {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.fin-version p {
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}
+
+.fin-version code {
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+}
+
+@media (max-width: 900px) {
+  .fin-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fin-hero-art {
+    order: -1;
+  }
+
+  .fin-arch {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .fin-cta .button {
+    width: 100%;
+  }
+
+  .fin-features,
+  .fin-security {
+    border-radius: var(--r-md);
+  }
+}
+
+/* ==========================================================================
    MOTION
    ========================================================================== */
 

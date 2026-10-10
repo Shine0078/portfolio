@@ -41,6 +41,10 @@ export function Hero() {
               <Download />
               Download resume
             </a>
+            <a className="button button-secondary" href="/portfolio/arcade/">
+              Play Code Runner
+              <ArrowRight />
+            </a>
           </div>
         </div>
 

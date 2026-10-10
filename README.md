@@ -5,6 +5,18 @@ readable without client-side JavaScript.
 
 **Live site:** <https://shine0078.github.io/portfolio/>
 
+## Code Runner arcade
+
+**Play:** <https://shine0078.github.io/portfolio/arcade/>
+
+A dependency-free canvas mini-game hosted as a static file in `public/arcade/index.html`.
+Fly a ship with the arrow keys/A-D, pointer drag or on-screen buttons; collect
+crystals for XP, dodge bugs, pick up a shield, and beat your stored personal best.
+The game pauses when the tab is hidden and has a reduced-motion option.
+
+The GitHub profile displays an animated SVG preview that links to this page;
+GitHub README files cannot execute JavaScript-based games directly.
+
 ## Stack
 
 - Next.js 16 (App Router, static export) and React 19

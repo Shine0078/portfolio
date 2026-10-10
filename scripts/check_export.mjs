@@ -34,6 +34,7 @@ for (const value of attributes) {
 }
 
 for (const required of [
+  "arcade/index.html",
   "og.png",
   "resume.pdf",
   "robots.txt",

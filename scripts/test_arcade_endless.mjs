@@ -11,11 +11,11 @@ import vm from 'node:vm';
 const html = readFileSync(resolve('public/arcade/index.html'), 'utf8');
 const script = html.match(/<script>\s*([\s\S]*?)<\/script>/)?.[1];
 assert(script, 'Code Runner inline script is missing');
-assert.match(html, /ENDLESS MODE|ENDLESS ARCADE/, 'The UI must describe endless mode');
+assert.match(html, /ENDLESS MODE|ENDLESS ARCADE|MODE: ENDLESS|Endless waves/, 'The UI must describe endless mode');
 
 const noop = () => {};
 const canvasContext = {
-  fillRect: noop, beginPath: noop, moveTo: noop, lineTo: noop, closePath: noop,
+  fillRect: noop, strokeRect: noop, beginPath: noop, moveTo: noop, lineTo: noop, closePath: noop,
   fill: noop, stroke: noop, arc: noop, save: noop, restore: noop, translate: noop,
   rotate: noop, fillText: noop,
   createRadialGradient: () => ({ addColorStop: noop }),

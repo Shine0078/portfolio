@@ -12,10 +12,15 @@ readable without client-side JavaScript.
 A dependency-free canvas mini-game hosted as a static file in `public/arcade/index.html`.
 Fly a ship with the arrow keys/A-D, pointer drag or on-screen buttons; collect
 crystals for XP, dodge bugs, pick up a shield, and beat your stored personal best.
-This is now **endless mode**: the run continues past 100 XP, unlocking a new wave
+This is **endless mode**: the run continues past 100 XP, unlocking a new wave
 at each 100-point milestone. Difficulty increases gradually (up to a fair cap),
 and the run ends only when all three lives are lost.
 The game pauses when the tab is hidden and supports reduced motion.
+
+The arcade uses an original, handcrafted-inspired visual language: warm paper,
+dark green playing field, coral spaceship, honey-yellow collectibles and
+physical button shadows. It uses no image services or external assets, and its
+animated profile banner now shares the same colours.
 
 Run `npm run test:arcade` to execute deterministic regression checks for
 continuing past 100 XP, wave progression, personal best, pause/resume, restart

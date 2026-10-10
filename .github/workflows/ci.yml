@@ -30,6 +30,9 @@ jobs:
       - name: Type-check
         run: npm run typecheck
 
+      - name: Verify Code Runner endless-mode gameplay
+        run: npm run test:arcade
+
       - name: Production build
         run: npm run build
         env:

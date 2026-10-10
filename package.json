@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test:arcade": "node scripts/test_arcade_endless.mjs",
     "prepare:lighthouse": "node scripts/prepare_lighthouse.mjs",
     "check:export": "node scripts/check_export.mjs",
     "prepare:sites": "node scripts/prepare_sites.mjs"

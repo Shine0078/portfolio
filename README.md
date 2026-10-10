@@ -17,6 +17,13 @@ at each 100-point milestone. Difficulty increases gradually (up to a fair cap),
 and the run ends only when all three lives are lost.
 The game pauses when the tab is hidden and supports reduced motion.
 
+**Responsive gameplay:** On phone-sized screens (up to 610 CSS px), the Canvas
+uses a genuine 620 × 800 portrait world, giving the ship and obstacles more
+vertical space. On wider screens, the game uses a 960 × 520 landscape world.
+Rotating the phone preserves the current score, lives and best score rather
+than restarting the run. Both modes support pointer-drag steering, touch
+buttons, arrow keys and A/D controls.
+
 The arcade uses an original, handcrafted-inspired visual language: warm paper,
 dark green playing field, coral spaceship, honey-yellow collectibles and
 physical button shadows. It uses no image services or external assets, and its

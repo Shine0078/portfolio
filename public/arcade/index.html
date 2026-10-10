@@ -105,7 +105,8 @@
     .value.cyan { color: #a64a30; }.value.pink { color: #bd5340; letter-spacing: -.15em; }
     #shield { font-size: clamp(15px, 2vw, 23px); }
     .arena { border-bottom: 2px solid var(--ink); overflow: hidden; background: var(--field); touch-action: none; }
-    canvas { display: block; width: 100%; height: auto; aspect-ratio: 960/520; }
+    /* Canvas keeps its real aspect ratio: wide desktop, taller portrait mobile. */
+    canvas { display: block; width: 100%; height: auto; }
     .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 15px; }
     .touch { display: flex; gap: 9px; flex-wrap: wrap; }
     button {
@@ -247,7 +248,13 @@
   const canvas = document.querySelector("#game");
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
-  const WIDTH = 960, HEIGHT = 520, PLAYER_Y = 436;
+  // Mobile players get a genuinely taller game world, not a stretched image.
+  const mobileQuery = window.matchMedia("(max-width: 610px)");
+  let WIDTH = mobileQuery.matches ? 620 : 960;
+  let HEIGHT = mobileQuery.matches ? 800 : 520;
+  let PLAYER_Y = HEIGHT - 84;
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
   const $ = id => document.getElementById(id);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const stars = Array.from({length: reducedMotion ? 24 : 75}, () => ({x: Math.random()*WIDTH, y: Math.random()*HEIGHT, r: Math.random()*1.7+.3, speed: 12+Math.random()*38}));
@@ -256,6 +263,26 @@
   const rand = (a,b) => a+Math.random()*(b-a);
   const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
   const pad = n => String(n).padStart(3,"0");
+
+  // Handle rotation/resizing without restarting, losing XP, or misplacing the ship.
+  function resizeGameWorld(){
+    const nextWidth = mobileQuery.matches ? 620 : 960;
+    const nextHeight = mobileQuery.matches ? 800 : 520;
+    if(WIDTH===nextWidth && HEIGHT===nextHeight) return;
+    const scaleX=nextWidth/WIDTH, scaleY=nextHeight/HEIGHT;
+    state.playerX*=scaleX;
+    state.targetX*=scaleX;
+    for(const o of state.objects){o.x*=scaleX;o.y*=scaleY;o.speed*=scaleY;}
+    for(const star of stars){star.x*=scaleX;star.y*=scaleY;star.speed*=scaleY;}
+    state.particles=[];
+    WIDTH=nextWidth;HEIGHT=nextHeight;PLAYER_Y=HEIGHT-84;
+    state.playerX=Math.max(32,Math.min(WIDTH-32,state.playerX));
+    state.targetX=Math.max(32,Math.min(WIDTH-32,state.targetX));
+    state.last=0;
+    canvas.width=WIDTH;canvas.height=HEIGHT;
+  }
+  if(mobileQuery.addEventListener) mobileQuery.addEventListener("change",resizeGameWorld);
+  window.addEventListener("resize",resizeGameWorld);
   function announce(msg){ $("announcement").textContent = msg; }
   function hud(){
     $("score").textContent=pad(state.score);
@@ -313,7 +340,7 @@
     const type=p<.65?"crystal":p<.94?"bug":"shield";
     // Every 100 XP increases obstacle speed. Clamp difficulty so late waves remain playable.
     const difficulty = Math.min(14,state.wave-1);
-    state.objects.push({x:rand(40,WIDTH-40),y:-35,type,angle:rand(0,Math.PI),speed:rand(130,188)+difficulty*18,r:type==="bug"?23:19});
+    state.objects.push({x:rand(40,WIDTH-40),y:-35,type,angle:rand(0,Math.PI),speed:(rand(130,188)+difficulty*18)*(HEIGHT/520),r:type==="bug"?23:19});
   }
   function update(dt){
     state.t+=dt;
@@ -432,11 +459,11 @@
     ctx.fillRect(0,286,WIDTH,HEIGHT-286);
     // A couple of flat-colour distant planets add warmth without gradients.
     ctx.fillStyle="#577965";
-    ctx.beginPath();ctx.arc(770,163,68,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(WIDTH*.81,163,68,0,Math.PI*2);ctx.fill();
     ctx.fillStyle="#3b6254";
-    ctx.beginPath();ctx.arc(760,157,64,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(WIDTH*.80,157,64,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle="#829b81";ctx.lineWidth=2;
-    ctx.beginPath();ctx.arc(760,157,82,.3,2.7);ctx.stroke();
+    ctx.beginPath();ctx.arc(WIDTH*.80,157,82,.3,2.7);ctx.stroke();
     for(const s of stars){
       ctx.fillStyle="rgba(246,229,186,.65)";
       ctx.fillRect(s.x,s.y,Math.max(2,s.r),Math.max(2,s.r));
@@ -461,29 +488,33 @@
     ctx.textAlign="left";
   }
   function overlay(title,subtitle,details){
-    // A printed game card feels warmer than the old full-screen sci-fi glow.
+    // Keep the printed-card overlay centred in either desktop or portrait mode.
+    const cardWidth=Math.min(515,WIDTH-60), cardHeight=238;
+    const cardX=(WIDTH-cardWidth)/2, cardY=(HEIGHT-cardHeight)/2;
+    const midX=WIDTH/2;
     ctx.fillStyle="rgba(12,32,27,.55)";
     ctx.fillRect(0,0,WIDTH,HEIGHT);
     ctx.fillStyle="#172e27";
-    ctx.fillRect(240,155,515,238);
+    ctx.fillRect(cardX+18,cardY+19,cardWidth,cardHeight);
     ctx.fillStyle="#fff3da";
-    ctx.fillRect(222,136,515,238);
+    ctx.fillRect(cardX,cardY,cardWidth,cardHeight);
     ctx.lineWidth=4;ctx.strokeStyle="#26342f";
-    ctx.strokeRect(222,136,515,238);
+    ctx.strokeRect(cardX,cardY,cardWidth,cardHeight);
     ctx.fillStyle="#e97650";
-    ctx.fillRect(222,136,515,15);
+    ctx.fillRect(cardX,cardY,cardWidth,15);
     ctx.textAlign="center";
     ctx.fillStyle="#26342f";
     ctx.font="900 55px Georgia,serif";
-    ctx.fillText(title,480,241);
+    ctx.fillText(title,midX,cardY+105);
     ctx.fillStyle="#3b584e";
-    ctx.font="bold 19px ui-monospace,monospace";
-    ctx.fillText(subtitle,480,282);
+    ctx.font="bold 24px ui-monospace,monospace";
+    ctx.fillText(subtitle,midX,cardY+146);
     ctx.fillStyle="#885440";
-    ctx.font="bold 15px ui-monospace,monospace";
-    ctx.fillText(details,480,324);
+    ctx.font="bold 20px ui-monospace,monospace";
+    ctx.fillText(details,midX,cardY+188);
     ctx.textAlign="left";
   }
+
   function draw(){
     background();
     for(const o of state.objects)drawObject(o);
@@ -493,18 +524,19 @@
       // Milestones are celebratory stamps, never end-of-level screens.
       const alpha=clamp((state.milestoneAt+2.2-state.t)/.4,0,1);
       ctx.globalAlpha=alpha;
-      ctx.fillStyle="#1e332b";ctx.fillRect(312,97,350,97);
-      ctx.fillStyle="#f7c969";ctx.fillRect(303,88,350,97);
-      ctx.lineWidth=3;ctx.strokeStyle="#27342b";ctx.strokeRect(303,88,350,97);
+      const milestoneX=(WIDTH-350)/2, milestoneY=HEIGHT*.16;
+      ctx.fillStyle="#1e332b";ctx.fillRect(milestoneX+9,milestoneY+9,350,97);
+      ctx.fillStyle="#f7c969";ctx.fillRect(milestoneX,milestoneY,350,97);
+      ctx.lineWidth=3;ctx.strokeStyle="#27342b";ctx.strokeRect(milestoneX,milestoneY,350,97);
       ctx.textAlign="center";
       ctx.font="bold 30px Georgia,serif";
       ctx.fillStyle="#27342b";
-      ctx.fillText("WAVE "+state.wave+" UNLOCKED!",WIDTH/2,129);
+      ctx.fillText("WAVE "+state.wave+" UNLOCKED!",WIDTH/2,milestoneY+41);
       ctx.font="bold 17px ui-monospace,monospace";
-      ctx.fillText(state.score+" XP  ★  KEEP GOING!",WIDTH/2,160);
+      ctx.fillText(state.score+" XP  ★  KEEP GOING!",WIDTH/2,milestoneY+72);
       ctx.textAlign="left";ctx.globalAlpha=1;
     }
-    if(state.phase==="ready")overlay("READY, PLAYER?","ONE SHIP. THREE LIVES. ZERO BUGS.","CLICK START TO BEGIN YOUR MISSION");
+    if(state.phase==="ready")overlay("READY, PLAYER?","ONE SHIP. THREE LIVES. ZERO BUGS.","TAP HERE OR PRESS START TO PLAY");
     if(state.phase==="paused")overlay("PAUSED","TAKE A BREATH, DEVELOPER","RESUME WHEN YOU'RE READY");
     if(state.phase==="lost")overlay("GAME OVER","THE BUGS WON THIS ROUND","REBOOT YOUR MISSION AND TRY AGAIN");
   }
@@ -516,7 +548,14 @@
     state.raf=requestAnimationFrame(loop);
   }
   function positionFromPointer(e){const rect=canvas.getBoundingClientRect();state.targetX=clamp((e.clientX-rect.left)/rect.width*WIDTH,32,WIDTH-32);}
-  canvas.addEventListener("pointerdown",e=>{canvas.setPointerCapture(e.pointerId);state.pointer=true;positionFromPointer(e);});
+  canvas.addEventListener("pointerdown",e=>{
+    // A tap on the field starts the game on phones without hunting for a button below.
+    if(state.phase==="ready"||state.phase==="lost")reset();
+    else if(state.phase==="paused")togglePause();
+    try { canvas.setPointerCapture?.(e.pointerId); } catch {} // Older mobile browsers may reject capture.
+    state.pointer=true;
+    positionFromPointer(e);
+  });
   canvas.addEventListener("pointermove",e=>{if(state.pointer)positionFromPointer(e);});
   canvas.addEventListener("pointerup",()=>{state.pointer=false;});
   canvas.addEventListener("pointercancel",()=>{state.pointer=false;});

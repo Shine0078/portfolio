@@ -12,7 +12,14 @@ readable without client-side JavaScript.
 A dependency-free canvas mini-game hosted as a static file in `public/arcade/index.html`.
 Fly a ship with the arrow keys/A-D, pointer drag or on-screen buttons; collect
 crystals for XP, dodge bugs, pick up a shield, and beat your stored personal best.
-The game pauses when the tab is hidden and has a reduced-motion option.
+This is now **endless mode**: the run continues past 100 XP, unlocking a new wave
+at each 100-point milestone. Difficulty increases gradually (up to a fair cap),
+and the run ends only when all three lives are lost.
+The game pauses when the tab is hidden and supports reduced motion.
+
+Run `npm run test:arcade` to execute deterministic regression checks for
+continuing past 100 XP, wave progression, personal best, pause/resume, restart
+and game-over behavior.
 
 The GitHub profile displays an animated SVG preview that links to this page;
 GitHub README files cannot execute JavaScript-based games directly.
@@ -40,7 +47,7 @@ The site uses the `/portfolio` base path, so the dev server serves it at
 ## Quality checks
 
 ```bash
-npm run lint && npm run typecheck && npm run build && npm run check:export
+npm run lint && npm run typecheck && npm run test:arcade && npm run build && npm run check:export
 ```
 
 CI additionally runs a high-severity dependency audit and Lighthouse

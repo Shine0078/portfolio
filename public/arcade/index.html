@@ -57,16 +57,16 @@
   <div class="shell">
     <header>
       <a class="brand" href="https://github.com/Shine0078"><span>◈</span> SHINE0078 <span>/</span> LAB</a>
-      <span class="status"><span class="dot" aria-hidden="true"></span> SYSTEM ONLINE · BUILD 01</span>
+      <span class="status"><span class="dot" aria-hidden="true"></span> SYSTEM ONLINE · ENDLESS MODE</span>
       <a href="/portfolio/">← BACK TO PORTFOLIO</a>
     </header>
     <div class="topline">
       <div>
         <div class="eyebrow">// WELCOME TO THE PLAYGROUND</div>
         <h1>CODE <em>RUNNER</em><span aria-hidden="true">_</span></h1>
-        <p class="intro">Your mission: collect the glowing code crystals, dodge incoming bugs, and reach <strong>100 XP</strong>. Every line of code is an adventure. Ready, developer?</p>
+        <p class="intro">Your mission: collect glowing code crystals, dodge incoming bugs, and chase your <strong>highest possible score</strong>. Every 100 XP unlocks another wave. How long can you survive?</p>
       </div>
-      <span class="badge">● INTERACTIVE BUILD · 2026</span>
+      <span class="badge">∞ ENDLESS ARCADE · 2026</span>
     </div>
     <div class="mission"><span><strong class="good">◆</strong> CRYSTAL +10 XP</span><span><strong class="bad">⬢</strong> BUG −1 LIFE</span><span><strong class="shield">⬡</strong> SHIELD BLOCKS A BUG</span></div>
     <section class="arcade" aria-label="Code Runner game">
@@ -95,11 +95,11 @@
   const canvas = document.querySelector("#game");
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
-  const WIDTH = 960, HEIGHT = 520, PLAYER_Y = 436, TARGET = 100;
+  const WIDTH = 960, HEIGHT = 520, PLAYER_Y = 436;
   const $ = id => document.getElementById(id);
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const stars = Array.from({length: reducedMotion ? 24 : 75}, () => ({x: Math.random()*WIDTH, y: Math.random()*HEIGHT, r: Math.random()*1.7+.3, speed: 12+Math.random()*38}));
-  const state = {phase:"ready", score:0, best:0, lives:3, wave:1, shield:0, playerX:WIDTH/2, targetX:WIDTH/2, keys:new Set(), objects:[], particles:[], t:0, spawn:.6, invincible:0, last:0, pointer:false, sound:false, audio:null, raf:0};
+  const state = {phase:"ready", score:0, best:0, lives:3, wave:1, shield:0, playerX:WIDTH/2, targetX:WIDTH/2, keys:new Set(), objects:[], particles:[], t:0, spawn:.6, invincible:0, milestoneAt:-Infinity, last:0, pointer:false, sound:false, audio:null, raf:0};
   try { state.best = Math.max(0, parseInt(localStorage.getItem("shine0078-code-runner-best") || "0", 10) || 0); } catch {}
   const rand = (a,b) => a+Math.random()*(b-a);
   const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
@@ -132,16 +132,22 @@
     if(reducedMotion)return;
     for(let i=0;i<count;i++){const angle=Math.random()*Math.PI*2,speed=rand(70,260);state.particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:rand(.25,.7),max:.7,color,size:rand(1,4)});}
   }
-  function finish(won){
-    state.phase=won?"won":"lost";
-    if(state.score>state.best){state.best=state.score;try{localStorage.setItem("shine0078-code-runner-best",String(state.best))}catch{}}
-    beep(won?880:160,.3,won?"sine":"sawtooth");
-    announce(won?"Level complete! You collected 100 XP.":"Game over! Try again and beat your best score.");
+  function updateBest(){
+    if(state.score > state.best){
+      state.best = state.score;
+      try { localStorage.setItem("shine0078-code-runner-best",String(state.best)); } catch {}
+    }
+  }
+  function finish(){
+    state.phase="lost";
+    updateBest();
+    beep(160,.3,"sawtooth");
+    announce("Game over! You reached "+state.score+" XP on wave "+state.wave+". Beat your best score!");
     hud();
   }
   function reset(){
     state.phase="playing";state.score=0;state.lives=3;state.wave=1;state.shield=0;state.playerX=WIDTH/2;state.targetX=WIDTH/2;
-    state.keys.clear();state.objects=[];state.particles=[];state.t=0;state.spawn=.45;state.invincible=0;state.last=0;state.pointer=false;
+    state.keys.clear();state.objects=[];state.particles=[];state.t=0;state.spawn=.45;state.invincible=0;state.milestoneAt=-Infinity;state.last=0;state.pointer=false;
     announce("Mission active. Collect cyan crystals and dodge pink bugs.");
     hud();beep(540,.1);
   }
@@ -153,11 +159,13 @@
   function spawn(){
     const p=Math.random();
     const type=p<.65?"crystal":p<.94?"bug":"shield";
-    state.objects.push({x:rand(40,WIDTH-40),y:-35,type,angle:rand(0,Math.PI),speed:rand(130,188)+Math.min(160,state.score*1.2),r:type==="bug"?23:19});
+    // Every 100 XP increases obstacle speed. Clamp difficulty so late waves remain playable.
+    const difficulty = Math.min(14,state.wave-1);
+    state.objects.push({x:rand(40,WIDTH-40),y:-35,type,angle:rand(0,Math.PI),speed:rand(130,188)+difficulty*18,r:type==="bug"?23:19});
   }
   function update(dt){
     state.t+=dt;
-    state.wave=1+Math.floor(state.t/18);
+    state.wave=1+Math.floor(state.score/100);
     if(state.invincible>0)state.invincible-=dt;
     const left=state.keys.has("ArrowLeft")||state.keys.has("a");
     const right=state.keys.has("ArrowRight")||state.keys.has("d");
@@ -165,19 +173,33 @@
     else{state.playerX+=(state.targetX-state.playerX)*Math.min(1,dt*12);}
     state.playerX=clamp(state.playerX,32,WIDTH-32);
     state.spawn-=dt;
-    if(state.spawn<=0){spawn();state.spawn=rand(.38,.65)*Math.max(.7,1-state.t/180);}
+    if(state.spawn<=0){
+      spawn();
+      state.spawn=rand(.38,.65)*Math.max(.48,1-Math.min(14,state.wave-1)*.05);
+    }
     for(const star of stars){star.y+=star.speed*dt;if(star.y>HEIGHT)star.y=0;}
     for(const o of state.objects){
       o.y+=o.speed*dt;o.angle+=dt*3;
       if(Math.hypot(o.x-state.playerX,o.y-PLAYER_Y)<o.r+24 && !o.hit){
         o.hit=true;
-        if(o.type==="crystal"){state.score+=10;burst(o.x,o.y,"#64efff");beep(610+Math.min(state.score,300),.09);}
+        if(o.type==="crystal"){
+          state.score+=10;
+          updateBest();
+          burst(o.x,o.y,"#64efff");
+          beep(610+Math.min(state.score,300),.09);
+          if(state.score%100===0){
+            state.wave=1+Math.floor(state.score/100);
+            state.milestoneAt=state.t;
+            burst(state.playerX,PLAYER_Y-65,"#ac8bff",30);
+            announce("100 XP milestone! Wave "+state.wave+" unlocked. Keep going!");
+            beep(950,.18);
+          }
+        }
         else if(o.type==="shield"){state.shield=1;burst(o.x,o.y,"#69f5a3");beep(750,.15);}
         else if(state.shield){state.shield=0;burst(o.x,o.y,"#69f5a3");beep(220,.16);}
         else if(state.invincible<=0){state.lives-=1;state.invincible=1.15;burst(o.x,o.y,"#ff6d90",22);beep(150,.21,"square");}
         hud();
-        if(state.score>=TARGET){finish(true);return;}
-        if(state.lives<=0){finish(false);return;}
+        if(state.lives<=0){finish();return;}
       }
     }
     state.objects=state.objects.filter(o=>o.y<HEIGHT+40&&!o.hit);
@@ -229,7 +251,7 @@
     const phase=(state.t*48)%52;
     for(let y=140+phase;y<HEIGHT+52;y+=52){const k=(y-140)/(HEIGHT-140);ctx.strokeStyle="rgba(82,188,255,"+(.07+.22*k)+")";ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(WIDTH,y);ctx.stroke();}
     ctx.fillStyle="rgba(109,230,255,.55)";ctx.font="12px ui-monospace,monospace";ctx.fillText(">> LIVE SIMULATION",25,35);
-    ctx.textAlign="right";ctx.fillText("REACH 100 XP // "+String(state.wave).padStart(2,"0"),WIDTH-25,35);ctx.textAlign="left";
+    ctx.textAlign="right";ctx.fillText("ENDLESS RUN // WAVE "+String(state.wave).padStart(2,"0"),WIDTH-25,35);ctx.textAlign="left";
   }
   function overlay(title,subtitle,details){
     ctx.fillStyle="rgba(4,10,28,.78)";ctx.fillRect(0,0,WIDTH,HEIGHT);
@@ -244,9 +266,21 @@
     for(const o of state.objects)drawObject(o);
     for(const p of state.particles){ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size,p.size)}
     ctx.globalAlpha=1;player();
+    if(state.phase==="playing" && state.t-state.milestoneAt<2.2){
+      const alpha=clamp((state.milestoneAt+2.2-state.t)/.4,0,1);
+      ctx.fillStyle="rgba(14,28,62,"+(.86*alpha)+")";
+      ctx.fillRect(288,78,384,89);
+      ctx.textAlign="center";
+      ctx.font="bold 34px ui-monospace,monospace";
+      ctx.fillStyle="#85efff";
+      ctx.fillText("WAVE "+state.wave+" UNLOCKED!",WIDTH/2,116);
+      ctx.font="16px ui-monospace,monospace";
+      ctx.fillStyle="#d4c9ff";
+      ctx.fillText(state.score+" XP · KEEP GOING!",WIDTH/2,146);
+      ctx.textAlign="left";
+    }
     if(state.phase==="ready")overlay("READY, PLAYER?","ONE SHIP. THREE LIVES. ZERO BUGS.","CLICK START TO BEGIN YOUR MISSION");
     if(state.phase==="paused")overlay("PAUSED","TAKE A BREATH, DEVELOPER","RESUME WHEN YOU'RE READY");
-    if(state.phase==="won")overlay("LEVEL COMPLETE!","YOU BEAT THE BUGS. +"+state.score+" XP","ACHIEVEMENT UNLOCKED  ·  PLAY AGAIN?");
     if(state.phase==="lost")overlay("GAME OVER","THE BUGS WON THIS ROUND","REBOOT YOUR MISSION AND TRY AGAIN");
   }
   function loop(now){
@@ -264,7 +298,7 @@
   document.addEventListener("keydown",e=>{
     const k=e.key.length===1?e.key.toLowerCase():e.key;
     if(["ArrowLeft","ArrowRight","a","d"," "].includes(k)){e.preventDefault();}
-    if(k===" "){if(!e.repeat){if(state.phase==="ready"||state.phase==="lost"||state.phase==="won")reset();else togglePause();}return;}
+    if(k===" "){if(!e.repeat){if(state.phase==="ready"||state.phase==="lost")reset();else togglePause();}return;}
     state.keys.add(k);
   });
   document.addEventListener("keyup",e=>{state.keys.delete(e.key.length===1?e.key.toLowerCase():e.key);});

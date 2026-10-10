@@ -21,7 +21,7 @@ const canvasContext = {
   createRadialGradient: () => ({ addColorStop: noop }),
 };
 
-function boot(random) {
+function boot(random, mobile = false) {
   const stored = new Map();
   const makeNode = () => ({
     textContent: '', style: {}, handlers: {},
@@ -35,6 +35,7 @@ function boot(random) {
   nodes.game.getContext = () => canvasContext;
   const listeners = {};
   let frame = null, t = 0, id = 0;
+  const viewport = {mobile, callback: null};
   const fakeMath = Object.create(Math);
   fakeMath.random = random;
   const sandbox = {
@@ -46,7 +47,9 @@ function boot(random) {
       hidden: false,
     },
     window: {
-      matchMedia: () => ({matches:true}),
+      matchMedia: query => query.includes("max-width")
+        ? {get matches() {return viewport.mobile;}, addEventListener(_type,fn) {viewport.callback=fn;}}
+        : {matches:true},
       addEventListener:noop,
     },
     localStorage: {
@@ -58,6 +61,10 @@ function boot(random) {
   vm.runInNewContext(script,sandbox,{filename:'arcade/index.html',timeout:1500});
   return {
     nodes,stored,
+    rotate(isMobile) {
+      viewport.mobile = isMobile;
+      viewport.callback?.();
+    },
     frames(n) {
       for(let i=0;i<n;i++) {
         assert(typeof frame==='function','Animation loop stopped unexpectedly');
@@ -76,6 +83,8 @@ const random = () => {
 };
 const run = boot(random);
 const {nodes,stored} = run;
+assert.equal(nodes.game.width, 960, 'Desktop game should remain wide');
+assert.equal(nodes.game.height, 520, 'Desktop game height should remain unchanged');
 nodes.start.click();
 run.frames(960);
 const scored = Number(nodes.score.textContent);
@@ -108,4 +117,28 @@ assert.equal(nodes.lives.textContent,'—','Zero lives was not detected');
 const afterLoss=nodes.score.textContent;
 run.frames(90);
 assert.equal(nodes.score.textContent,afterLoss,'Game continued updating score after game over');
-console.log('PASS: endless scoring beyond 100 XP, wave progression, best score, pause/resume, restart, loss at zero lives.');
+// Portrait screens must use a taller world, survive rotation, and retain progress.
+mode='crystal';
+const mobileRun = boot(random, true);
+assert.equal(mobileRun.nodes.game.width, 620, 'Phone world should be narrower');
+assert.equal(mobileRun.nodes.game.height, 800, 'Phone world should be taller');
+mobileRun.nodes.start.click();
+mobileRun.frames(960);
+const mobileScore = Number(mobileRun.nodes.score.textContent);
+assert(mobileScore>=100,'Portrait mode should score past the first milestone');
+mobileRun.rotate(false);
+assert.equal(mobileRun.nodes.game.width,960,'Landscape rotation should restore wide game');
+assert.equal(mobileRun.nodes.game.height,520,'Landscape rotation should restore wide height');
+assert.equal(Number(mobileRun.nodes.score.textContent),mobileScore,'Rotation reset the score');
+mobileRun.frames(240);
+assert(Number(mobileRun.nodes.score.textContent)>mobileScore,'Game did not continue after rotating');
+const beforeBack = Number(mobileRun.nodes.score.textContent);
+mobileRun.rotate(true);
+assert.equal(mobileRun.nodes.game.width,620);
+assert.equal(mobileRun.nodes.game.height,800);
+assert.equal(Number(mobileRun.nodes.score.textContent),beforeBack,'Second rotation reset score');
+const tapRun = boot(random, true);
+tapRun.nodes.game.handlers.pointerdown[0]({pointerId:1,clientX:480});
+assert.match(tapRun.nodes.announcement.textContent,/Game on!/,'Tapping the game field should start on phones');
+tapRun.nodes.game.handlers.pointerup[0]();
+console.log('PASS: endless gameplay, mobile tap-to-start, 620x800 phone portrait, 960x520 desktop/landscape, rotation without score loss, save, pause, restart and lives.');

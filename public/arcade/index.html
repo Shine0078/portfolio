@@ -3,91 +3,243 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#070c1a">
-  <meta name="description" content="Play CODE RUNNER: an interactive mini arcade game by Shine0078. Collect code crystals, dodge bugs, and unlock your next level.">
-  <title>CODE RUNNER // SHINE0078</title>
+  <meta name="theme-color" content="#f2ebd9">
+  <meta name="description" content="Code Runner, a hand-crafted endless arcade game by Shine0078. Catch gems, dodge bugs, and chase a new high score.">
+  <title>Code Runner — The Little Arcade by Shine0078</title>
   <style>
-    :root{color-scheme:dark;font-family:ui-monospace,SFMono-Regular,Consolas,Monaco,monospace;--cyan:#64efff;--purple:#ac8bff;--ink:#e9f6ff}
-    *{box-sizing:border-box}
-    html{min-height:100%;background:#060b18}
-    body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(ellipse at 50% -25%,#263368 0%,#0c1430 38%,#050915 78%);overflow-x:hidden}
-    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:linear-gradient(#638aff19 1px,transparent 1px),linear-gradient(90deg,#638aff19 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(#000,transparent 80%)}
-    .shell{position:relative;max-width:1100px;margin:auto;padding:clamp(16px,3.5vw,36px)}
-    header,.topline,.hud,.controls,.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-    header{margin-bottom:30px;font-size:12px;letter-spacing:.13em}
-    a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
-    .brand{color:#dceeff;font-weight:800}.brand span{color:var(--cyan)}
-    .status{display:flex;align-items:center;gap:9px;color:#8fb2d1}
-    .dot{display:inline-block;height:7px;width:7px;border-radius:50%;background:#5dffc2;box-shadow:0 0 10px #5dffc2;animation:blink 1.8s ease-in-out infinite}
-    .eyebrow{font-size:12px;color:var(--cyan);letter-spacing:.25em}
-    h1{font-size:clamp(38px,7vw,79px);line-height:1;letter-spacing:-.075em;margin:11px 0 14px;font-weight:900;text-shadow:0 0 35px #6eeeff48}
-    h1 em{font-style:normal;color:var(--cyan)}
-    .intro{font-size:clamp(13px,1.8vw,16px);color:#aac0db;line-height:1.6;margin:0 0 20px;max-width:700px}
-    .badge{padding:9px 12px;border:1px solid #548aff52;color:#a9c6ef;border-radius:50px;font-size:11px;white-space:nowrap;background:#1022479c}
-    .arcade{margin-top:26px;padding:clamp(8px,1.5vw,16px);border:1px solid #64efff52;border-radius:24px;background:#0b1427;box-shadow:0 20px 80px #0009,0 0 60px #6feaff0c,inset 0 1px #b6f6ff20}
-    .hud{padding:10px 14px 16px;gap:8px;justify-content:space-around}
-    .stat{display:flex;flex-direction:column;align-items:center;min-width:76px;gap:5px}
-    .label{font-size:10px;color:#7896b8;letter-spacing:.15em}
-    .value{font-weight:850;font-size:clamp(20px,3.4vw,27px);color:#f3fbff;font-variant-numeric:tabular-nums}
-    .value.cyan{color:var(--cyan)}.value.pink{color:#ff839f}
-    .arena{position:relative;border:1px solid #425a86;border-radius:14px;overflow:hidden;background:#060d22;touch-action:none}
-    .arena:after{position:absolute;inset:0;content:"";pointer-events:none;opacity:.16;background:repeating-linear-gradient(transparent 0,transparent 3px,#000 4px);mix-blend-mode:multiply}
-    canvas{display:block;width:100%;height:auto;aspect-ratio:960/520}
-    .controls{margin-top:18px;gap:12px}
-    button{font:inherit;border:1px solid #546996;color:#dcefff;background:#132346;border-radius:11px;min-height:48px;padding:13px 19px;cursor:pointer;transition:transform .12s,background .12s,border-color .12s;touch-action:none}
-    button:hover{background:#1c3562;border-color:var(--cyan)}
-    button:active{transform:scale(.96)}
-    button:focus-visible,a:focus-visible{outline:3px solid #f5e89c;outline-offset:3px}
-    .primary{border-color:#b0f8ff;background:linear-gradient(125deg,#57ecff,#9f80ff);color:#081328;font-weight:900;box-shadow:0 5px 25px #5deeff3d}
-    .primary:hover{background:linear-gradient(125deg,#9dffff,#c4b2ff)}
-    .direction{min-width:70px;color:var(--cyan);font-size:20px;font-weight:800}
-    .key{display:inline-block;font-size:11px;padding:2px 6px;border:1px solid #6478a366;border-radius:5px;color:#bfdaed}
-    .hint{color:#9aacc7;font-size:12px;line-height:1.8}
-    .foot{margin-top:25px;padding:10px 0;color:#7d91b4;font-size:12px}
-    .foot a{color:#c4daec}
-    .mission{display:flex;gap:12px;flex-wrap:wrap;color:#8faed2;font-size:12px}
-    .mission strong{font-weight:700}.mission .good{color:#64efff}.mission .bad{color:#ff7894}.mission .shield{color:#69f5a3}
-    .touch{display:flex;gap:10px}
-    @keyframes blink{50%{opacity:.35}}
-    @media(max-width:610px){header{margin-bottom:20px}.arcade{border-radius:16px}.hud{padding:8px 0 12px}.stat{min-width:58px}.controls{justify-content:center}.controls .hint{flex-basis:100%;text-align:center}.direction{flex:1;max-width:105px}.foot{justify-content:center;text-align:center}h1{letter-spacing:-.055em}}
-    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+    /* THE LITTLE ARCADE — printed-paper colour, soft ink, and honest controls. */
+    :root {
+      color-scheme: light;
+      --paper: #f2ebd9;
+      --cream: #fff9e9;
+      --ink: #26342f;
+      --muted: #57665c;
+      --leaf: #34594f;
+      --field: #203d37;
+      --orange: #e97650;
+      --yellow: #f7cb67;
+      --mint: #bfd8a9;
+      --edge: #26342f;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#66746023 .8px, transparent .8px);
+      background-size: 13px 13px;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 4px; }
+    a:focus-visible, button:focus-visible, canvas:focus-visible {
+      outline: 3px solid #bd4f33;
+      outline-offset: 4px;
+    }
+    .shell { position: relative; width: min(100%, 1100px); margin: 0 auto; padding: 22px clamp(16px, 3.6vw, 38px) 36px; }
+    header {
+      display: flex; align-items: center; gap: 18px; justify-content: space-between;
+      padding: 0 0 15px; border-bottom: 2px solid var(--ink);
+    }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 900; font-size: 15px; line-height: 1.1; letter-spacing: .03em; }
+    .brand-mark {
+      width: 42px; height: 42px; display: grid; place-items: center;
+      border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow);
+      transform: rotate(-11deg); font: 900 24px Georgia, serif;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    .brand small { display: block; padding-top: 5px; letter-spacing: .16em; font: 600 10px ui-monospace, Consolas, monospace; color: var(--muted); }
+    .issue { font: 800 11px ui-monospace, Consolas, monospace; letter-spacing: .08em; color: var(--leaf); }
+    .back { border-bottom: 2px solid var(--ink); padding: 7px 0; font: 800 12px ui-monospace, Consolas, monospace; }
+    .topline { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(248px, .65fr); align-items: center; gap: 30px; padding: 29px 0 25px; }
+    .eyebrow { font: 800 11px ui-monospace, Consolas, monospace; letter-spacing: .11em; color: #9e4931; }
+    h1 {
+      position: relative; margin: 8px 0 9px; max-width: 680px;
+      font-size: clamp(57px, 9.2vw, 106px); font-weight: 950;
+      line-height: .89; letter-spacing: -.085em; text-transform: uppercase;
+    }
+    h1 .second { display: block; margin-left: clamp(26px, 8vw, 86px); }
+    h1 em { font-style: normal; color: var(--orange); }
+    h1 .spark { position: absolute; display: inline-block; top: 14%; right: 3%; transform: rotate(-22deg); font-size: .36em; color: var(--leaf); }
+    .intro { margin: 20px 0 0; max-width: 510px; color: #495b52; font-size: clamp(14px, 1.55vw, 16px); font-weight: 500; line-height: 1.6; }
+    .intro strong { color: #a04d32; font-weight: 900; }
+    .howto {
+      position: relative; border: 2px solid var(--ink); border-radius: 10px; padding: 17px 20px 16px;
+      background: var(--cream); box-shadow: 6px 7px 0 var(--ink);
+      transform: rotate(1.2deg);
+    }
+    .howto-title { font: 950 12px ui-monospace, Consolas, monospace; letter-spacing: .08em; display: flex; justify-content: space-between; }
+    .howto-title span { color: #a25139; }
+    .steps { margin: 12px 0 13px; padding: 0; list-style: none; }
+    .steps li { display: flex; gap: 12px; padding: 8px 0; align-items: baseline; font-size: 14px; font-weight: 700; border-bottom: 1px dashed #adada0; }
+    .steps li:last-child { border-bottom: 0; }
+    .steps li b { color: #b15138; font: 800 13px ui-monospace, Consolas, monospace; }
+    .handstamp { display: inline-block; padding: 5px 9px; background: var(--mint); color: var(--ink); border-radius: 3px; font: 900 11px ui-monospace, Consolas, monospace; transform: rotate(-3deg); }
+    .ribbon {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;
+      padding: 11px 0; border-block: 2px solid var(--ink);
+      font: 800 11px ui-monospace, Consolas, monospace; letter-spacing: .045em;
+    }
+    .ribbon span:last-child { color: var(--muted); }
+    .mission { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 19px 0 15px; font: 800 12px ui-monospace, Consolas, monospace; }
+    .mission span { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--ink); border-radius: 5px; padding: 8px 11px; background: var(--cream); }
+    .mission strong { font-size: 17px; }
+    .mission .good { color: #aa6939; }.mission .bad { color: #b34e43; }.mission .shield { color: #306c52; }
+    .arcade {
+      border: 3px solid var(--ink); border-radius: 12px; background: #fff9e9;
+      box-shadow: 9px 10px 0 var(--ink); overflow: hidden;
+    }
+    .arcade-head {
+      display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 10px;
+      border-bottom: 2px solid var(--ink); padding: 11px 18px;
+      background: var(--mint); font: 900 11px ui-monospace, Consolas, monospace; letter-spacing: .075em;
+    }
+    .now-dot { color: #c6503a; font-size: 16px; vertical-align: -1px; }
+    .hud { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); border-bottom: 2px solid var(--ink); }
+    .stat { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px; padding: 13px 6px 14px; min-width: 0; }
+    .stat + .stat { border-left: 1px dashed #a3a89b; }
+    .label { color: #626b61; font: 800 10px ui-monospace, Consolas, monospace; letter-spacing: .1em; }
+    .value { font: 950 clamp(19px,3vw,31px) ui-monospace, Consolas, monospace; color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -.07em; white-space: nowrap; }
+    .value.cyan { color: #a64a30; }.value.pink { color: #bd5340; letter-spacing: -.15em; }
+    #shield { font-size: clamp(15px, 2vw, 23px); }
+    .arena { border-bottom: 2px solid var(--ink); overflow: hidden; background: var(--field); touch-action: none; }
+    canvas { display: block; width: 100%; height: auto; aspect-ratio: 960/520; }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 15px; }
+    .touch { display: flex; gap: 9px; flex-wrap: wrap; }
+    button {
+      appearance: none; border: 2px solid var(--ink); border-radius: 6px;
+      min-height: 48px; padding: 11px 18px; color: var(--ink); background: #fcf6e9;
+      font: 900 13px ui-monospace, Consolas, monospace; cursor: pointer;
+      touch-action: none; box-shadow: 3px 3px 0 var(--ink);
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    @media(hover:hover){button:hover{background:#e4e9ce;transform:translate(-1px,-2px);box-shadow:4px 5px 0 var(--ink)}}
+    button:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+    .primary { background: var(--orange); color: #1d2925; }
+    @media(hover:hover){.primary:hover { background: #f29d68; }}
+    .direction { min-width: 55px; padding: 9px 14px; font-size: 19px; background: var(--yellow); }
+    .hint { color: var(--muted); font: 650 12px ui-monospace, Consolas, monospace; line-height: 1.7; }
+    .controls .hint { max-width: 280px; text-align: right; }
+    .key { display: inline-block; border: 1.5px solid #738178; border-radius: 4px; padding: 1px 4px; font-size: 11px; background: white; }
+    .announcement { margin: 22px 8px 0; display: flex; align-items: center; gap: 11px; padding: 11px 14px; border-left: 4px solid var(--orange); background: #fffaeb; font: 700 13px ui-monospace, Consolas, monospace; color: #3e524a; }
+    .announcement::before { content: "✷"; color: #b35938; font-size: 17px; }
+    .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 22px 4px 0; padding-top: 17px; border-top: 2px solid var(--ink); color: var(--muted); font: 800 11px ui-monospace, Consolas, monospace; }
+    .foot a { text-decoration: underline; text-underline-offset: 3px; }
+    @media(max-width: 760px) {
+      header { gap: 10px; }
+      .issue { display: none; }
+      .topline { grid-template-columns: 1fr; gap: 20px; }
+      h1 { font-size: clamp(54px, 12vw, 90px); }
+      .howto { transform: none; width: min(100%,440px); }
+      .steps { display: flex; flex-wrap: wrap; gap: 8px 15px; }
+      .steps li { padding: 5px 0; }
+      .controls { justify-content: center; }
+      .controls .hint { width: 100%; max-width: none; text-align: center; }
+    }
+    @media(max-width: 440px) {
+      .shell { padding: 14px 13px 28px; }
+      .brand { font-size: 12px; }.brand-mark { width: 35px; height: 35px; font-size: 20px; }
+      .back { font-size: 10px; }
+      .topline { padding: 24px 0 19px; }
+      h1 { font-size: clamp(50px, 14vw, 64px); }
+      h1 .spark { right: 0; }
+      .mission { font-size: 10px; gap: 6px; }
+      .mission span { padding: 6px 7px; }
+      .arcade { box-shadow: 5px 6px 0 var(--ink); }
+      .arcade-head { font-size: 10px; padding: 9px; }
+      .hud .stat { padding: 10px 2px; }
+      .label { font-size: 8px; letter-spacing: 0; }
+      .value { font-size: clamp(14px, 4.5vw, 20px); }
+      .controls { padding: 12px 7px; }
+      .touch { justify-content: center; }
+      button { font-size: 11px; padding: 9px 10px; }
+      .direction { min-width: 53px; }
+      .ribbon span:last-child { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto!important; transition: none!important; animation: none!important; } }
   </style>
 </head>
 <body>
   <div class="shell">
     <header>
-      <a class="brand" href="https://github.com/Shine0078"><span>◈</span> SHINE0078 <span>/</span> LAB</a>
-      <span class="status"><span class="dot" aria-hidden="true"></span> SYSTEM ONLINE · ENDLESS MODE</span>
-      <a href="/portfolio/">← BACK TO PORTFOLIO</a>
+      <a class="brand" href="https://github.com/Shine0078" aria-label="Shine0078 on GitHub">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SHINE0078<small>THE LITTLE ARCADE</small></span>
+      </a>
+      <span class="issue">DESIGNED FOR FUN / NO. 001</span>
+      <a href="/portfolio/" class="back">← BACK TO PORTFOLIO</a>
     </header>
-    <div class="topline">
+
+    <section class="topline" aria-label="Welcome to Code Runner">
       <div>
-        <div class="eyebrow">// WELCOME TO THE PLAYGROUND</div>
-        <h1>CODE <em>RUNNER</em><span aria-hidden="true">_</span></h1>
-        <p class="intro">Your mission: collect glowing code crystals, dodge incoming bugs, and chase your <strong>highest possible score</strong>. Every 100 XP unlocks another wave. How long can you survive?</p>
+        <div class="eyebrow">✳ INSERT COIN? NAH. IT'S FREE.</div>
+        <h1>CODE<span class="second"><em>RUNNER</em><span class="spark" aria-hidden="true">✳</span></span></h1>
+        <p class="intro">A tiny game about collecting good ideas and dodging bad bugs.
+          <strong>Endless waves, no finish line.</strong> Just you, a little spaceship,
+          and a score worth bragging about.</p>
       </div>
-      <span class="badge">∞ ENDLESS ARCADE · 2026</span>
+      <aside class="howto" aria-label="How to play">
+        <div class="howto-title">HOW TO PLAY <span>↗ 3 EASY STEPS</span></div>
+        <ol class="steps">
+          <li><b>01</b> Move your ship left and right.</li>
+          <li><b>02</b> Catch gems. Dodge the bugs.</li>
+          <li><b>03</b> See how far you can make it!</li>
+        </ol>
+        <span class="handstamp">♥ MADE FOR THE FUN OF IT</span>
+      </aside>
+    </section>
+
+    <div class="ribbon"><span>01 / THE GAME ROOM</span><span>HAND-MADE PIXELS · ENDLESS PLAY · KEEP GOING ↗</span></div>
+    <div class="mission" aria-label="Game rules">
+      <span><strong class="good">◆</strong> GEM = +10 XP</span>
+      <span><strong class="bad">⬢</strong> BUG = −1 LIFE</span>
+      <span><strong class="shield">⬡</strong> SHIELD = SAFE</span>
+      <span>★ NEXT WAVE EVERY 100 XP</span>
     </div>
-    <div class="mission"><span><strong class="good">◆</strong> CRYSTAL +10 XP</span><span><strong class="bad">⬢</strong> BUG −1 LIFE</span><span><strong class="shield">⬡</strong> SHIELD BLOCKS A BUG</span></div>
+
     <section class="arcade" aria-label="Code Runner game">
+      <div class="arcade-head">
+        <span><span class="now-dot">●</span> NOW PLAYING / CODE RUNNER</span>
+        <span>MODE: ENDLESS  &nbsp; ✳ &nbsp;  READY WHEN YOU ARE</span>
+      </div>
       <div class="hud">
-        <div class="stat"><span class="label">SCORE / XP</span><output class="value cyan" id="score">000</output></div>
-        <div class="stat"><span class="label">BEST</span><output class="value" id="best">000</output></div>
+        <div class="stat"><span class="label">YOUR SCORE</span><output class="value cyan" id="score">000</output></div>
+        <div class="stat"><span class="label">PERSONAL BEST</span><output class="value" id="best">000</output></div>
         <div class="stat"><span class="label">LIVES</span><output class="value pink" id="lives">♥ ♥ ♥</output></div>
         <div class="stat"><span class="label">WAVE</span><output class="value" id="wave">01</output></div>
         <div class="stat"><span class="label">SHIELD</span><output class="value" id="shield">OFF</output></div>
       </div>
       <div class="arena">
-        <canvas id="game" width="960" height="520" aria-label="Arcade field: move the spaceship left or right to collect crystals and dodge bugs." tabindex="0">Your browser does not support the canvas game. Try a recent browser.</canvas>
+        <canvas id="game" width="960" height="520" aria-label="Code Runner arcade. Move the ship left or right to catch gems and avoid bugs." tabindex="0">
+          Your browser does not support Canvas. Try a current browser to play.
+        </canvas>
       </div>
       <div class="controls">
-        <div class="touch"><button class="direction" id="left" aria-label="Move left" type="button">◀</button><button class="direction" id="right" aria-label="Move right" type="button">▶</button></div>
-        <div class="touch"><button class="primary" id="start" type="button">▶ START GAME</button><button id="pause" type="button">Ⅱ PAUSE</button><button id="sound" type="button" aria-pressed="false">♪ SOUND OFF</button></div>
-        <div class="hint">Use <span class="key">←</span> <span class="key">→</span> or <span class="key">A</span> <span class="key">D</span> · Drag on the field · <span class="key">SPACE</span> pause</div>
+        <div class="touch">
+          <button class="direction" id="left" aria-label="Move left" type="button">◀</button>
+          <button class="direction" id="right" aria-label="Move right" type="button">▶</button>
+        </div>
+        <div class="touch">
+          <button class="primary" id="start" type="button">▶ START GAME</button>
+          <button id="pause" type="button">Ⅱ PAUSE</button>
+          <button id="sound" type="button" aria-pressed="false">♪ SOUND OFF</button>
+        </div>
+        <div class="hint">
+          <span class="key">←</span> <span class="key">→</span> / <span class="key">A</span> <span class="key">D</span>
+          · drag to steer · <span class="key">SPACE</span> pause
+        </div>
       </div>
     </section>
-    <p id="announcement" role="status" aria-live="polite" class="hint" style="margin:12px 8px">Press START GAME to launch. Nothing to install.</p>
-    <footer class="foot"><span>DESIGNED & CODED BY <a href="https://github.com/Shine0078">SHINE0078 ↗</a></span><span>Made with canvas, curiosity &amp; a little chaos ✦</span><a href="/portfolio/">Explore the real projects →</a></footer>
+    <p id="announcement" role="status" aria-live="polite" class="announcement">
+      Press START GAME and see how far you can get.
+    </p>
+    <footer class="foot">
+      <span>© SHINE0078 · JUST A LITTLE SIDE PROJECT</span>
+      <span>BUILT WITH ☕ AND CURIOSITY</span>
+      <a href="/portfolio/">SEE WHAT ELSE I'VE BUILT ↗</a>
+    </footer>
   </div>
 <script>
 (() => {
@@ -111,7 +263,7 @@
     $("lives").textContent=("♥ ".repeat(state.lives)).trim() || "—";
     $("wave").textContent=String(state.wave).padStart(2,"0");
     $("shield").textContent=state.shield ? "ON" : "OFF";
-    $("shield").style.color=state.shield ? "#69f5a3" : "#96a6bc";
+    $("shield").style.color=state.shield ? "#2c6950" : "#6c746b";
     $("start").textContent=state.phase==="ready"?"▶ START GAME":"↻ RESTART";
     $("pause").textContent=state.phase==="paused"?"▶ RESUME":"Ⅱ PAUSE";
   }
@@ -148,7 +300,7 @@
   function reset(){
     state.phase="playing";state.score=0;state.lives=3;state.wave=1;state.shield=0;state.playerX=WIDTH/2;state.targetX=WIDTH/2;
     state.keys.clear();state.objects=[];state.particles=[];state.t=0;state.spawn=.45;state.invincible=0;state.milestoneAt=-Infinity;state.last=0;state.pointer=false;
-    announce("Mission active. Collect cyan crystals and dodge pink bugs.");
+    announce("Game on! Catch the golden gems. Avoid the orange bugs.");
     hud();beep(540,.1);
   }
   function togglePause(){
@@ -185,19 +337,19 @@
         if(o.type==="crystal"){
           state.score+=10;
           updateBest();
-          burst(o.x,o.y,"#64efff");
+          burst(o.x,o.y,"#f9c96d");
           beep(610+Math.min(state.score,300),.09);
           if(state.score%100===0){
             state.wave=1+Math.floor(state.score/100);
             state.milestoneAt=state.t;
-            burst(state.playerX,PLAYER_Y-65,"#ac8bff",30);
-            announce("100 XP milestone! Wave "+state.wave+" unlocked. Keep going!");
+            burst(state.playerX,PLAYER_Y-65,"#eb8057",30);
+            announce("Nice! Wave "+state.wave+" is here. Another 100 XP in the bag. Keep flying!");
             beep(950,.18);
           }
         }
-        else if(o.type==="shield"){state.shield=1;burst(o.x,o.y,"#69f5a3");beep(750,.15);}
-        else if(state.shield){state.shield=0;burst(o.x,o.y,"#69f5a3");beep(220,.16);}
-        else if(state.invincible<=0){state.lives-=1;state.invincible=1.15;burst(o.x,o.y,"#ff6d90",22);beep(150,.21,"square");}
+        else if(o.type==="shield"){state.shield=1;burst(o.x,o.y,"#b7dfb3");beep(750,.15);}
+        else if(state.shield){state.shield=0;burst(o.x,o.y,"#b7dfb3");beep(220,.16);}
+        else if(state.invincible<=0){state.lives-=1;state.invincible=1.15;burst(o.x,o.y,"#f08066",22);beep(150,.21,"square");}
         hud();
         if(state.lives<=0){finish();return;}
       }
@@ -211,54 +363,125 @@
     ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=line;ctx.stroke();}
   }
   function drawObject(o){
-    const {x,y,angle}=o;ctx.save();ctx.translate(x,y);
-    ctx.shadowBlur=22;ctx.shadowColor=o.type==="bug"?"#ff5077":o.type==="shield"?"#69f5a3":"#64efff";
+    const {x,y,angle}=o;
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.shadowBlur=0;
+    ctx.lineJoin="round";
     if(o.type==="crystal"){
-      ctx.rotate(angle);poly([[0,-19],[14,0],[0,19],[-14,0]],"#64efff","#d0ffff",2);
-      poly([[0,-19],[0,19],[14,0]],"#1889d4",null);
+      // Golden paper-cut gem; the small highlight gives it a physical, sticker-like finish.
+      ctx.rotate(angle*.45);
+      poly([[0,-21],[16,0],[0,21],[-16,0]],"#f8c76a","#fff4c9",3);
+      poly([[0,-21],[0,21],[16,0]],"#d79043",null);
+      poly([[-7,-3],[0,-14],[3,-6]],"#fff8df",null);
     }else if(o.type==="bug"){
-      ctx.rotate(Math.sin(state.t*5+angle)*.12);poly([[-19,-18],[19,-18],[24,0],[17,20],[-17,20],[-24,0]],"#5f1636","#ff708e",3);
-      ctx.fillStyle="#ffb9ca";ctx.fillRect(-13,-4,8,5);ctx.fillRect(5,-4,8,5);
-      ctx.strokeStyle="#ff96ab";ctx.beginPath();ctx.moveTo(-17,14);ctx.lineTo(17,14);ctx.stroke();
+      // Chunky bug with little legs and unmistakably grumpy eyes.
+      ctx.rotate(Math.sin(state.t*5+angle)*.10);
+      ctx.strokeStyle="#e88969";
+      ctx.lineWidth=4;
+      for(const side of [-1,1]){
+        for(const step of [-1,0,1]){
+          const y0=step*9;
+          ctx.beginPath();ctx.moveTo(side*15,y0);ctx.lineTo(side*27,y0+step*5);ctx.stroke();
+        }
+      }
+      poly([[-18,-18],[18,-18],[23,-10],[23,13],[14,21],[-14,21],[-23,13],[-23,-10]],"#d76f55","#f5b28d",3);
+      ctx.fillStyle="#fff4dc";
+      ctx.fillRect(-13,-6,9,7);ctx.fillRect(5,-6,9,7);
+      ctx.fillStyle="#253830";
+      ctx.fillRect(-9,-5,4,5);ctx.fillRect(9,-5,4,5);
+      ctx.fillRect(-5,12,10,3);
     }else{
-      ctx.rotate(angle*.6);poly([[0,-22],[20,-11],[20,11],[0,22],[-20,11],[-20,-11]],"#195f49","#69f5a3",3);
-      ctx.strokeStyle="#d9fff0";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-9,0);ctx.lineTo(-2,8);ctx.lineTo(12,-9);ctx.stroke();
-    }ctx.restore();
+      ctx.rotate(angle*.35);
+      poly([[0,-23],[21,-10],[21,12],[0,24],[-21,12],[-21,-10]],"#b7dcb3","#f7e5b8",3);
+      ctx.strokeStyle="#285743";ctx.lineWidth=4;
+      ctx.beginPath();ctx.moveTo(-10,0);ctx.lineTo(-2,9);ctx.lineTo(12,-9);ctx.stroke();
+    }
+    ctx.restore();
   }
   function player(){
-    const x=state.playerX,y=PLAYER_Y;ctx.save();ctx.translate(x,y);
+    const x=state.playerX,y=PLAYER_Y;
+    ctx.save();
+    ctx.translate(x,y);
     if(state.invincible>0 && Math.floor(state.t*14)%2===0)ctx.globalAlpha=.28;
     if(state.shield){
-      ctx.strokeStyle="#69f5a3";ctx.lineWidth=2;ctx.shadowColor="#69f5a3";ctx.shadowBlur=24;
-      ctx.beginPath();ctx.arc(0,4,35,0,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle="#b5e3ad";ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(0,4,36,0,Math.PI*2);ctx.stroke();
     }
     if(!reducedMotion && state.phase==="playing"){
-      poly([[-9,16],[0,43+Math.sin(state.t*27)*9],[9,16]],"#42c9ff",null);
-      poly([[-5,20],[0,32+Math.sin(state.t*23)*7],[5,20]],"#ffffff",null);
+      poly([[-9,17],[0,44+Math.sin(state.t*26)*7],[9,17]],"#ed7850",null);
+      poly([[-5,17],[0,29+Math.sin(state.t*20)*5],[5,17]],"#ffdb7c",null);
     }
-    ctx.shadowBlur=24;ctx.shadowColor="#56e6ff";
-    poly([[0,-28],[24,22],[9,14],[0,19],[-9,14],[-24,22]],"#1a549b","#88f5ff",3);
-    poly([[0,-19],[9,5],[0,11],[-9,5]],"#ddfaff",null);
+    // Cream spaceship with a coral nose and pale mint wings — no neon glow.
+    poly([[0,-31],[27,23],[10,16],[0,20],[-10,16],[-27,23]],"#f6d59e","#fdf2d8",3);
+    poly([[0,-31],[11,-5],[0,-13],[-11,-5]],"#e87553",null);
+    poly([[-16,13],[-28,25],[-10,20]],"#85ab86",null);
+    poly([[16,13],[28,25],[10,20]],"#85ab86",null);
+    poly([[0,-12],[9,7],[0,13],[-9,7]],"#47776d","#fdf7df",1.7);
     ctx.restore();
   }
   function background(){
-    ctx.fillStyle="#070f27";ctx.fillRect(0,0,WIDTH,HEIGHT);
-    const grad=ctx.createRadialGradient(480,80,10,480,240,660);grad.addColorStop(0,"#1d2d60");grad.addColorStop(1,"#070f27");
-    ctx.fillStyle=grad;ctx.fillRect(0,0,WIDTH,HEIGHT);
-    for(const s of stars){ctx.fillStyle="rgba(170,218,255,.58)";ctx.fillRect(s.x,s.y,s.r,s.r)}
-    ctx.strokeStyle="rgba(92,113,209,.20)";ctx.lineWidth=1;
-    for(let i=0;i<=12;i++){const x=WIDTH*i/12;ctx.beginPath();ctx.moveTo(WIDTH/2+(x-WIDTH/2)*.12,140);ctx.lineTo(x,HEIGHT);ctx.stroke();}
-    const phase=(state.t*48)%52;
-    for(let y=140+phase;y<HEIGHT+52;y+=52){const k=(y-140)/(HEIGHT-140);ctx.strokeStyle="rgba(82,188,255,"+(.07+.22*k)+")";ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(WIDTH,y);ctx.stroke();}
-    ctx.fillStyle="rgba(109,230,255,.55)";ctx.font="12px ui-monospace,monospace";ctx.fillText(">> LIVE SIMULATION",25,35);
-    ctx.textAlign="right";ctx.fillText("ENDLESS RUN // WAVE "+String(state.wave).padStart(2,"0"),WIDTH-25,35);ctx.textAlign="left";
+    ctx.fillStyle="#24463f";
+    ctx.fillRect(0,0,WIDTH,HEIGHT);
+    // This game field is inspired by a little screen-printed board game.
+    ctx.fillStyle="#2f574c";
+    ctx.fillRect(0,70,WIDTH,218);
+    ctx.fillStyle="#203e39";
+    ctx.fillRect(0,0,WIDTH,70);
+    ctx.fillStyle="#3b6254";
+    ctx.fillRect(0,286,WIDTH,HEIGHT-286);
+    // A couple of flat-colour distant planets add warmth without gradients.
+    ctx.fillStyle="#577965";
+    ctx.beginPath();ctx.arc(770,163,68,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#3b6254";
+    ctx.beginPath();ctx.arc(760,157,64,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle="#829b81";ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(760,157,82,.3,2.7);ctx.stroke();
+    for(const s of stars){
+      ctx.fillStyle="rgba(246,229,186,.65)";
+      ctx.fillRect(s.x,s.y,Math.max(2,s.r),Math.max(2,s.r));
+    }
+    ctx.strokeStyle="rgba(218,229,194,.12)";ctx.lineWidth=1;
+    for(let i=0;i<=12;i++){
+      const x=WIDTH*i/12;
+      ctx.beginPath();ctx.moveTo(WIDTH/2+(x-WIDTH/2)*.12,140);ctx.lineTo(x,HEIGHT);ctx.stroke();
+    }
+    const phase=(state.t*36)%54;
+    for(let y=140+phase;y<HEIGHT+54;y+=54){
+      const k=(y-140)/(HEIGHT-140);
+      ctx.strokeStyle="rgba(230,228,194,"+(.06+.20*k)+")";
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(WIDTH,y);ctx.stroke();
+    }
+    // Simple console-like field notes at top of the illustrated play area.
+    ctx.fillStyle="#f6e6c2";
+    ctx.font="bold 16px ui-monospace,monospace";
+    ctx.fillText("✳ GEM FIELD",26,43);
+    ctx.textAlign="right";
+    ctx.fillText("WAVE "+String(state.wave).padStart(2,"0")+" / NO FINISH LINE",WIDTH-26,43);
+    ctx.textAlign="left";
   }
   function overlay(title,subtitle,details){
-    ctx.fillStyle="rgba(4,10,28,.78)";ctx.fillRect(0,0,WIDTH,HEIGHT);
-    ctx.textAlign="center";ctx.shadowBlur=30;ctx.shadowColor="#64efff";
-    ctx.font="900 64px ui-monospace,monospace";ctx.fillStyle="#75f0ff";ctx.fillText(title,WIDTH/2,210);
-    ctx.shadowBlur=0;ctx.font="23px ui-monospace,monospace";ctx.fillStyle="#e3eeff";ctx.fillText(subtitle,WIDTH/2,264);
-    ctx.font="16px ui-monospace,monospace";ctx.fillStyle="#9db4d9";ctx.fillText(details,WIDTH/2,308);
+    // A printed game card feels warmer than the old full-screen sci-fi glow.
+    ctx.fillStyle="rgba(12,32,27,.55)";
+    ctx.fillRect(0,0,WIDTH,HEIGHT);
+    ctx.fillStyle="#172e27";
+    ctx.fillRect(240,155,515,238);
+    ctx.fillStyle="#fff3da";
+    ctx.fillRect(222,136,515,238);
+    ctx.lineWidth=4;ctx.strokeStyle="#26342f";
+    ctx.strokeRect(222,136,515,238);
+    ctx.fillStyle="#e97650";
+    ctx.fillRect(222,136,515,15);
+    ctx.textAlign="center";
+    ctx.fillStyle="#26342f";
+    ctx.font="900 55px Georgia,serif";
+    ctx.fillText(title,480,241);
+    ctx.fillStyle="#3b584e";
+    ctx.font="bold 19px ui-monospace,monospace";
+    ctx.fillText(subtitle,480,282);
+    ctx.fillStyle="#885440";
+    ctx.font="bold 15px ui-monospace,monospace";
+    ctx.fillText(details,480,324);
     ctx.textAlign="left";
   }
   function draw(){
@@ -267,17 +490,19 @@
     for(const p of state.particles){ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size,p.size)}
     ctx.globalAlpha=1;player();
     if(state.phase==="playing" && state.t-state.milestoneAt<2.2){
+      // Milestones are celebratory stamps, never end-of-level screens.
       const alpha=clamp((state.milestoneAt+2.2-state.t)/.4,0,1);
-      ctx.fillStyle="rgba(14,28,62,"+(.86*alpha)+")";
-      ctx.fillRect(288,78,384,89);
+      ctx.globalAlpha=alpha;
+      ctx.fillStyle="#1e332b";ctx.fillRect(312,97,350,97);
+      ctx.fillStyle="#f7c969";ctx.fillRect(303,88,350,97);
+      ctx.lineWidth=3;ctx.strokeStyle="#27342b";ctx.strokeRect(303,88,350,97);
       ctx.textAlign="center";
-      ctx.font="bold 34px ui-monospace,monospace";
-      ctx.fillStyle="#85efff";
-      ctx.fillText("WAVE "+state.wave+" UNLOCKED!",WIDTH/2,116);
-      ctx.font="16px ui-monospace,monospace";
-      ctx.fillStyle="#d4c9ff";
-      ctx.fillText(state.score+" XP · KEEP GOING!",WIDTH/2,146);
-      ctx.textAlign="left";
+      ctx.font="bold 30px Georgia,serif";
+      ctx.fillStyle="#27342b";
+      ctx.fillText("WAVE "+state.wave+" UNLOCKED!",WIDTH/2,129);
+      ctx.font="bold 17px ui-monospace,monospace";
+      ctx.fillText(state.score+" XP  ★  KEEP GOING!",WIDTH/2,160);
+      ctx.textAlign="left";ctx.globalAlpha=1;
     }
     if(state.phase==="ready")overlay("READY, PLAYER?","ONE SHIP. THREE LIVES. ZERO BUGS.","CLICK START TO BEGIN YOUR MISSION");
     if(state.phase==="paused")overlay("PAUSED","TAKE A BREATH, DEVELOPER","RESUME WHEN YOU'RE READY");
